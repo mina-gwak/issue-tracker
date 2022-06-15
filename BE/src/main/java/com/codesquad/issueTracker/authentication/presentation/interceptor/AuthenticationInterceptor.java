@@ -40,6 +40,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         String authorizationInfo = request.getHeader("Authorization");
         if (authorizationInfo == null) {
             log.info("[preHandle][JWT Token 에러 발생]");
+            log.info("request uri is : {}", request.getRequestURI());
             throw new IllegalStateException("토큰이 없습니다. 로그인 먼저 해주세요.");
         }
         String[] parts = authorizationInfo.split(" ");
