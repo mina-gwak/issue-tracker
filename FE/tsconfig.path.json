@@ -15,6 +15,7 @@
       "@mocks/*": ["mocks/*"],
       "@pages/*": ["pages/*"],
       "@router": ["router"],
+      "@router/*": ["router/*"],
       "@utils/*": ["utils/*"]
     }
   },
