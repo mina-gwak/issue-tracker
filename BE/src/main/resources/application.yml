@@ -5,14 +5,34 @@ spring:
     username: ${USERNAME}
     password: ${PASSWORD}
 
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+    database: mysql
+
+  redis:
+    host: localhost
+    port: 6379
+
 jwt:
   token:
-    validate-time: 1800
+    #    ms 단위
+    access-validate-time: 180000 # 180초
+    refresh-validate-time: 3600000 # 1시간
     token-secret: ${JWT_TOKEN_SECRET}
 
-    github:
-      token-server-uri: "https://github.com/login/oauth/access_token"
-      oauth-server-uri: "https://api.github.com/user"
-      oauth-login-uri: "https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&scope=user"
-      client-id: ${GITHUB_CLIENT_ID}
-      client-secret: ${GITHUB_CLIENT_SECRET}
+oauth:
+  github:
+    token-server-uri: "https://github.com/login/oauth/access_token"
+    oauth-server-uri: "https://api.github.com/user"
+    oauth-login-uri: "https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&scope=user"
+    client-id: ${GITHUB_CLIENT_ID}
+    client-secret: ${GITHUB_CLIENT_SECRET}
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    com.codesquad.issueTracker: debug
