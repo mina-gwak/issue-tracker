@@ -22,7 +22,7 @@ do
     elif [ ${RETRY_COUNT} -eq 10 ]; then
         echo "> Health check failed. Kill WAS running at ${SWITCH_PORT}"
         TARGET_PID=$(lsof -Fp -i TCP:${SWITCH_PORT} | grep -Po '[0-9]+')
-        sudo kill -2 ${TARGET_PID}
+        sudo kill -15 ${TARGET_PID}
         exit 1
     fi
     sleep 10
