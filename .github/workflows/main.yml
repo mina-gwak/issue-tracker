@@ -56,4 +56,13 @@ jobs:
       - name: ⬆️ Upload to S3
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
         working-directory: ${{env.working-directory}}
+     
+      # Code Deploy를 통해 ec2로 zip file 옮기기
+      - name: ➡️ Code Deploy
+        run: aws deploy create-deployment
+          --application-name issueTracker-deploy
+          --deployment-config-name CodeDeployDefault.AllAtOnce
+          --deployment-group-name issueTracker-code-deploy
+          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
+        working-directory: ${{env.WORKING_DIRECTORY}}
 
