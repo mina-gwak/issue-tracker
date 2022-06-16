@@ -17,6 +17,6 @@ hooks:
       timeout: 180
       runas: ec2-user
 
-    - location: script/health_check.sh
+    - location: scripts/health_check.sh
       timeout: 180
       runas: ec2-user
