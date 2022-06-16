@@ -40,13 +40,9 @@ const LoginCallback = () => {
     }
   }, [response]);
 
-  return error ? (
-    <Navigate to={'/error'} state={{ message: ERROR.LOGIN_ERROR }} replace />
-  ) : accessToken ? (
-    <Navigate to={'/issue-list'} replace />
-  ) : (
-    <Loading />
-  );
+  if (error) return <Navigate to={'/error'} state={{ message: ERROR.LOGIN_ERROR }} replace />;
+  else if (accessToken) return <Navigate to={'/issue-list'} replace />;
+  else return <Loading />;
 };
 
 export default LoginCallback;

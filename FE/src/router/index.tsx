@@ -1,8 +1,8 @@
 import Error from '@pages/Error';
+import NotFound from '@pages/Error/NotFound';
 import IssueList from '@pages/IssueList';
 import Login from '@pages/Login';
 import LoginCallback from '@pages/LoginCallback';
-import NotFound from '@pages/NotFound';
 import ProtectedRoute from '@router/ProtectedRoute';
 import RedirectRoute from '@router/RedirectRoute';
 
