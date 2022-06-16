@@ -16,6 +16,7 @@ module.exports = override(
     '@pages': path.resolve(__dirname, 'src/pages'),
     '@router': path.resolve(__dirname, 'src/router'),
     '@router/*': path.resolve(__dirname, 'src/router/*'),
+    '@type': path.resolve(__dirname, 'src/type'),
     '@utils': path.resolve(__dirname, 'src/utils'),
   }),
 );
