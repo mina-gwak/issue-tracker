@@ -16,6 +16,6 @@ if [ ! -z ${TARGET_PID} ]; then
   sudo kill ${TARGET_PID}
 fi
 
-nohup java -jar -Dserver.port=${SWITCH_PORT} /home/ec2-user/airbnb-deploy/build/libs/* > /home/ec2-user/nohup.out 2>&1 &
+nohup java -jar -Dserver.port=${SWITCH_PORT} /home/ec2-user/issueTracker-deploy/build/libs/* > /home/ec2-user/nohup.out 2>&1 &
 echo "> Now new WAS runs at ${SWITCH_PORT}."
 exit 0
