@@ -20,6 +20,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(authenticationInterceptor)
             .order(1)
             .addPathPatterns("/**")
-            .excludePathPatterns("/", "/api/oauth/**", "/api/health", "/favicon.ico", "/css/**");
+            .excludePathPatterns("/", "/api/oauth/**", "/favicon.ico", "/css/**");
     }
 }

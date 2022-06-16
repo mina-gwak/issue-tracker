@@ -2,6 +2,7 @@ package com.codesquad.issueTracker.authentication.presentation;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,4 +33,9 @@ public class OAuthController {
         return ResponseEntity.ok(loginToken);
     }
 
+    @GetMapping("/logout")
+    public ResponseEntity<Void> oAuthLogout(@RequestAttribute String username) {
+        oAuthService.logout(username);
+        return ResponseEntity.ok().build();
+    }
 }
