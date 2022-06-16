@@ -13,7 +13,7 @@ TARGET_PID=$(lsof -Fp -i TCP:${SWITCH_PORT} | grep -Po '[0-9]+')
 
 if [ ! -z ${TARGET_PID} ]; then
   echo "> Kill WAS running at ${SWITCH_PORT} for running new WAS"
-  sudo kill -2 ${TARGET_PID}
+  sudo kill -15 ${TARGET_PID}
 fi
 
 nohup java -jar -Dserver.port=${SWITCH_PORT} /home/ec2-user/issueTracker-deploy/build/libs/* > /home/ec2-user/nohup.out 2>&1 &
