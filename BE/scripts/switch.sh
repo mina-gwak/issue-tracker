@@ -14,7 +14,7 @@ function switch_proxy() {
   echo "set \$service_url http://127.0.0.1:${SWITCH_PORT};" | tee /home/ec2-user/config/service_url.inc
   echo "> Now Nginx proxies to ${SWITCH_PORT}."
 
-  # Reload nginx
+  # Reload nginx.
   sudo service nginx reload
   echo "> Nginx reloaded."
 }
