@@ -14,20 +14,6 @@ const outlineStyles = css<OutlineStylesType>`
   ${({ outline }) =>
     outline &&
     css`
-      background-color: ${({ theme }) => theme.colors.blue};
-
-      &:hover {
-        background-color: ${({ theme }) => theme.colors.darkBlue};
-      }
-    
-      &:focus {
-        border: 4px solid ${({ theme }) => theme.colors.lightBlue};
-      }
-    `}
-
-  ${({ outline }) =>
-    !outline &&
-    css`
       color: ${({ theme }) => theme.colors.blue};
       background-color: ${({ theme }) => theme.colors.white};
       border: 2px solid ${({ theme }) => theme.colors.blue};
@@ -36,7 +22,21 @@ const outlineStyles = css<OutlineStylesType>`
         color: ${({ theme }) => theme.colors.darkBlue};
         background-color: ${({ theme }) => theme.colors.darkBlue};
       }
-    
+
+      &:focus {
+        border: 4px solid ${({ theme }) => theme.colors.lightBlue};
+      }
+    `}
+
+  ${({ outline }) =>
+    !outline &&
+    css`
+      background-color: ${({ theme }) => theme.colors.blue};
+
+      &:hover {
+        background-color: ${({ theme }) => theme.colors.darkBlue};
+      }
+
       &:focus {
         border: 4px solid ${({ theme }) => theme.colors.lightBlue};
       }
@@ -47,25 +47,28 @@ const sizeStyles = css<SizeStylesType>`
   ${({ size }) =>
     size === BUTTON_SIZE.SMALL &&
     css`
-      width: 80px;
+      width: 120px;
       height: 40px;
       font-size: ${({ theme }) => theme.fontSizes.xSmall};
+      border-radius: 11px;
     `}
 
   ${({ size }) =>
     size === BUTTON_SIZE.MEDIUM &&
     css`
-      width: 100px;
-      height: 35px;
+      width: 240px;
+      height: 56px;
       font-size: ${({ theme }) => theme.fontSizes.medium};
+      border-radius: 20px;
     `}
 
   ${({ size }) =>
     size === BUTTON_SIZE.LARGE &&
     css`
-      width: 150px;
-      height: 80px;
+      width: 340px;
+      height: 64px;
       font-size: ${({ theme }) => theme.fontSizes.medium};
+      border-radius: 20px;
     `}
 `;
 
@@ -78,10 +81,7 @@ export const Button = styled.button<OutlineStylesType & SizeStylesType>`
     opacity: 0.5;
   }
 
-  /* 아웃라인 */
   ${outlineStyles}
 
-  /* 크기 */
   ${sizeStyles}
 `;
-
