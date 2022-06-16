@@ -28,4 +28,8 @@ public class RedisTokenRepository {
     public Optional<String> findRefreshTokenByAccessToken(String accessToken) {
         return Optional.ofNullable(opsForValue.get(accessToken));
     }
+
+    public void delete(String username) {
+        opsForValue.set(username, "", 1, TimeUnit.MILLISECONDS);
+    }
 }

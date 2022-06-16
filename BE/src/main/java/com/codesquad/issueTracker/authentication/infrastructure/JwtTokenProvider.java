@@ -35,7 +35,7 @@ public class JwtTokenProvider {
     }
 
     public String generateRefreshToken(String payload) {
-        return createToken(null, refreshTokenValidityTime);
+        return createToken(payload, refreshTokenValidityTime);
     }
 
     private String createToken(String payload, long expireTime) {
