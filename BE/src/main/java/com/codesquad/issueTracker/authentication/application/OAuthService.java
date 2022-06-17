@@ -9,7 +9,7 @@ import com.codesquad.issueTracker.authentication.infrastructure.JwtTokenProvider
 import com.codesquad.issueTracker.authentication.infrastructure.OAuthClientServer;
 import com.codesquad.issueTracker.authentication.infrastructure.dto.OAuthTokenResponse;
 import com.codesquad.issueTracker.authentication.infrastructure.dto.UserProfileResponse;
-import com.codesquad.issueTracker.authentication.presentation.dto.OAuthLoginTokenResponse;
+import com.codesquad.issueTracker.authentication.presentation.dto.OAuthLoginResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ public class OAuthService {
     }
 
     @Transactional
-    public OAuthLoginTokenResponse login(String code) {
+    public OAuthLoginResponse login(String code) {
         OAuthTokenResponse accessToken = oAuthClientServer.getOAuthToken(code);
         UserProfileResponse userProfile = oAuthClientServer.getUserProfile(accessToken);
 
@@ -42,8 +42,11 @@ public class OAuthService {
 
         // TODO : RollBack 적용 필요
         redisTokenRepository.insert(userProfile.getName(), jwtRefreshToken);
+        return new OAuthLoginResponse("Bearer", jwtAccessToken, jwtRefreshToken, userProfile);
+    }
 
-        return new OAuthLoginTokenResponse("Bearer", jwtAccessToken, jwtRefreshToken);
+    public void logout(String username) {
+        redisTokenRepository.delete(username);
     }
 
     private void saveUser(UserProfileResponse userProfile) {
@@ -51,5 +54,9 @@ public class OAuthService {
             return;
         }
         userRepository.save(userProfile.toEntity());
+    }
+
+    public boolean isLogout(String username) {
+        return redisTokenRepository.findByKey(username).isEmpty();
     }
 }
