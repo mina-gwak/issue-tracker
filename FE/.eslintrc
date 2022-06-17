@@ -1,0 +1,68 @@
+{
+  "env": {
+    "es6": true,
+    "es2021": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "sourceType": "module",
+    "ecmaVersion": 2021
+  },
+  "plugins": ["react", "@typescript-eslint", "import"],
+  "rules": {
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", "index"],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "@data",
+            "group": "internal"
+          },
+          {
+            "pattern": "@storybook/**",
+            "group": "external"
+          },
+          {
+            "pattern": "@*/**",
+            "group": "internal"
+          },
+          {
+            "pattern": "./**",
+            "group": "index"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "alphabetize": {
+          "order": "asc"
+        },
+        "newlines-between": "always"
+      }
+    ],
+    "react/jsx-filename-extension": ["warn", { "extensions": ["ts", ".tsx"] }],
+    "import/extensions": ["error", "ignorePackages", { "ts": "never", "tsx": "never" }],
+    "no-unused-vars": 1,
+    "react/jsx-props-no-spreading": 0,
+    "react/function-component-definition": 0,
+    "react/react-in-jsx-scope": "off",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  }
+}
