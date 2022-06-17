@@ -7,15 +7,20 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
     database: mysql
+    show-sql: true
 
   redis:
     host: localhost
     port: 6379
+
+  sql:
+    init:
+      mode: always
 
 jwt:
   token:
