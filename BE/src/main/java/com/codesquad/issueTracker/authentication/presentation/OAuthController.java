@@ -32,10 +32,4 @@ public class OAuthController {
         OAuthLoginTokenResponse loginToken = oAuthService.login(code);
         return ResponseEntity.ok(loginToken);
     }
-
-    @GetMapping("/logout")
-    public ResponseEntity<Void> oAuthLogout(@RequestAttribute String username) {
-        oAuthService.logout(username);
-        return ResponseEntity.ok().build();
-    }
 }

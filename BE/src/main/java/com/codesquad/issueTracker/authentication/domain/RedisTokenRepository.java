@@ -25,8 +25,8 @@ public class RedisTokenRepository {
         opsForValue.set(username, refreshToken, refreshTokenValidityTimeInSeconds, TimeUnit.SECONDS);
     }
 
-    public Optional<String> findRefreshTokenByAccessToken(String accessToken) {
-        return Optional.ofNullable(opsForValue.get(accessToken));
+    public Optional<String> findByKey(String key) {
+        return Optional.ofNullable(opsForValue.get(key));
     }
 
     public void delete(String username) {

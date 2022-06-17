@@ -1,7 +1,5 @@
 package com.codesquad.issueTracker.authentication.presentation.interceptor;
 
-import java.util.Optional;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,29 +8,29 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.codesquad.issueTracker.authentication.application.OAuthService;
 import com.codesquad.issueTracker.authentication.infrastructure.JwtTokenProvider;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Component
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(AuthenticationInterceptor.class);
     private final JwtTokenProvider tokenProvider;
-
-    public AuthenticationInterceptor(JwtTokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
-    }
+    private final OAuthService oAuthService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = resolveToken(request);
         log.debug("token is : {}", token);
-        Optional<String> username = tokenProvider.parsePayload(token);
-        username.ifPresentOrElse(
-            u -> request.setAttribute("username", u),
-            () -> {
-                log.debug("token에 username이 존재하지 않습니다.");
-                throw new IllegalStateException("username이 존재하지 않습니다.");
-            });
+        String username = tokenProvider.parsePayload(token);
+        if (oAuthService.isLogout(username)) {
+            log.info("로그인이 필요합니다.");
+            return false;
+        }
+        request.setAttribute("username", username);
         return true;
     }
 

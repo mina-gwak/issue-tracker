@@ -1,7 +1,5 @@
 package com.codesquad.issueTracker.authentication.application;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +46,10 @@ public class OAuthService {
         return new OAuthLoginTokenResponse("Bearer", jwtAccessToken, jwtRefreshToken);
     }
 
+    public void logout(String username) {
+        redisTokenRepository.delete(username);
+    }
+
     private void saveUser(UserProfileResponse userProfile) {
         if (userRepository.findByName(userProfile.getName()).isPresent()) {
             return;
@@ -55,7 +57,7 @@ public class OAuthService {
         userRepository.save(userProfile.toEntity());
     }
 
-    public void logout(String username) {
-        redisTokenRepository.delete(username);
+    public boolean isLogout(String username) {
+        return redisTokenRepository.findByKey(username).isEmpty();
     }
 }
