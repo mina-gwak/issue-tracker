@@ -1,11 +1,11 @@
-import { Images } from '@assets/images';
+import { Images, ImagesType } from '@assets/images';
 
 export interface ImagePropsType {
-  imageName: string;
+  imageName: ImagesType;
 }
 
 const Image = ({ imageName }: ImagePropsType) => {
-  return <img src={Images[imageName]} />;
+  return <img src={Images[imageName]} alt={imageName} />;
 };
 
 export default Image;

@@ -1,3 +1,3 @@
 export const API = {
-  GITHUB_LOGIN_CALLBACK: '/api/oauth/login/github/callback'
-}
+  GITHUB_LOGIN_CALLBACK: '/api/oauth/login/github/callback',
+} as const;

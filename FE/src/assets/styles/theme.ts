@@ -36,9 +36,9 @@ const fontWeights = {
   regular: '400',
 };
 
-export type ColorType = typeof colors;
-export type FontSizeType = typeof fontSizes;
-export type FontWeightType = typeof fontWeights;
+export type ColorsType = typeof colors;
+export type FontSizesType = typeof fontSizes;
+export type FontWeightsType = typeof fontWeights;
 
 export const theme: DefaultTheme = {
   colors,
