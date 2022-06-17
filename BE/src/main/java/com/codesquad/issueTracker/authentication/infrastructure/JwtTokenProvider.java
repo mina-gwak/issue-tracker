@@ -58,10 +58,10 @@ public class JwtTokenProvider {
                 .getBody()
                 .getSubject();
         } catch (ExpiredJwtException e) {
-            log.debug("만료된 토큰입니다. exception message : {}", e.getMessage());
+            log.info("만료된 토큰입니다. exception message : {}", e.getMessage());
             throw new IllegalArgumentException("만료된 토큰 : " + e.getClaims().getSubject());
         } catch (JwtException | IllegalArgumentException e) {
-            log.debug("토큰 parsing 중 예외가 발생하였습니다. exception message : {}", e.getMessage());
+            log.info("토큰 parsing 중 예외가 발생하였습니다. exception message : {}", e.getMessage());
             throw new IllegalArgumentException("토큰 parsing 중 예외가 발생하였습니다.");
         }
     }
