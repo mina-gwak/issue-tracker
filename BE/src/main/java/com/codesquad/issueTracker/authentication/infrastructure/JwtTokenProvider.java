@@ -1,7 +1,6 @@
 package com.codesquad.issueTracker.authentication.infrastructure;
 
 import java.util.Date;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -51,13 +50,13 @@ public class JwtTokenProvider {
             .compact();
     }
 
-    public Optional<String> parsePayload(String token) {
+    public String parsePayload(String token) {
         try {
-            return Optional.ofNullable(Jwts.parser()
+            return Jwts.parser()
                 .setSigningKey(secretKey)
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject());
+                .getSubject();
         } catch (ExpiredJwtException e) {
             log.debug("만료된 토큰입니다. exception message : {}", e.getMessage());
             throw new IllegalArgumentException("만료된 토큰 : " + e.getClaims().getSubject());
