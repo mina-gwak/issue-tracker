@@ -19,12 +19,12 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<String> loginCheck(@RequestAttribute String username) {
-        return ResponseEntity.ok("login success! : " + username);
+        return ResponseEntity.ok("login success : " + username);
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<Void> oAuthLogout(@RequestAttribute String username) {
+    public ResponseEntity<String> oAuthLogout(@RequestAttribute String username) {
         oAuthService.logout(username);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("logout success : " + username);
     }
 }
