@@ -56,7 +56,7 @@ public class GitHubOAuthClientServer implements OAuthClientServer {
             .getBody();
 
         if (Objects.isNull(response)) {
-            throw new IllegalStateException("GitHub로부터 정상적인 데이터를 받지 못했습니다.");
+            throw new IllegalStateException("GitHub Server로부터 토큰을 받지 못했습니다.");
         }
         return response;
     }
@@ -68,8 +68,13 @@ public class GitHubOAuthClientServer implements OAuthClientServer {
         headers.add("Authorization", token.getAccessTokenHeader());
 
         HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
-        return restTemplate
+        UserProfileResponse response = restTemplate
             .exchange(githubOAuthServerUri, HttpMethod.GET, httpEntity, UserProfileResponse.class)
             .getBody();
+
+        if (Objects.isNull(response)) {
+            throw new IllegalStateException("GitHub로부터 User 데이터를 받지 못했습니다.");
+        }
+        return response;
     }
 }
