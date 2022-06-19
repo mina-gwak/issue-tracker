@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codesquad.issueTracker.authentication.application.OAuthService;
-import com.codesquad.issueTracker.authentication.presentation.dto.OAuthLoginTokenResponse;
+import com.codesquad.issueTracker.authentication.presentation.dto.OAuthLoginResponse;
 import com.codesquad.issueTracker.authentication.presentation.dto.OAuthorizationLoginUrlResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -27,9 +27,8 @@ public class OAuthController {
     }
 
     @GetMapping("/login/github/callback")
-    public ResponseEntity<OAuthLoginTokenResponse> oAuthLogin(@RequestParam String code) {
-        OAuthLoginTokenResponse loginToken = oAuthService.login(code);
+    public ResponseEntity<OAuthLoginResponse> oAuthLogin(@RequestParam String code) {
+        OAuthLoginResponse loginToken = oAuthService.login(code);
         return ResponseEntity.ok(loginToken);
     }
-
 }

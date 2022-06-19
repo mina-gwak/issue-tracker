@@ -1,7 +1,6 @@
 package com.codesquad.issueTracker.authentication.infrastructure;
 
 import java.util.Date;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -35,7 +34,7 @@ public class JwtTokenProvider {
     }
 
     public String generateRefreshToken(String payload) {
-        return createToken(null, refreshTokenValidityTime);
+        return createToken(payload, refreshTokenValidityTime);
     }
 
     private String createToken(String payload, long expireTime) {
@@ -51,18 +50,18 @@ public class JwtTokenProvider {
             .compact();
     }
 
-    public Optional<String> parsePayload(String token) {
+    public String parsePayload(String token) {
         try {
-            return Optional.ofNullable(Jwts.parser()
+            return Jwts.parser()
                 .setSigningKey(secretKey)
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject());
+                .getSubject();
         } catch (ExpiredJwtException e) {
-            log.debug("만료된 토큰입니다. exception message : {}", e.getMessage());
+            log.info("만료된 토큰입니다. exception message : {}", e.getMessage());
             throw new IllegalArgumentException("만료된 토큰 : " + e.getClaims().getSubject());
         } catch (JwtException | IllegalArgumentException e) {
-            log.debug("토큰 parsing 중 예외가 발생하였습니다. exception message : {}", e.getMessage());
+            log.info("토큰 parsing 중 예외가 발생하였습니다. exception message : {}", e.getMessage());
             throw new IllegalArgumentException("토큰 parsing 중 예외가 발생하였습니다.");
         }
     }
