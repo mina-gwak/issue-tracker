@@ -1,5 +1,3 @@
-import { ConstantObjectType } from "type";
-
-export const IMAGE_NAME: ConstantObjectType = {
+export const IMAGE_NAME = {
   LARGE_LOGO: 'LargeLogo',
-};
+} as const;

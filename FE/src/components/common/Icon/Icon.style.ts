@@ -20,7 +20,7 @@ const sizeStyles = css<StyledIconProps>`
     `}
 
   ${({ size }) =>
-    size === ICON_SIZE.LAR &&
+    size === ICON_SIZE.LARGE &&
     css`
       width: 2.75rem;
     `}

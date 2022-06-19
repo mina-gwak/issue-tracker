@@ -1,6 +1,7 @@
 import LargeLogo from '@assets/images/LargeLogo.webp';
-import { ConstantObjectType } from 'type';
 
-export const Images: ConstantObjectType = {
+export const Images = {
   LargeLogo,
-};
+} as const;
+
+export type ImagesType = keyof typeof Images;

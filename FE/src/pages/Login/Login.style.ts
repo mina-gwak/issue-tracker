@@ -1,20 +1,16 @@
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { flexCenter } from '@assets/styles/mixin';
+import { pageContentCenter, flexCenter } from '@assets/styles/mixin';
 
 export const Wrapper = styled.div`  
-  ${flexCenter}
-  flex-direction: column;
-  width: 100vw;
-  height: 100vh;
-`
+  ${pageContentCenter}
+`;
 
 export const LoginContainer = styled.div`
   margin-top: 60px;
-`
+`;
 
-export const GithubLoginButton = styled(NavLink)`
+export const GithubLoginButton = styled.a`
   ${flexCenter}
   gap: 10px;
   width: 340px;
