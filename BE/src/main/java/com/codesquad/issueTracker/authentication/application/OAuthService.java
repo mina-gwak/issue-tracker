@@ -3,7 +3,7 @@ package com.codesquad.issueTracker.authentication.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.codesquad.issueTracker.User.domain.UserRepository;
+import com.codesquad.issueTracker.user.domain.UserRepository;
 import com.codesquad.issueTracker.authentication.domain.RedisTokenRepository;
 import com.codesquad.issueTracker.authentication.infrastructure.JwtTokenProvider;
 import com.codesquad.issueTracker.authentication.infrastructure.OAuthClientServer;

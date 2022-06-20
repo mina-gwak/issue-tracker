@@ -1,6 +1,6 @@
 package com.codesquad.issueTracker.authentication.infrastructure.dto;
 
-import com.codesquad.issueTracker.User.domain.User;
+import com.codesquad.issueTracker.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;

@@ -5,12 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.codesquad.issueTracker.Comment.domain.Comment;
+import com.codesquad.issueTracker.comment.domain.Comment;
+import com.codesquad.issueTracker.label.domain.AttachedLabel;
+import com.codesquad.issueTracker.milestone.domain.Milestone;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -22,6 +27,7 @@ public class Issue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
     private String content;
     private boolean isOpened;
@@ -30,6 +36,15 @@ public class Issue {
 
     @OneToMany(mappedBy = "issue")
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "issue")
+    private List<AttachedLabel> attachedLabels = new ArrayList<>();
+
+    // TODO : 편의 메서드 작성 필요
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "milestoneId")
+    private Milestone milestone;
 
     public Issue(String title, String content, LocalDateTime writtenTime,
         LocalDateTime modificationTime) {
