@@ -1,4 +1,4 @@
-package com.codesquad.issueTracker.Comment.domain;
+package com.codesquad.issueTracker.comment.domain;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.codesquad.issueTracker.Issue.domain.Issue;
-import com.codesquad.issueTracker.User.domain.User;
+import com.codesquad.issueTracker.user.domain.User;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

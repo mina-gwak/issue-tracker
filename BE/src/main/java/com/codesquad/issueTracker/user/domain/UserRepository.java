@@ -1,4 +1,4 @@
-package com.codesquad.issueTracker.User.domain;
+package com.codesquad.issueTracker.user.domain;
 
 import java.util.Optional;
 

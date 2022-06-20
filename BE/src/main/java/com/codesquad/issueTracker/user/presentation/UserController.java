@@ -1,4 +1,4 @@
-package com.codesquad.issueTracker.User.presentation;
+package com.codesquad.issueTracker.user.presentation;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

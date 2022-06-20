@@ -1,4 +1,4 @@
-package com.codesquad.issueTracker.User.domain;
+package com.codesquad.issueTracker.user.domain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,4 +35,6 @@ public class User {
         this.name = name;
         this.image = image;
     }
+
+    // TODO : 편의 메서드 작성 필요
 }

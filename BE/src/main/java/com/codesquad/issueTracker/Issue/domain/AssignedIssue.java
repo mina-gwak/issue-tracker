@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.codesquad.issueTracker.User.domain.User;
+import com.codesquad.issueTracker.user.domain.User;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
