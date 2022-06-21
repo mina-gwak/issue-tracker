@@ -1,11 +1,13 @@
-import { Images, ImagesType } from '@assets/images';
+import * as S from '@components/common/Image/Image.style';
 
 export interface ImagePropsType {
-  imageName: ImagesType;
+  url: string;
+  alt: string;
+  size?: string;
 }
 
-const Image = ({ imageName }: ImagePropsType) => {
-  return <img src={Images[imageName]} alt={imageName} />;
+const Image = ({ url, alt, size }: ImagePropsType) => {
+  return <S.Image src={url} alt={alt} {...{ size }} />;
 };
 
 export default Image;
