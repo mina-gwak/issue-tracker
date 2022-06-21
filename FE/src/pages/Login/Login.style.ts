@@ -11,7 +11,7 @@ export const LoginContainer = styled.div`
 `;
 
 export const GithubLoginButton = styled.a`
-  ${flexCenter}
+  ${flexCenter};
   gap: 10px;
   width: 340px;
   height: 64px;
