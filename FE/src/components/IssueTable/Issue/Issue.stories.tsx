@@ -1,15 +1,15 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { BrowserRouter } from 'react-router-dom';
 
-import { issueItem } from '@components/IssueTable';
 import Issue from '@components/IssueTable/Issue';
+import { issueDummyData } from '@data';
 import { IssueListType } from '@type/issueType';
 
 export default {
   title: 'Component/IssueTable/Issue',
   component: Issue,
   args: {
-    ...issueItem[0],
+    ...issueDummyData[0],
   },
 } as ComponentMeta<typeof Issue>;
 
