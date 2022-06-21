@@ -1,18 +1,20 @@
+import { ReactNode } from 'react';
+
 import * as S from '@components/common/Button/Button.style';
 
 interface ButtonPropsType {
-  content: string;
+  children: ReactNode;
   size: string;
   onClick: () => void;
   disabled?: boolean;
   outline?: boolean;
 }
 
-const Button = ({ content, size, onClick, disabled = false, outline = false }: ButtonPropsType) => {
+const Button = ({ children, size, onClick, disabled = false, outline = false }: ButtonPropsType) => {
   const buttonProps = { size, outline };
   return (
     <S.Button onClick={onClick} disabled={disabled} {...buttonProps}>
-      <span>{content}</span>
+      {children}
     </S.Button>
   );
 };
