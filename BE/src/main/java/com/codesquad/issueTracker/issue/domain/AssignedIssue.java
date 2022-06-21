@@ -1,4 +1,4 @@
-package com.codesquad.issueTracker.Issue.domain;
+package com.codesquad.issueTracker.issue.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,8 +11,10 @@ import javax.persistence.ManyToOne;
 import com.codesquad.issueTracker.user.domain.User;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class AssignedIssue {

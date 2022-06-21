@@ -1,4 +1,4 @@
-package com.codesquad.issueTracker.authentication.domain;
+package com.codesquad.issueTracker.authentication.domain.repository;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;

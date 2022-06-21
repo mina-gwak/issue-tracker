@@ -9,12 +9,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.codesquad.issueTracker.Issue.domain.AssignedIssue;
-import com.codesquad.issueTracker.Issue.domain.Issue;
+import com.codesquad.issueTracker.issue.domain.AssignedIssue;
+import com.codesquad.issueTracker.issue.domain.Issue;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class User {

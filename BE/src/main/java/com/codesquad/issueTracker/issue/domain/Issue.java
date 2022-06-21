@@ -1,8 +1,8 @@
-package com.codesquad.issueTracker.Issue.domain;
+package com.codesquad.issueTracker.issue.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,10 +16,13 @@ import javax.persistence.OneToMany;
 import com.codesquad.issueTracker.comment.domain.Comment;
 import com.codesquad.issueTracker.label.domain.AttachedLabel;
 import com.codesquad.issueTracker.milestone.domain.Milestone;
+import com.codesquad.issueTracker.user.domain.User;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Issue {
@@ -34,11 +37,18 @@ public class Issue {
     private LocalDateTime writtenTime;
     private LocalDateTime modificationTime;
 
-    @OneToMany(mappedBy = "issue")
-    private List<Comment> comments = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
 
     @OneToMany(mappedBy = "issue")
-    private List<AttachedLabel> attachedLabels = new ArrayList<>();
+    private Set<Comment> comments = new HashSet<>();
+
+    @OneToMany(mappedBy = "issue")
+    private Set<AttachedLabel> attachedLabels = new HashSet<>();
+
+    @OneToMany(mappedBy = "issue")
+    private Set<AssignedIssue> assignedIssues = new HashSet<>();
 
     // TODO : 편의 메서드 작성 필요
 
