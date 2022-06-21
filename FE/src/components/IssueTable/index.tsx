@@ -9,7 +9,7 @@ const IssueTable = () => {
     <S.Wrapper>
       <TableHeader />
       {issueDummyData.map((issueInfo: IssueListType) => (
-        <Issue {...issueInfo} />
+        <Issue {...issueInfo} key={issueInfo.id} />
       ))}
     </S.Wrapper>
   );

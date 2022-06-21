@@ -41,8 +41,8 @@ const TableHeader = () => {
       </S.IssueTabs>
       <S.FilterList>
         {filterList.map(({ id, ...props }) => (
-          <li>
-            <Filter key={id} {...props} />
+          <li key={id}>
+            <Filter {...props} />
           </li>
         ))}
       </S.FilterList>
