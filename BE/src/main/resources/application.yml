@@ -18,14 +18,14 @@ spring:
     host: localhost
     port: 6379
 
-  sql:
-    init:
-      mode: always
+#  sql:
+#    init:
+#      mode: always
 
 jwt:
   token:
     #    ms 단위
-    access-validate-time: 180000 # 180초
+    access-validate-time: 1800000 # 180초
     refresh-validate-time: 3600000 # 1시간
     token-secret: ${JWT_TOKEN_SECRET}
 
