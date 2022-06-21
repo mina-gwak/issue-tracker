@@ -10,4 +10,4 @@ declare module '*.webp' {
   export default ref;
 }
 
-
+declare module '*.woff';
