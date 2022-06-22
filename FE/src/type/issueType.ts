@@ -24,5 +24,6 @@ export interface IssueListType {
   milestone: MilestoneType;
   assignees: MemberType[];
   author: MemberType;
+  isOpen: boolean;
   time: Date;
 }
