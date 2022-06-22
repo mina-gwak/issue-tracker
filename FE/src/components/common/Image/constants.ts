@@ -5,5 +5,6 @@ export const IMAGE_NAME = {
 
 export const IMAGE_SIZE = {
   SMALL: 'SMALL',
+  MEDIUM: 'MEDIUM',
   LARGE: 'LARGE',
 } as const;

@@ -24,7 +24,7 @@ const Header = () => {
           <Image
             url='https://avatars.githubusercontent.com/u/93566353?v=4'
             alt='Khan'
-            size={IMAGE_SIZE.LARGE}
+            size={IMAGE_SIZE.MEDIUM}
           />
         </S.LogoutMenuButton>
         {isLogoutMenuOpen && (
