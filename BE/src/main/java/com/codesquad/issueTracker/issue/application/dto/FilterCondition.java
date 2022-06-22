@@ -1,4 +1,4 @@
-package com.codesquad.issueTracker.issue.presentation.dto;
+package com.codesquad.issueTracker.issue.application.dto;
 
 import java.util.ArrayList;
 import java.util.List;

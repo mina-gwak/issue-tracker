@@ -7,8 +7,8 @@ import org.yaml.snakeyaml.util.EnumUtils;
 
 import com.codesquad.issueTracker.issue.domain.MainFilter;
 import com.codesquad.issueTracker.issue.domain.SubFilter;
-import com.codesquad.issueTracker.issue.presentation.dto.FilterCondition;
-import com.codesquad.issueTracker.issue.presentation.dto.SubFilterDetail;
+import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
+import com.codesquad.issueTracker.issue.application.dto.SubFilterDetail;
 
 import lombok.extern.slf4j.Slf4j;
 
