@@ -1,7 +1,6 @@
-import React from 'react';
-
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 
 import GlobalStyle from '@assets/styles/GlobalStyle';
@@ -11,12 +10,12 @@ import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <BrowserRouter>
+  <ThemeProvider theme={theme}>
+    <GlobalStyle />
+    <BrowserRouter>
+      <RecoilRoot>
         <App />
-      </BrowserRouter>
-    </ThemeProvider>
-  </React.StrictMode>,
+      </RecoilRoot>
+    </BrowserRouter>
+  </ThemeProvider>,
 );
