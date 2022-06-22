@@ -6,7 +6,7 @@ interface LabelTagType {
 }
 
 export const LabelTag = styled.span<LabelTagType>`
-  font-size: ${({ theme }) => theme.fontSizes.small};
+  font-size: ${({ theme }) => theme.fontSizes.xSmall};
   color: ${({ textColor }) => textColor};
   background-color: ${({ backgroundColor }) => backgroundColor};
   border-radius: 30px;

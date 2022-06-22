@@ -35,11 +35,9 @@ export const IssueTitleWrapper = styled.div`
   align-items: center;
   margin-bottom: 8px;
 
-  svg {
-    path {
-      fill: #C7EBFF;
-      stroke: #007AFF;
-    }
+  svg path {
+    fill: ${({ theme }) => theme.colors.lightBlue};
+    stroke: ${({ theme }) => theme.colors.blue};
   }
 `;
 

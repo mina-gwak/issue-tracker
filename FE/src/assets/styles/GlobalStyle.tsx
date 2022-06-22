@@ -148,6 +148,7 @@ const GlobalStyle = createGlobalStyle`
   }
   a:link,
   a:visited {
+    color: inherit;
     text-decoration: none;
   }
   ul,
