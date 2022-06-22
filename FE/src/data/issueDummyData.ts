@@ -16,6 +16,7 @@ export const issueDummyData: IssueListType[] = [
       name: 'Khan',
       imgUrl: 'https://avatars.githubusercontent.com/u/93566353?v=4',
     },
+    isOpen: true,
     time: new Date(1655712214955),
   },
   {
@@ -33,6 +34,7 @@ export const issueDummyData: IssueListType[] = [
       name: 'Jamie',
       imgUrl: 'https://avatars.githubusercontent.com/u/62706988?v=4',
     },
+    isOpen: false,
     time: new Date(1655712114955),
   },
 ];
