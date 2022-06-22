@@ -29,6 +29,7 @@ const sizeStyles = css<StyledIconProps>`
 
 export const Icon = (iconName: IconsType) => {
   return styled(Icons[iconName])<StyledIconProps>`
+    flex-shrink: 0;
     ${sizeStyles}
   `;
 };
