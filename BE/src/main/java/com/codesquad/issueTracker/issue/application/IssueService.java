@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
 import com.codesquad.issueTracker.issue.domain.repository.IssueRepository;
 import com.codesquad.issueTracker.issue.infrastructure.QueryParser;
-import com.codesquad.issueTracker.issue.presentation.dto.FilterCondition;
 
 import lombok.RequiredArgsConstructor;
 
