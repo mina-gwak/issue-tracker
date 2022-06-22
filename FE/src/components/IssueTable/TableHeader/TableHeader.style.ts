@@ -35,3 +35,8 @@ export const FilterButton = styled.button`
   align-items: center;
   gap: 4px;
 `;
+
+
+export const FilterListItem = styled.li`
+position: relative;
+`
