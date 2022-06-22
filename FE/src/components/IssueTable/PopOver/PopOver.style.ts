@@ -109,3 +109,17 @@ export const UserWrapper = styled.div`
 export const UserDescription = styled.p`
   ${smallTextStyle};
 `;
+
+/* Author PopOver */
+
+export const UserInformation = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+`;
+
+export const UserId = styled.h3``;
+
+export const UserName = styled.span`
+  color: ${({ theme }) => theme.colors.grey2};
+`;
