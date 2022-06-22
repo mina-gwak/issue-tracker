@@ -17,10 +17,13 @@ public class UserProfileResponse {
     @JsonProperty("login")
     private String name;
 
+    @JsonProperty("name")
+    private String nickname;
+
     @JsonProperty("avatar_url")
     private String image;
 
     public User toEntity() {
-        return new User(name, image);
+        return new User(name, nickname, image);
     }
 }

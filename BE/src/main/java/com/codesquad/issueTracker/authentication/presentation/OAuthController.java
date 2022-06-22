@@ -39,6 +39,6 @@ public class OAuthController {
     public ResponseEntity<OAuthLoginResponse> getTestToken() {
         String accessToken = jwtTokenProvider.generateAccessToken(String.valueOf(1));
         String refreshToken = jwtTokenProvider.generateRefreshToken(String.valueOf(1));
-        return ResponseEntity.ok(new OAuthLoginResponse("Bearer", accessToken, refreshToken, new UserProfileResponse("guest", "http://zipbanchan.godohosting.com/detail_page/3_main/1351/1351_ZIP_P_0108_S.jpg")));
+        return ResponseEntity.ok(new OAuthLoginResponse("Bearer", accessToken, refreshToken, new UserProfileResponse("guest", "guestMode", "http://zipbanchan.godohosting.com/detail_page/3_main/1351/1351_ZIP_P_0108_S.jpg")));
     }
 }

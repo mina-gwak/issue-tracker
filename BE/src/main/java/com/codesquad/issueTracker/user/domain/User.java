@@ -25,6 +25,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String nickname;
     private String image;
 
     @OneToMany(mappedBy = "user")
@@ -33,8 +34,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Issue> issues = new ArrayList<>();
 
-    public User(String name, String image) {
+    public User(String name, String nickname, String image) {
         this.name = name;
+        this.nickname = nickname;
         this.image = image;
     }
 

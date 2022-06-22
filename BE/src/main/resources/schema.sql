@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `image` VARCHAR(255) NULL,
+  `nickname` VARCHAR(45) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -48,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `issue` (
   `written_time` DATETIME NULL,
   `modification_time` DATETIME NULL,
   `user_id` BIGINT NOT NULL,
-  `milestone_id` BIGINT,
+  `milestone_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_issue_user_idx` (`user_id` ASC) VISIBLE,
   INDEX `fk_issue_milestone1_idx` (`milestone_id` ASC) VISIBLE,
