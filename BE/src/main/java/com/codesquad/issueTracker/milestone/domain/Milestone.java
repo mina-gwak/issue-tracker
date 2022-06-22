@@ -31,6 +31,4 @@ public class Milestone {
 
     @OneToMany(mappedBy = "milestone")
     private List<Issue> issues = new ArrayList<>();
-
-    // TODO : 편의 메서드 작성 필요
 }

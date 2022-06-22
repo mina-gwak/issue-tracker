@@ -50,8 +50,6 @@ public class Issue {
     @OneToMany(mappedBy = "issue")
     private Set<AssignedIssue> assignedIssues = new HashSet<>();
 
-    // TODO : 편의 메서드 작성 필요
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "milestoneId")
     private Milestone milestone;

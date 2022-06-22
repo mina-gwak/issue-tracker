@@ -4,26 +4,24 @@ import static com.codesquad.issueTracker.comment.domain.QComment.*;
 import static com.codesquad.issueTracker.issue.domain.QAssignedIssue.*;
 import static com.codesquad.issueTracker.issue.domain.QIssue.*;
 import static com.codesquad.issueTracker.label.domain.QAttachedLabel.*;
+import static com.codesquad.issueTracker.label.domain.QLabel.*;
 import static com.codesquad.issueTracker.milestone.domain.QMilestone.*;
 import static com.codesquad.issueTracker.user.domain.QUser.*;
+import static com.querydsl.core.group.GroupBy.*;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 
 import org.springframework.stereotype.Repository;
 
-import com.codesquad.issueTracker.comment.domain.Comment;
-import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
-import com.codesquad.issueTracker.issue.domain.Issue;
-import com.codesquad.issueTracker.issue.domain.MainFilter;
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
+import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
+import com.codesquad.issueTracker.issue.application.dto.LabelCoverResponse;
 import com.codesquad.issueTracker.issue.application.dto.SubFilterDetail;
-import com.codesquad.issueTracker.label.domain.AttachedLabel;
+import com.codesquad.issueTracker.issue.domain.MainFilter;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.extern.slf4j.Slf4j;
@@ -41,39 +39,24 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
     @Override
     public List<IssueCoverResponse> search(FilterCondition condition, Long userId) {
 
-        JPAQuery<Issue> query = queryFactory.selectFrom(issue)
-            .leftJoin(issue.user, user)
-            .leftJoin(issue.milestone, milestone)
+        List<IssueCoverResponse> result = queryFactory.selectFrom(issue)
+            .join(issue.user, user)
+            .join(issue.milestone, milestone)
             .leftJoin(issue.attachedLabels, attachedLabel)
-            .fetchJoin()
-            .leftJoin(issue.comments, comment)
-            .fetchJoin()
-            .leftJoin(issue.assignedIssues, assignedIssue)
-            .fetchJoin()
+            .leftJoin(attachedLabel.label, label)
             .where(addMainCondition(condition.getMainFilter(), userId), addSubCondition(condition.getSubFilters()))
-            .distinct();
+            .distinct()
+            .transform(
+                groupBy(issue.id).list(
+                    Projections.constructor(IssueCoverResponse.class, list(
+                            Projections.constructor(LabelCoverResponse.class,
+                                label.name, label.labelColor, label.textColor)
+                        ), issue.title, issue.id, user.name, user.image, issue.modificationTime, milestone.name)));
 
-        List<Issue> result = query.fetch();
-
-        log.info("result size : {}", result.size());
-
-        for (Issue issue : result) {
-            log.info("===============issue================");
-            log.info("issue is : {}, written by : {}, ", issue.getId(), issue.getUser().getName());
-            Set<Comment> comments = issue.getComments();
-            for (Comment comment1 : comments) {
-                log.info("comment id : {}, content : {}", comment1.getId(), comment1.getContent());
-            }
-            for (AttachedLabel attachedLabel : issue.getAttachedLabels()) {
-                log.info("label is : {}", attachedLabel.getLabel().getName());
-            }
-            log.info("=================================");
-        }
-
-        return result.stream()
-            .map(IssueCoverResponse::new)
-            .collect(Collectors.toList());
+        return result;
     }
+
+
 
     private Predicate addMainCondition(MainFilter condition, Long userId) {
         if(condition.equals(MainFilter.CLOSE)) {

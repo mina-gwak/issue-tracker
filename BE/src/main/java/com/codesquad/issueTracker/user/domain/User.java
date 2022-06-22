@@ -39,6 +39,4 @@ public class User {
         this.nickname = nickname;
         this.image = image;
     }
-
-    // TODO : 편의 메서드 작성 필요
 }

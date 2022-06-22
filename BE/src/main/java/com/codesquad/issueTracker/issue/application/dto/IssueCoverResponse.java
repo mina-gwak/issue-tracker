@@ -23,18 +23,15 @@ public class IssueCoverResponse {
     private LocalDateTime modificationTime;
     private String milestoneName;
 
-    public IssueCoverResponse(Issue issue) {
-        Set<AttachedLabel> attachedLabels = issue.getAttachedLabels();
-        this.labelCoverResponses = attachedLabels.stream()
-            .map(AttachedLabel::getLabel)
-            .map(label -> new LabelCoverResponse(label.getName(), label.getLabelColor(), label.getTextColor()))
-            .collect(Collectors.toList());
-
-        this.title = issue.getTitle();
-        this.issueId = issue.getId();
-        this.writer = issue.getUser().getName();
-        this.writerImage = issue.getUser().getImage();
-        this.modificationTime = issue.getModificationTime();
-        this.milestoneName = issue.getMilestone().getName();
+    public IssueCoverResponse(
+        List<LabelCoverResponse> labelCoverResponses, String title, Long issueId, String writer,
+        String writerImage, LocalDateTime modificationTime, String milestoneName) {
+        this.labelCoverResponses = labelCoverResponses;
+        this.title = title;
+        this.issueId = issueId;
+        this.writer = writer;
+        this.writerImage = writerImage;
+        this.modificationTime = modificationTime;
+        this.milestoneName = milestoneName;
     }
 }
