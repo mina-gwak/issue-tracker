@@ -18,11 +18,21 @@ export const sizeStyles = css<StyledImageProps>`
     `}
 
   ${({ size }) =>
-    size === IMAGE_SIZE.LARGE &&
+    size === IMAGE_SIZE.MEDIUM &&
     css`
       display: block;
       width: 2.75rem;
       height: 2.75rem;
+      border: 1px solid ${({ theme }) => theme.colors.grey4};
+      border-radius: 50%;
+    `}
+
+  ${({ size }) =>
+    size === IMAGE_SIZE.LARGE &&
+    css`
+      display: block;
+      width: 4rem;
+      height: 4rem;
       border: 1px solid ${({ theme }) => theme.colors.grey4};
       border-radius: 50%;
     `}
