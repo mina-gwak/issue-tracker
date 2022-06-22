@@ -5,12 +5,11 @@ export const Wrapper = styled.div`
   bottom: calc(100% + 30px);
   left: 50%;
   width: 360px;
-  min-height: 170px;
+  min-height: 100px;
   border: 1px solid ${({ theme }) => theme.colors.grey4};
   border-radius: 6px;
   background-color: ${({ theme }) => theme.colors.white};
   transform: translateX(-10%);
-  padding: 16px;
   
   &::before,
   &::after {
