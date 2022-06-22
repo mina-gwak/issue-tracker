@@ -6,6 +6,7 @@ import { IMAGE_SIZE } from '@components/common/Image/constants';
 import Label from '@components/common/Label';
 import PopOver from '@components/common/PopOver';
 import { IssueListType } from '@type/issueType';
+import { getDate } from '@utils/date';
 
 const MAX_LABEL = 3;
 const USER = 'Jamie';
@@ -27,11 +28,11 @@ const IssuePopOver = ({ title, labels, num, assignees, author, isOpen, time }: I
     <PopOver>
       <S.Wrapper {...{ isOpen }}>
         <S.ContentsWrapper>
-          <S.Date>Jun 18</S.Date>
+          <S.Date>{getDate(time)}</S.Date>
           <S.ContentsContainer>
             <Icon {...{ iconName }} />
             <div>
-              <S.IssueLink to='/issue-list'>
+              <S.IssueLink to='이슈 상세 페이지'>
                 <S.Title>{title}</S.Title>
                 <S.IssueNumber>#{num}</S.IssueNumber>
               </S.IssueLink>
