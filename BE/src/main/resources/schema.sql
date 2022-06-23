@@ -14,9 +14,10 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 DROP TABLE IF EXISTS `user` ;
 
 CREATE TABLE IF NOT EXISTS `user` (
-  `id` BIGINT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `image` VARCHAR(255) NULL,
+  `nickname` VARCHAR(45) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -27,9 +28,10 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `milestone` ;
 
 CREATE TABLE IF NOT EXISTS `milestone` (
-  `id` BIGINT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
+  `due_date` DATETIME NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -40,7 +42,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `issue` ;
 
 CREATE TABLE IF NOT EXISTS `issue` (
-  `id` BIGINT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(255) NULL,
   `content` TEXT NULL,
   `is_opened` TINYINT NOT NULL,
@@ -70,7 +72,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `comment` ;
 
 CREATE TABLE IF NOT EXISTS `comment` (
-  `id` BIGINT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `content` TEXT NULL,
   `written_time` DATETIME NULL,
   `user_id` BIGINT NOT NULL,
@@ -97,7 +99,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `label` ;
 
 CREATE TABLE IF NOT EXISTS `label` (
-  `id` BIGINT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
   `label_color` VARCHAR(45) NULL,
@@ -112,7 +114,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `assigned_issue` ;
 
 CREATE TABLE IF NOT EXISTS `assigned_issue` (
-  `id` BIGINT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `user_id` BIGINT NOT NULL,
   `issue_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`),
@@ -137,7 +139,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `attached_label` ;
 
 CREATE TABLE IF NOT EXISTS `attached_label` (
-  `id` BIGINT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `issue_id` BIGINT NOT NULL,
   `label_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`),

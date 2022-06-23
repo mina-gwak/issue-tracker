@@ -1,9 +1,11 @@
 import { Navigate } from 'react-router-dom';
 
-const RedirectRoute = () => {
-  const token = localStorage.getItem('token');
+import { useLocalStorage } from '@hooks/useLocalStorage';
 
-  return token ? <Navigate to={'issue-list'} replace /> : <Navigate to={'login'} replace />;
+const RedirectRoute = () => {
+  const [accessToken] = useLocalStorage('accessToken', '');
+
+  return accessToken ? <Navigate to={'issue-list'} replace /> : <Navigate to={'login'} replace />;
 };
 
 export default RedirectRoute;

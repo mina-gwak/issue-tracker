@@ -1,6 +1,7 @@
 package com.codesquad.issueTracker.authentication.presentation.dto;
 
-import com.codesquad.issueTracker.authentication.infrastructure.dto.UserProfileResponse;
+import com.codesquad.issueTracker.authentication.application.dto.UserProfileResponse;
+import com.codesquad.issueTracker.authentication.infrastructure.dto.UserProfile;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

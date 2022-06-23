@@ -1,8 +1,5 @@
-import { ConstantObjectType } from "type";
-
-export const BUTTON_SIZE: ConstantObjectType = {
+export const BUTTON_SIZE = {
   SMALL: 'small',
   MEDIUM: 'medium',
   LARGE: 'large',
-};
-
+} as const;
