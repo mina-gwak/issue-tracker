@@ -1,0 +1,14 @@
+= Issue Tracker API
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[OAuth-API]]
+== OAuth API
+
+[[OAuth-링크-조회]]
+=== OAuth 링크 조회
+operation::get-login-url[snippets='http-request,http-response,response-fields']
+
+
