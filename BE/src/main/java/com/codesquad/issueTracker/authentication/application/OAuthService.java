@@ -11,7 +11,7 @@ import com.codesquad.issueTracker.authentication.domain.repository.RedisTokenRep
 import com.codesquad.issueTracker.authentication.infrastructure.JwtTokenProvider;
 import com.codesquad.issueTracker.authentication.infrastructure.OAuthClientServer;
 import com.codesquad.issueTracker.authentication.infrastructure.dto.OAuthTokenResponse;
-import com.codesquad.issueTracker.authentication.infrastructure.dto.UserProfileResponse;
+import com.codesquad.issueTracker.authentication.infrastructure.dto.UserProfile;
 import com.codesquad.issueTracker.authentication.presentation.dto.OAuthLoginResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class OAuthService {
     @Transactional
     public OAuthLoginResponse login(String code) {
         OAuthTokenResponse accessToken = oAuthClientServer.getOAuthToken(code);
-        UserProfileResponse userProfile = oAuthClientServer.getUserProfile(accessToken);
+        UserProfile userProfile = oAuthClientServer.getUserProfile(accessToken);
 
         User user = saveUser(userProfile);
         String savedUserId = String.valueOf(user.getId());
@@ -45,14 +45,14 @@ public class OAuthService {
 
         // TODO : RollBack 적용 필요
         redisTokenRepository.insert(savedUserId, jwtRefreshToken);
-        return new OAuthLoginResponse("Bearer", jwtAccessToken, jwtRefreshToken, userProfile);
+        return new OAuthLoginResponse("Bearer", jwtAccessToken, jwtRefreshToken, userProfile.toDto());
     }
 
     public void logout(String username) {
         redisTokenRepository.delete(username);
     }
 
-    private User saveUser(UserProfileResponse userProfile) {
+    private User saveUser(UserProfile userProfile) {
         Optional<User> user = userRepository.findByName(userProfile.getName());
         return user.orElseGet(() -> userRepository.save(userProfile.toEntity()));
     }

@@ -22,6 +22,7 @@ public class IssueCoverResponse {
     private String writerImage;
     private LocalDateTime modificationTime;
     private String milestoneName;
+    // TODO : isOpen도 같이 전달하기
 
     public IssueCoverResponse(
         List<LabelCoverResponse> labelCoverResponses, String title, Long issueId, String writer,

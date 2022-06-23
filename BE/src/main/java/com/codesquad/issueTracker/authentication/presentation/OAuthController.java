@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codesquad.issueTracker.authentication.application.OAuthService;
+import com.codesquad.issueTracker.authentication.application.dto.UserProfileResponse;
 import com.codesquad.issueTracker.authentication.infrastructure.JwtTokenProvider;
-import com.codesquad.issueTracker.authentication.infrastructure.dto.UserProfileResponse;
+import com.codesquad.issueTracker.authentication.infrastructure.dto.UserProfile;
 import com.codesquad.issueTracker.authentication.presentation.dto.OAuthLoginResponse;
 import com.codesquad.issueTracker.authentication.presentation.dto.OAuthorizationLoginUrlResponse;
 
