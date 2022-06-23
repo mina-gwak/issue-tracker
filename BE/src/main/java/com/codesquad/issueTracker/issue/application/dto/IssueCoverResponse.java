@@ -22,11 +22,11 @@ public class IssueCoverResponse {
     private String writerImage;
     private LocalDateTime modificationTime;
     private String milestoneName;
-    // TODO : isOpen도 같이 전달하기
+    private boolean opened;
 
     public IssueCoverResponse(
         List<LabelCoverResponse> labelCoverResponses, String title, Long issueId, String writer,
-        String writerImage, LocalDateTime modificationTime, String milestoneName) {
+        String writerImage, LocalDateTime modificationTime, String milestoneName, boolean opened) {
         this.labelCoverResponses = labelCoverResponses;
         this.title = title;
         this.issueId = issueId;
@@ -34,5 +34,6 @@ public class IssueCoverResponse {
         this.writerImage = writerImage;
         this.modificationTime = modificationTime;
         this.milestoneName = milestoneName;
+        this.opened = opened;
     }
 }

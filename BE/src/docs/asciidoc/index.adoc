@@ -26,6 +26,13 @@ operation::get-user-filter-info[snippets='http-request,http-response,response-fi
 === 🔒 로그아웃
 operation::request-logout[snippets='http-request,http-response']
 
+[[Issue-API]]
+== Issue API
+
+[[show-Issue-List]]
+=== 🔒 이슈 리스트 조회
+operation::get-issue-with-main-filter[snippets='http-request,request-parameters,http-response,response-fields']
+
 [[Milestone-API]]
 == Milestone API
 

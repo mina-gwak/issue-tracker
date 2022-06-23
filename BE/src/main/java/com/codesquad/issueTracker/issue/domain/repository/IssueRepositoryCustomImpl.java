@@ -51,12 +51,10 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
                     Projections.constructor(IssueCoverResponse.class, list(
                             Projections.constructor(LabelCoverResponse.class,
                                 label.name, label.labelColor, label.textColor)
-                        ), issue.title, issue.id, user.name, user.image, issue.modificationTime, milestone.name)));
+                        ), issue.title, issue.id, user.name, user.image, issue.modificationTime, milestone.name, issue.isOpened)));
 
         return result;
     }
-
-
 
     private Predicate addMainCondition(MainFilter condition, Long userId) {
         if(condition.equals(MainFilter.CLOSE)) {
@@ -75,6 +73,7 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
     }
 
     private Predicate addSubCondition(List<SubFilterDetail> subFilters) {
+        // TODO : subFilters 추가 적용
         return null;
     }
 }
