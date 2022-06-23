@@ -12,10 +12,10 @@
     "@types/react-dom": "^18.0.5",
     "axios": "^0.27.2",
     "http-proxy-middleware": "^2.0.6",
-    "mws": "^2.0.8",
     "qs": "^6.10.5",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-query": "^3.39.1",
     "react-refresh": "^0.11.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
@@ -89,8 +89,12 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.30.0",
     "eslint-plugin-react-hooks": "^4.5.0",
+    "msw": "^0.42.3",
     "prettier": "^2.7.0",
     "react-app-rewired": "^2.2.1",
     "webpack": "^5.73.0"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
