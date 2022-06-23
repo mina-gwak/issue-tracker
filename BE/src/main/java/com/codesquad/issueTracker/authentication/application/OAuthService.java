@@ -48,6 +48,7 @@ public class OAuthService {
         return new OAuthLoginResponse("Bearer", jwtAccessToken, jwtRefreshToken, userProfile.toDto());
     }
 
+    @Transactional
     public void logout(String username) {
         redisTokenRepository.delete(username);
     }
@@ -57,6 +58,7 @@ public class OAuthService {
         return user.orElseGet(() -> userRepository.save(userProfile.toEntity()));
     }
 
+    @Transactional(readOnly = true)
     public boolean isLogout(String userId) {
         return redisTokenRepository.findByKey(userId).isEmpty();
     }

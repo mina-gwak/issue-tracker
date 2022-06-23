@@ -3,6 +3,7 @@ package com.codesquad.issueTracker.issue.application;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
@@ -18,6 +19,7 @@ public class IssueService {
     private final QueryParser queryParser;
     private final IssueRepository issueRepository;
 
+    @Transactional(readOnly = true)
     public List<IssueCoverResponse> findIssuesByCondition(String query, Long userId) {
         FilterCondition condition = queryParser.makeFilterCondition(query);
         return issueRepository.search(condition, userId);
