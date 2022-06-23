@@ -30,8 +30,8 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<String> oAuthLogout(@RequestAttribute String username) {
-        oAuthService.logout(username);
-        return ResponseEntity.ok("logout success : " + username);
+    public ResponseEntity<Void> oAuthLogout(@RequestAttribute String userId) {
+        oAuthService.logout(userId);
+        return ResponseEntity.noContent().build();
     }
 }
