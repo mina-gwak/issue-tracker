@@ -21,7 +21,9 @@ const Error = () => {
       <S.Title>Oops!</S.Title>
       <S.BoldMessage>{ message }</S.BoldMessage>
       <S.Message>잠시 후에 다시 시도해주세요.</S.Message>
-      <Button size={BUTTON_SIZE.MEDIUM} content={'처음으로 돌아가기'} onClick={() => navigate('/')} />
+      <Button size={BUTTON_SIZE.MEDIUM} onClick={() => navigate('/')}>
+        <span>처음으로 돌아가기</span>
+      </Button>
     </S.Wrapper>
   );
 };

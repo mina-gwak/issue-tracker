@@ -16,7 +16,8 @@
       "@pages/*": ["pages/*"],
       "@router": ["router"],
       "@router/*": ["router/*"],
-      "@type": ["type"],
+      "@store/*": ["store/*"],
+      "@type/*": ["type/*"],
       "@utils/*": ["utils/*"]
     }
   },
