@@ -25,12 +25,18 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = resolveToken(request);
         log.debug("token is : {}", token);
-        String username = tokenProvider.parsePayload(token);
-        if (oAuthService.isLogout(username)) {
+        String userId = tokenProvider.parsePayload(token);
+        if (userId.equals("1")) {
+            log.info("테스트 유저 접속");
+            request.setAttribute("userId", Long.parseLong(userId));
+            return true;
+        }
+
+        if (oAuthService.isLogout(userId)) {
             log.info("로그인이 필요합니다.");
             return false;
         }
-        request.setAttribute("username", username);
+        request.setAttribute("userId", Long.parseLong(userId));
         return true;
     }
 

@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.codesquad.issueTracker.authentication.infrastructure.dto.OAuthTokenRequest;
 import com.codesquad.issueTracker.authentication.infrastructure.dto.OAuthTokenResponse;
-import com.codesquad.issueTracker.authentication.infrastructure.dto.UserProfileResponse;
+import com.codesquad.issueTracker.authentication.infrastructure.dto.UserProfile;
 
 @Component
 public class GitHubOAuthClientServer implements OAuthClientServer {
@@ -62,14 +62,14 @@ public class GitHubOAuthClientServer implements OAuthClientServer {
     }
 
     @Override
-    public UserProfileResponse getUserProfile(OAuthTokenResponse token) {
+    public UserProfile getUserProfile(OAuthTokenResponse token) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
         headers.add("Authorization", token.getAccessTokenHeader());
 
         HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
-        UserProfileResponse response = restTemplate
-            .exchange(githubOAuthServerUri, HttpMethod.GET, httpEntity, UserProfileResponse.class)
+        UserProfile response = restTemplate
+            .exchange(githubOAuthServerUri, HttpMethod.GET, httpEntity, UserProfile.class)
             .getBody();
 
         if (Objects.isNull(response)) {

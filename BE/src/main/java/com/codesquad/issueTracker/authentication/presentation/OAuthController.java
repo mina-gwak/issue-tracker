@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codesquad.issueTracker.authentication.application.OAuthService;
+import com.codesquad.issueTracker.authentication.application.dto.UserProfileResponse;
+import com.codesquad.issueTracker.authentication.infrastructure.JwtTokenProvider;
+import com.codesquad.issueTracker.authentication.infrastructure.dto.UserProfile;
 import com.codesquad.issueTracker.authentication.presentation.dto.OAuthLoginResponse;
 import com.codesquad.issueTracker.authentication.presentation.dto.OAuthorizationLoginUrlResponse;
 
@@ -20,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class OAuthController {
 
     private final OAuthService oAuthService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @GetMapping("/github")
     public ResponseEntity<OAuthorizationLoginUrlResponse> githubAuthorizationUrl() {
@@ -30,5 +34,12 @@ public class OAuthController {
     public ResponseEntity<OAuthLoginResponse> oAuthLogin(@RequestParam String code) {
         OAuthLoginResponse loginToken = oAuthService.login(code);
         return ResponseEntity.ok(loginToken);
+    }
+    // TODO : test token(삭제 필요)
+    @GetMapping("/testToken")
+    public ResponseEntity<OAuthLoginResponse> getTestToken() {
+        String accessToken = jwtTokenProvider.generateAccessToken(String.valueOf(1));
+        String refreshToken = jwtTokenProvider.generateRefreshToken(String.valueOf(1));
+        return ResponseEntity.ok(new OAuthLoginResponse("Bearer", accessToken, refreshToken, new UserProfileResponse("guest", "guestMode", "http://zipbanchan.godohosting.com/detail_page/3_main/1351/1351_ZIP_P_0108_S.jpg")));
     }
 }

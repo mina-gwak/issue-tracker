@@ -1,7 +1,7 @@
 package com.codesquad.issueTracker.authentication.infrastructure;
 
 import com.codesquad.issueTracker.authentication.infrastructure.dto.OAuthTokenResponse;
-import com.codesquad.issueTracker.authentication.infrastructure.dto.UserProfileResponse;
+import com.codesquad.issueTracker.authentication.infrastructure.dto.UserProfile;
 
 public interface OAuthClientServer {
 
@@ -9,5 +9,5 @@ public interface OAuthClientServer {
 
     OAuthTokenResponse getOAuthToken(String code);
 
-    UserProfileResponse getUserProfile(OAuthTokenResponse token);
+    UserProfile getUserProfile(OAuthTokenResponse token);
 }
