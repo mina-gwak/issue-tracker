@@ -7,7 +7,7 @@ export interface ImagePropsType {
 }
 
 const Image = ({ url, alt, size }: ImagePropsType) => {
-  return <S.Image src={url} alt={alt} {...{ size }} />;
+  return <S.Image src={url} alt={alt} size={size} />;
 };
 
 export default Image;
