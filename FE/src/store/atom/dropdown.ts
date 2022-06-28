@@ -1,8 +1,15 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
-export const modalState = atom({
+type modalStateType = { [key: string]: boolean };
+
+export const modalState = atom<modalStateType>({
   key: 'modalState',
   default: {
-    "issue": true, "label": true, "milestone": false, "author": false, "assignee": false, "stateModify": false
+    issue: false,
+    label: false,
+    milestone: false,
+    author: false,
+    assignee: false,
+    stateModify: false,
   },
 });
