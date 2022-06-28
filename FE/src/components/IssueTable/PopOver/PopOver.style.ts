@@ -1,40 +1,18 @@
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-interface StyledIconProps {
-  isOpen: boolean;
-}
+import { iconStyle, StyledIconProps } from '@styles/mixin';
 
 const smallTextStyle = css`
   color: ${({ theme }) => theme.colors.grey2};
   font-size: ${({ theme }) => theme.fontSizes.xSmall};
 `;
 
-const iconStyle = css<StyledIconProps>`
-  ${({ isOpen }) =>
-    isOpen &&
-    css`
-      path {
-        fill: ${({ theme }) => theme.colors.lightBlue};
-        stroke: ${({ theme }) => theme.colors.blue};
-      }
-    `}
-
-  ${({ isOpen }) =>
-    !isOpen &&
-    css`
-      path {
-        fill: ${({ theme }) => theme.colors.lightPurple};
-        stroke: ${({ theme }) => theme.colors.purple};
-      }
-    `}
-`;
-
 export const Wrapper = styled.div<StyledIconProps>`
   & > div:not(:last-child) {
     border-bottom: 1px solid ${({ theme }) => theme.colors.grey4};
   }
-  
+
   * {
     font-size: 14px;
   }
