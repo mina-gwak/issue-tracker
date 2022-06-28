@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-import { pageContentCenter, flexCenter } from '@assets/styles/mixin';
+import { pageContentCenter, flexCenter } from '@styles/mixin';
 
-export const Wrapper = styled.div`  
+export const Wrapper = styled.div`
   ${pageContentCenter}
 `;
 
@@ -17,7 +17,7 @@ export const GithubLoginButton = styled.a`
   height: 64px;
   color: ${({ theme }) => theme.colors.white};
   font-size: ${({ theme }) => theme.fontSizes.medium};
-  font-weight:  ${({ theme }) => theme.fontWeights.bold};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
   background-color: ${({ theme }) => theme.colors.black};
   border-radius: 20px;
 `;

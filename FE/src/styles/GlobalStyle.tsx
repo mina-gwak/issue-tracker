@@ -1,13 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-import NotoSansKR from '@assets/fonts/noto-sans-kr.woff';
-
 const GlobalStyle = createGlobalStyle`
-  @font-face {
-    font-family: "Noto Sans KR";
-    src: url(${NotoSansKR});
-  }
-  
   *,
   :after,
   :before {
@@ -15,9 +8,11 @@ const GlobalStyle = createGlobalStyle`
     -moz-box-sizing: border-box;
     box-sizing: border-box;
   }
+
   html {
     overflow-y: scroll;
   }
+
   body {
     margin: 0;
     line-height: 1.5;
@@ -27,6 +22,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: ${({ theme }) => theme.fontSizes.small};
     background-color: ${({ theme }) => theme.colors.grey6};
   }
+
   html,
   h1,
   h2,
@@ -40,6 +36,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     border: 0;
   }
+
   h1,
   h2,
   h3,
@@ -48,6 +45,7 @@ const GlobalStyle = createGlobalStyle`
   h6 {
     font-size: 1em;
   }
+
   article,
   aside,
   details,
@@ -61,6 +59,7 @@ const GlobalStyle = createGlobalStyle`
   section {
     display: block;
   }
+
   header ul,
   nav ul,
   footer ul {
@@ -68,6 +67,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     list-style: none;
   }
+
   legend {
     position: absolute;
     font-size: 0;
@@ -75,6 +75,7 @@ const GlobalStyle = createGlobalStyle`
     text-indent: -9999em;
     overflow: hidden;
   }
+
   label,
   input,
   button,
@@ -82,16 +83,19 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Noto Sans KR', sans-serif;
     vertical-align: middle;
   }
+
   input,
   button {
     margin: 0;
     padding: 0;
     font-size: 1em;
   }
+
   button,
   input[type="submit"] {
     cursor: pointer;
   }
+
   button {
     padding: 0;
     border: none;
@@ -100,9 +104,11 @@ const GlobalStyle = createGlobalStyle`
     background-color: transparent;
     cursor: pointer;
   }
+
   button:focus {
     outline: none;
   }
+
   input[type="checkbox"],
   input[type="text"],
   input[type="tel"],
@@ -115,6 +121,7 @@ const GlobalStyle = createGlobalStyle`
     -moz-appearance: none;
     appearance: none;
   }
+
   input[type="text"],
   input[type="tel"],
   input[type="password"],
@@ -122,35 +129,43 @@ const GlobalStyle = createGlobalStyle`
   select {
     outline: none;
   }
+
   textarea,
   select {
     font-size: 1em;
   }
+
   select::-ms-expand {
     display: none;
   }
+
   textarea {
     resize: none;
     border-radius: 0;
     -webkit-appearance: none;
   }
+
   p {
     margin: 0;
     padding: 0;
     word-break: break-all;
   }
+
   hr {
     display: none;
   }
+
   pre {
     overflow-x: scroll;
     font-size: 1.1em;
   }
+
   a:link,
   a:visited {
     color: inherit;
     text-decoration: none;
   }
+
   ul,
   li,
   dl,
@@ -159,10 +174,12 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
   }
+
   ul,
   li {
     list-style: none;
   }
+
   strong {
     font-weight: bold;
   }

@@ -14,9 +14,11 @@
       "@hooks/*": ["hooks/*"],
       "@mocks/*": ["mocks/*"],
       "@pages/*": ["pages/*"],
+      "@query/*": ["query/*"],
       "@router": ["router"],
       "@router/*": ["router/*"],
       "@store/*": ["store/*"],
+      "@styles/*": ["styles/*"],
       "@type/*": ["type/*"],
       "@utils/*": ["utils/*"]
     }

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { flexBetween } from '@assets/styles/mixin';
+import { flexBetween } from '@styles/mixin';
 
 export const MenuList = styled.div<{ position: string }>`
   position: absolute;
@@ -22,8 +22,7 @@ export const MenuTitle = styled.h3`
 `;
 
 export const MenuOptionGroup = styled.div`
-  ${flexBetween}
-
+  ${flexBetween};
   padding: 6px 16px;
 
   &:not(:last-child) {
