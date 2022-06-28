@@ -5,18 +5,36 @@ import Image from '@components/common/Image';
 import { IMAGE_SIZE } from '@components/common/Image/constants';
 import Label from '@components/common/Label';
 import PopOver from '@components/common/PopOver';
-import { IssueListType } from '@type/issueType';
+import { useIssue } from '@query/issue';
+import { useIssuePopOver } from '@query/issuePopOver';
+import { IssuePopOverDataType, IssueType } from '@type/issueType';
 import { getDate } from '@utils/date';
 
 const MAX_LABEL = 3;
 const USER = 'Jamie';
 
-const IssuePopOver = ({ title, labels, num, assignees, author, isOpen, time }: IssueListType) => {
+export interface IssuePopOverPropsType {
+  issueId: number;
+}
+
+const IssuePopOver = ({ issueId }: IssuePopOverPropsType) => {
+  const {
+    data: {
+      isOpen,
+      title,
+      writer,
+      writerImage,
+      labelCoverResponses,
+    } = {} as IssueType,
+  } = useIssue(issueId);
+
+  const { data: { contents, registerTime, assignees } = {} as IssuePopOverDataType } = useIssuePopOver();
+
   const iconName = isOpen ? ICON_NAME.ALERT_CIRCLE : ICON_NAME.ARCHIVE;
 
   // TODO: 유저의 네임값 가져와서 비교
-  const isAuthor = author.name === USER;
-  const isAssignee = assignees.some(({ name }) => name === USER);
+  const isAuthor = writer === USER;
+  const isAssignee = assignees?.some(({ name }) => name === USER);
 
   const userDescription = () => {
     if (isAuthor && isAssignee) return 'You are assigned and opened';
@@ -28,24 +46,24 @@ const IssuePopOver = ({ title, labels, num, assignees, author, isOpen, time }: I
     <PopOver>
       <S.Wrapper {...{ isOpen }}>
         <S.ContentsWrapper>
-          <S.Date>{getDate(time)}</S.Date>
+          <S.Date>{getDate(registerTime)}</S.Date>
           <S.ContentsContainer>
             <Icon {...{ iconName }} />
             <div>
               <S.IssueLink to='이슈 상세 페이지'>
                 <S.Title>{title}</S.Title>
-                <S.IssueNumber>#{num}</S.IssueNumber>
+                <S.IssueNumber>#{issueId}</S.IssueNumber>
               </S.IssueLink>
               <S.IssueContents>
-                Hercle, victrix regius! gratis absolutio! rem Est bassus armarium, cesaris. Ecce, nixus! Nunquam fallere boreas.
+                {contents}
               </S.IssueContents>
               <S.LabelList>
-                {labels.map((label) => (
-                  <li>
+                {labelCoverResponses.map((label) => (
+                  <li key={label.labelName}>
                     <Label {...label} />
                   </li>
                 ))}
-                {labels.length > MAX_LABEL && (
+                {labelCoverResponses.length > MAX_LABEL && (
                   <li>
                     <S.MoreLabel>+ more</S.MoreLabel>
                   </li>
@@ -56,11 +74,7 @@ const IssuePopOver = ({ title, labels, num, assignees, author, isOpen, time }: I
         </S.ContentsWrapper>
         {(isAuthor || isAssignee) && (
           <S.UserWrapper>
-            <Image
-              url={author.imgUrl}
-              alt={author.name}
-              size={IMAGE_SIZE.SMALL}
-            />
+            <Image url={writerImage} alt={writer} size={IMAGE_SIZE.SMALL} />
             <S.UserDescription>{userDescription()}</S.UserDescription>
           </S.UserWrapper>
         )}
