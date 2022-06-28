@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.form`
+export const Wrapper = styled.div`
   display: flex;
   flex-shrink: 0;
   width: 601px;
@@ -34,14 +34,15 @@ export const FilterButton = styled.button`
   &:hover {
     color: ${({ theme }) => theme.colors.grey1};
     background-color: ${({ theme }) => theme.colors.grey4};
-    
+
     path {
       stroke: ${({ theme }) => theme.colors.grey1};
     }
   }
 `;
 
-export const FilterInputWrapper = styled(FilterButtonWrapper)`
+export const FilterInputWrapper = styled.form`
+  position: relative;
   flex-grow: 1;
 
   svg {
@@ -49,7 +50,7 @@ export const FilterInputWrapper = styled(FilterButtonWrapper)`
     top: 50%;
     left: 24px;
     transform: translateY(-50%);
-    
+
     path {
       transition: all 200ms;
     }
@@ -74,7 +75,7 @@ export const FilterInput = styled.input`
   &:focus {
     color: ${({ theme }) => theme.colors.black};
     background-color: ${({ theme }) => theme.colors.grey6};
-    
+
     & + svg {
       path {
         stroke: ${({ theme }) => theme.colors.grey2};
