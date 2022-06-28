@@ -4,5 +4,8 @@ export const Wrapper = styled.div`
   width: 1280px;
   border: 1px solid ${({ theme }) => theme.colors.grey4};
   border-radius: 11px;
-  overflow: hidden;
+
+  & > *:last-child {
+    border-radius: 0 0 11px 11px;
+  }
 `;
