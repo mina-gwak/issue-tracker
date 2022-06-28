@@ -22,7 +22,7 @@ export default {
 
 export const Default: ComponentStory<typeof CheckBox> = (args: CheckBoxPropsType) => {
   const [isChecked, setIsChecked] = useState(false);
-  const toggleIsChecked = () => setIsChecked((isChecked) => !isChecked);
+  const toggleIsChecked = () => setIsChecked((prevState) => !prevState);
 
-  return <CheckBox {...args} {...{ isChecked }} {...{ toggleIsChecked }} />;
+  return <CheckBox {...args} isChecked={isChecked} toggleIsChecked={toggleIsChecked} />;
 };
