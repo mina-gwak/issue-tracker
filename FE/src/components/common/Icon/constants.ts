@@ -9,6 +9,8 @@ export const ICON_NAME = {
   MILESTONE: 'Milestone',
   SEARCH: 'Search',
   SELECT: 'Select',
+  CHECKBOX_CIRCLE_ACTIVE: 'CheckBoxCircleActive',
+  CHECKBOX_CIRCLE_INITIAL: 'CheckBoxCircleInitial',
 } as const;
 
 export const ICON_SIZE = {
