@@ -1,40 +1,76 @@
-import { IssueListType } from '@type/issueType';
+import { IssueType } from '@type/issueType';
 
-export const issueDummyData: IssueListType[] = [
+export const issueDummyData: IssueType[] = [
   {
-    id: 1,
-    num: 1,
-    title: 'FE 이슈트래커 개발',
-    labels: [{ id: 11, name: 'FE', backgroundColor: '#000', textColor: '#fff' }],
-    milestone: { id: 111, title: '마스터즈 코스' },
-    assignees: [
-      { id: 1111, name: 'Khan', imgUrl: 'https://avatars.githubusercontent.com/u/93566353?v=4' },
-      { id: 2222, name: 'Jamie', imgUrl: 'https://avatars.githubusercontent.com/u/62706988?v=4' },
+    labelCoverResponses: [
+      {
+        labelName: '제이미',
+        labelColor: 'yellow',
+        textColor: 'black',
+      },
+      {
+        labelName: '루시드',
+        labelColor: 'red',
+        textColor: 'white',
+      },
     ],
-    author: {
-      id: 11111,
-      name: 'Khan',
-      imgUrl: 'https://avatars.githubusercontent.com/u/93566353?v=4',
-    },
+    title: 'title1',
+    issueId: 1,
+    writer: 'guest',
+    writerImage: 'http://zipbanchan.godohosting.com/detail_page/3_main/1351/1351_ZIP_P_0108_S.jpg',
+    modificationTime: '2022-06-18T03:24:00',
+    milestoneName: 'BE course',
     isOpen: true,
-    time: new Date(1655712214955),
   },
   {
-    id: 2,
-    num: 2,
-    title: 'BE OAuth 개발',
-    labels: [{ id: 22, name: 'BE', backgroundColor: '#f00', textColor: '#fff' }],
-    milestone: { id: 222, title: '마스터즈 코스' },
-    assignees: [
-      { id: 1111, name: 'Khan', imgUrl: 'https://avatars.githubusercontent.com/u/93566353?v=4' },
-      { id: 2222, name: 'Jamie', imgUrl: 'https://avatars.githubusercontent.com/u/62706988?v=4' },
+    labelCoverResponses: [
+      {
+        labelName: '루시드',
+        labelColor: 'red',
+        textColor: 'white',
+      },
+      {
+        labelName: 'FE',
+        labelColor: 'Red',
+        textColor: 'black',
+      },
     ],
-    author: {
-      id: 2222,
-      name: 'Jamie',
-      imgUrl: 'https://avatars.githubusercontent.com/u/62706988?v=4',
-    },
+    title: 'title2',
+    issueId: 2,
+    writer: 'lucid',
+    writerImage: 'http://zipbanchan.godohosting.com/detail_page/3_main/1351/1351_ZIP_P_0108_S.jpg',
+    modificationTime: '2022-06-18T03:24:00',
+    milestoneName: 'Fe course',
     isOpen: false,
-    time: new Date(1655712114955),
+  },
+  {
+    labelCoverResponses: [],
+    title: 'title3',
+    issueId: 3,
+    writer: 'lucid',
+    writerImage: 'http://zipbanchan.godohosting.com/detail_page/3_main/1351/1351_ZIP_P_0108_S.jpg',
+    modificationTime: '2022-06-18T03:24:00',
+    milestoneName: 'Android course',
+    isOpen: true,
+  },
+  {
+    labelCoverResponses: [],
+    title: 'title4',
+    issueId: 4,
+    writer: 'tesla',
+    writerImage: 'http://zipbanchan.godohosting.com/detail_page/3_main/1351/1351_ZIP_P_0108_S.jpg',
+    modificationTime: '2022-06-18T03:24:00',
+    milestoneName: 'iOS course',
+    isOpen: true,
+  },
+  {
+    labelCoverResponses: [],
+    title: 'title5',
+    issueId: 5,
+    writer: 'guest',
+    writerImage: 'http://zipbanchan.godohosting.com/detail_page/3_main/1351/1351_ZIP_P_0108_S.jpg',
+    modificationTime: '2022-06-18T03:24:00',
+    milestoneName: 'Fe course',
+    isOpen: false,
   },
 ];
