@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 import { flexBetween } from '@assets/styles/mixin';
 
@@ -23,6 +23,7 @@ export const MenuTitle = styled.h3`
 
 export const MenuOptionGroup = styled.div`
   ${flexBetween}
+
   padding: 6px 16px;
 
   &:not(:last-child) {
@@ -30,6 +31,20 @@ export const MenuOptionGroup = styled.div`
   }
 `;
 
+export const MenuOptionItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
 export const MenuItemOption = styled.span`
   font-size: 14px;
+`;
+
+export const CircleColorIcon = styled.div<{ colorIcon: string }>`
+  width: 18px;
+  height: 18px;
+  background-color: ${({ colorIcon }) => colorIcon};
+  border: 1px solid ${({ theme }) => theme.colors.grey4};
+  border-radius: 50px;
 `;
