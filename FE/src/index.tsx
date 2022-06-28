@@ -4,15 +4,16 @@ import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 
-import GlobalStyle from '@assets/styles/GlobalStyle';
-import { theme } from '@assets/styles/theme';
 import { worker } from '@mocks/browser';
+import GlobalStyle from '@styles/GlobalStyle';
+import { theme } from '@styles/theme';
 
 import App from './App';
+import '@assets/fonts/font.css';
 
 worker.start();
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
