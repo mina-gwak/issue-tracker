@@ -1,6 +1,8 @@
 import { ReactComponent as AlertCircle } from '@assets/icons/alertCircle.svg';
 import { ReactComponent as Archive } from '@assets/icons/archive.svg';
 import { ReactComponent as CheckBoxActive } from '@assets/icons/checkBoxActive.svg';
+import { ReactComponent as CheckBoxCircleActive } from '@assets/icons/checkBoxCircleActive.svg';
+import { ReactComponent as CheckBoxCircleInitial } from '@assets/icons/checkBoxCircleInitial.svg';
 import { ReactComponent as CheckBoxDisabled } from '@assets/icons/checkBoxDisabled.svg';
 import { ReactComponent as CheckBoxInitial } from '@assets/icons/checkBoxInitial.svg';
 import { ReactComponent as Github } from '@assets/icons/github.svg';
@@ -20,6 +22,8 @@ export const Icons = {
   Milestone,
   Search,
   Select,
+  CheckBoxCircleActive,
+  CheckBoxCircleInitial,
 } as const;
 
 export type IconsType = keyof typeof Icons;
