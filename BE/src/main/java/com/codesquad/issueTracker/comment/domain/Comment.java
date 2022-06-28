@@ -36,6 +36,8 @@ public class Comment {
     @JoinColumn(name = "issueId")
     private Issue issue;
 
+    private boolean editable;
+
     public Comment(String content, LocalDateTime writtenTime, User user,
         Issue issue) {
         this.content = content;

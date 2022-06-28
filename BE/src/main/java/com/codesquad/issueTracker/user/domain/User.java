@@ -39,4 +39,8 @@ public class User {
         this.nickname = nickname;
         this.image = image;
     }
+
+    public boolean isYourId(Long userId) {
+        return this.id.equals(userId);
+    }
 }
