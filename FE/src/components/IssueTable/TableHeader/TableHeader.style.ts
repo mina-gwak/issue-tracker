@@ -4,7 +4,8 @@ export const Wrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 32px;
-  width: 1280px;
+  width: auto;
+  min-width: 1200px;
   height: 64px;
   background-color: ${({ theme }) => theme.colors.grey6};
   border-bottom: 1px solid ${({ theme }) => theme.colors.grey4};
@@ -20,7 +21,7 @@ export const IssueTabs = styled.ul`
 export const IssueTab = styled.button`
   display: flex;
   align-items: center;
-  gap: 4px; 
+  gap: 4px;
   line-height: 26px;
 `;
 
@@ -36,7 +37,6 @@ export const FilterButton = styled.button`
   gap: 4px;
 `;
 
-
 export const FilterListItem = styled.li`
-position: relative;
-`
+  position: relative;
+`;
