@@ -35,4 +35,8 @@ public class AssignedIssue {
         this.user = user;
         this.issue = issue;
     }
+
+    public boolean isAssignedThisUser(Long userId) {
+        return user.isYourId(userId);
+    }
 }

@@ -62,4 +62,13 @@ public class Issue {
         this.writtenTime = writtenTime;
         this.modificationTime = modificationTime;
     }
+
+    public boolean isAssignedThisUser(Long userId) {
+        for (AssignedIssue assignedIssue : assignedIssues) {
+            if (assignedIssue.isAssignedThisUser(userId)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

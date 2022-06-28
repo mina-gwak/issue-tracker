@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
+import com.codesquad.issueTracker.issue.application.dto.PopUpResponse;
 import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.issue.domain.MainFilter;
 import com.codesquad.issueTracker.issue.domain.repository.IssueRepository;
@@ -58,5 +59,13 @@ public class IssueService {
 
     private Predicate<Issue> closedPredicate() {
         return issue -> !issue.isOpened();
+    }
+
+    @Transactional(readOnly = true)
+    public PopUpResponse popUpIssue(Long issueId, Long userId) {
+        Issue issue = issueRepository.findById(issueId)
+            .orElseThrow(() -> new IllegalStateException("유효하지 않은 issueId입니다."));
+
+        return new PopUpResponse(issue, issue.isAssignedThisUser(userId));
     }
 }
