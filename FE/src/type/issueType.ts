@@ -1,7 +1,6 @@
 export interface LabelType {
-  id: number;
-  name: string;
-  backgroundColor: string;
+  labelName: string;
+  labelColor: string;
   textColor: string;
 }
 
@@ -16,14 +15,19 @@ export interface MemberType {
   imgUrl: string;
 }
 
-export interface IssueListType {
-  id: number;
-  num: number;
+export interface IssueType {
   title: string;
-  labels: LabelType[];
-  milestone: MilestoneType;
-  assignees: MemberType[];
-  author: MemberType;
+  labelCoverResponses: LabelType[];
+  issueId: number;
+  writer: string;
+  writerImage: string;
+  modificationTime: string;
+  milestoneName: string;
   isOpen: boolean;
-  time: Date;
+}
+
+export interface IssuePopOverDataType {
+  contents: string;
+  registerTime: string;
+  assignees: MemberType[];
 }
