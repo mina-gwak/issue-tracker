@@ -8,7 +8,6 @@ export default {
   title: 'Common/CheckBox',
   component: CheckBox,
   args: {
-    checkBoxId: 'label-option-1',
     isAllChecked: true,
   },
   argTypes: {
