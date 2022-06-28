@@ -1,6 +1,6 @@
+import SVG from 'react-inlinesvg';
 import styled, { css } from 'styled-components';
 
-import { Icons, IconsType } from '@assets/icons';
 import { ICON_SIZE } from '@components/common/Icon/constants';
 
 type StyledIconProps = {
@@ -27,9 +27,7 @@ const sizeStyles = css<StyledIconProps>`
     `}
 `;
 
-export const Icon = (iconName: IconsType) => {
-  return styled(Icons[iconName])<StyledIconProps>`
-    flex-shrink: 0;
-    ${sizeStyles}
-  `;
-};
+export const Icon = styled(SVG)<StyledIconProps>`
+  flex-shrink: 0;
+  ${sizeStyles}
+`;
