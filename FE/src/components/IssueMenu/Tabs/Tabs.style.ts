@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { flexCenter } from "@assets/styles/mixin";
+import { flexCenter } from '@styles/mixin';
 
 export const TabContainer = styled.div`
   display: flex;
@@ -21,11 +21,11 @@ export const Tab = styled(Link)`
   &:first-of-type {
     border-right: 1px solid ${({ theme }) => theme.colors.grey4};
   }
-  
+
   &:hover {
     background-color: ${({ theme }) => theme.colors.grey5};
   }
-  
+
   &:active {
     background-color: ${({ theme }) => theme.colors.grey4};
   }
