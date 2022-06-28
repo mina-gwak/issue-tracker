@@ -1,7 +1,7 @@
 export interface DropdownType {
-  id: number,
-  optionName: string,
-  value?: string,
-  circleIcon?: string
+  id: number;
+  optionName: string;
+  value?: string;
+  circleIcon?: string;
+  colorIcon?: string;
 }
-
