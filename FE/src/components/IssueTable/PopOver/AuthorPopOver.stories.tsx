@@ -1,5 +1,4 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { BrowserRouter } from 'react-router-dom';
 
 import AuthorPopOver from '@components/IssueTable/PopOver/AuthorPopOver';
 import * as S from '@components/common/PopOver/PopOver.style';
@@ -14,11 +13,9 @@ export const Default: ComponentStory<typeof AuthorPopOver> = () => {
   element.style.position = 'relative';
 
   return (
-    <BrowserRouter>
       <S.StoryWrapper>
         Element
         <AuthorPopOver />
       </S.StoryWrapper>
-    </BrowserRouter>
   );
 };

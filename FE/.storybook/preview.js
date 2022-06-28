@@ -1,6 +1,10 @@
-import GlobalStyle from '../src/assets/styles/GlobalStyle';
+import GlobalStyle from '../src/styles/GlobalStyle';
 import { ThemeProvider } from 'styled-components';
-import { theme } from '../src/assets/styles/theme';
+import { theme } from '../src/styles/theme';
+import { BrowserRouter } from 'react-router-dom';
+import { RecoilRoot } from 'recoil';
+import { QueryClientProvider } from 'react-query';
+import { queryClient } from '../src';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -15,10 +19,16 @@ export const parameters = {
 export const decorators = [
   (Story) => (
     <>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <Story />
-      </ThemeProvider>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <RecoilRoot>
+            <ThemeProvider theme={theme}>
+              <GlobalStyle />
+              <Story />
+            </ThemeProvider>
+          </RecoilRoot>
+        </QueryClientProvider>
+      </BrowserRouter>
     </>
   ),
 ];
