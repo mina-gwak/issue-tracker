@@ -7,24 +7,19 @@ import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
 import { filterList } from '@data';
 
-const TableHeader = () => {
+export interface TableHeaderPropsType {
+  count: [number, number];
+}
+
+const TableHeader = ({ count: [openedIssue, closedIssue] }: TableHeaderPropsType) => {
   const [isChecked, setIsChecked] = useState(false);
   const [isAllChecked, setIsAllChecked] = useState(false);
-
-  // TODO: 데이터 요청 후 각각 열림/닫힘 이슈의 개수로 업데이트
-  const openedIssue = 2;
-  const closedIssue = 0;
 
   const toggleIsChecked = () => setIsChecked((isChecked) => !isChecked);
 
   return (
     <S.Wrapper>
-      <CheckBox
-        checkBoxId='check-all'
-        {...{ isChecked }}
-        {...{ toggleIsChecked }}
-        {...{ isAllChecked }}
-      />
+      <CheckBox {...{ isChecked }} {...{ toggleIsChecked }} {...{ isAllChecked }} />
       <S.IssueTabs>
         <li>
           <S.IssueTab>

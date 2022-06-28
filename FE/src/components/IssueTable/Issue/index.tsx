@@ -4,23 +4,31 @@ import IssueTitle from '@components/IssueTable/Issue/IssueTitle';
 import CheckBox from '@components/common/CheckBox';
 import Image from '@components/common/Image';
 import { IMAGE_SIZE } from '@components/common/Image/constants';
-import { IssueListType } from '@type/issueType';
+import { IssueType } from '@type/issueType';
 
-const Issue = ({ title, labels, num, milestone, assignees, author, time }: IssueListType) => {
+const Issue = ({
+  title,
+  labelCoverResponses,
+  issueId,
+  isOpen,
+  writer,
+  writerImage,
+  modificationTime,
+  milestoneName,
+}: IssueType) => {
   return (
     <S.Wrapper>
-      <CheckBox checkBoxId='1' isChecked={true} toggleIsChecked={() => {}} />
+      <CheckBox isChecked={true} toggleIsChecked={() => {}} />
       <S.Container>
-        <IssueTitle {...{ title }} {...{ labels }} />
+        <IssueTitle issueId={issueId} isOpen={isOpen} {...{ title }} labels={labelCoverResponses} />
         <IssueDescription
-          {...{ num }}
-          {...{ milestone }}
-          {...{ assignees }}
-          {...{ author }}
-          {...{ time }}
+          {...{ issueId }}
+          {...{ milestoneName }}
+          {...{ writer }}
+          {...{ modificationTime }}
         />
       </S.Container>
-      <Image url={author.imgUrl} alt={author.name} size={IMAGE_SIZE.SMALL} />
+      <Image url={writerImage} alt={writer} size={IMAGE_SIZE.SMALL} />
     </S.Wrapper>
   );
 };

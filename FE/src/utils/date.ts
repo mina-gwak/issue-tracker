@@ -1,4 +1,4 @@
-export const calcTwoTimeDifference = (updatedDateTime: Date) => {
+export const calcTwoTimeDifference = (updatedDateTime: string) => {
   const currentTime = new Date();
   const updateTime = new Date(updatedDateTime);
   const diffMinutes = currentTime.getTime() - updateTime.getTime();
@@ -11,7 +11,7 @@ export const calcTwoTimeDifference = (updatedDateTime: Date) => {
 
 const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-export const getDate = (registeredDate: Date) => {
+export const getDate = (registeredDate: string) => {
   const date = new Date(registeredDate);
   return `${month[date.getMonth()]} ${date.getDate()}`;
 }

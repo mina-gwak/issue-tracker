@@ -1,24 +1,42 @@
+import { useState } from 'react';
+
 import { Link } from 'react-router-dom';
 
 import * as S from '@components/IssueTable/Issue/Issue.style';
+import IssuePopOver from '@components/IssueTable/PopOver/IssuePopOver';
 import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
 import Label from '@components/common/Label';
 import { LabelType } from '@type/issueType';
 
 interface IssueTitlePropsType {
+  issueId: number;
+  isOpen: boolean;
   title: string;
   labels: LabelType[];
 }
 
-const IssueTitle = ({ title, labels }: IssueTitlePropsType) => {
+const IssueTitle = ({ issueId, isOpen, title, labels }: IssueTitlePropsType) => {
+  const [isPopOverOpen, setIsPopOverOpen] = useState(false);
+
+  const iconName = isOpen ? ICON_NAME.ALERT_CIRCLE : ICON_NAME.ARCHIVE;
+
   return (
-    <S.IssueTitleWrapper>
-      <Icon iconName={ICON_NAME.ALERT_CIRCLE} />
-      <Link to={`이슈 상세 페이지`}>
-        <S.Title>{title}</S.Title>
-      </Link>
-      {labels.length && labels.map(({ id, ...props }: LabelType) => <Label {...props} key={id} />)}
+    <S.IssueTitleWrapper isOpen={isOpen}>
+      <Icon iconName={iconName} />
+      <S.IssuePopOverWrapper
+        onMouseEnter={() => setIsPopOverOpen(true)}
+        onMouseLeave={() => setIsPopOverOpen(false)}
+      >
+        <Link to={`이슈 상세 페이지`}>
+          <S.Title>{title}</S.Title>
+        </Link>
+        {isPopOverOpen && <IssuePopOver issueId={issueId} />}
+      </S.IssuePopOverWrapper>
+      <S.LabelList>
+        {labels.length > 0 &&
+          labels.map((label: LabelType) => <Label {...label} key={label.labelName} />)}
+      </S.LabelList>
     </S.IssueTitleWrapper>
   );
 };
