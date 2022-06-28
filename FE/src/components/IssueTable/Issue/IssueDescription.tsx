@@ -21,7 +21,8 @@ const IssueDescription = ({
 }: IssueDescriptionPropsType) => {
   const [isPopOverOpen, setIsPopOverOpen] = useState(false);
 
-  const differenceTime = calcTwoTimeDifference(modificationTime);
+  const currentDate = new Date();
+  const differenceTime = calcTwoTimeDifference(currentDate, modificationTime);
 
   return (
     <S.Description>
