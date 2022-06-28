@@ -1,4 +1,4 @@
-import { IconsType } from '@assets/icons';
+import { Icons, IconsType } from '@assets/icons';
 import * as S from '@components/common/Icon/Icon.style';
 import { ICON_SIZE } from '@components/common/Icon/constants';
 
@@ -8,8 +8,7 @@ export interface IconPropsType {
 }
 
 const Icon = ({ iconName, iconSize = ICON_SIZE.SMALL }: IconPropsType) => {
-  const Icon = S.Icon(iconName);
-  return <Icon size={iconSize} />;
+  return <S.Icon src={Icons[iconName]} size={iconSize} />;
 };
 
 export default Icon;
