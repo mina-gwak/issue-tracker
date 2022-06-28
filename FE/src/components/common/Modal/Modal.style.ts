@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 
+import { POSITION } from '@components/common/Modal/constants';
 import { flexBetween } from '@styles/mixin';
 
 export const MenuList = styled.div<{ position: string }>`
   position: absolute;
   width: 200px;
-  right: ${({ position }) => position === 'right' && 0}px;
+  right: ${({ position }) => position === POSITION.RIGHT && 0}px;
   background-color: ${({ theme }) => theme.colors.white};
   border: 1px solid ${({ theme }) => theme.colors.grey4};
   border-radius: 11px;
