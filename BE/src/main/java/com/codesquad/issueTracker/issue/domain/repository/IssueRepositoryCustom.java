@@ -2,9 +2,9 @@ package com.codesquad.issueTracker.issue.domain.repository;
 
 import java.util.List;
 
-import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
+import com.codesquad.issueTracker.issue.domain.Issue;
 
 public interface IssueRepositoryCustom {
-    List<IssueCoverResponse> search(FilterCondition condition, Long userId);
+    List<Issue> search(FilterCondition condition, Long userId);
 }
