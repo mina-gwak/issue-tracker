@@ -6,10 +6,10 @@ insert into user (name, nickname, image) values
 ('mina', 'jamie', 'https://avatars.githubusercontent.com/u/62706988?v=4');
 
 insert into milestone (name, description, due_date) values
-('BE course', '백엔드입니다.', null),
-('Fe course', '프론트입니다.', null),
-('Android course', '안드로이드입니다.', null),
-('iOS course', 'iOS 입니다.', null);
+('BE_Course', '백엔드입니다.', null),
+('Fe_Course', '프론트입니다.', null),
+('Android_Course', '안드로이드입니다.', null),
+('iOS_Course', 'iOS 입니다.', null);
 
 insert into label (name, description, label_color, text_color) values
 ('BE', '배겐드', 'blue', 'white'),
@@ -35,14 +35,14 @@ insert into attached_label (issue_id, label_id) values
 (2, 2),
 (2, 3);
 
-insert into comment (content, written_time, user_id, issue_id) values
-('comment content1', null, 1, 2),
-('comment content2', null, 2, 3),
-('comment content3', null, 1, 2),
-('comment content4', null, 1, 3),
-('comment content5', null, 3, 1),
-('comment content6', null, 3, 3),
-('comment content7', null, 2, 5);
+insert into comment (content, written_time, user_id, issue_id, editable) values
+('comment content1', null, 1, 2, true),
+('comment content2', null, 2, 3, true),
+('comment content3', null, 1, 2, true),
+('comment content4', null, 1, 3, true),
+('comment content5', null, 3, 1, true),
+('comment content6', null, 3, 3, true),
+('comment content7', null, 2, 5, true);
 
 insert into assigned_issue (user_id, issue_id) values
 (1, 3),

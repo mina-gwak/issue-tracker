@@ -1,14 +1,12 @@
 package com.codesquad.issueTracker.issue.infrastructure;
 
-import java.util.List;
-
 import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.util.EnumUtils;
 
-import com.codesquad.issueTracker.issue.domain.MainFilter;
-import com.codesquad.issueTracker.issue.domain.SubFilter;
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
 import com.codesquad.issueTracker.issue.application.dto.SubFilterDetail;
+import com.codesquad.issueTracker.issue.domain.MainFilter;
+import com.codesquad.issueTracker.issue.domain.SubFilter;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,6 +32,7 @@ public class QueryParser {
                     filterConditionRequest.changeMainFilter(mainFilter);
                 } catch (IllegalArgumentException e) {
                     log.info("유효하지 않는 mainFilter 타입입니다.");
+                    throw new IllegalStateException("유효하지 않는 mainFilter 타입입니다.");
                 }
                 continue;
             }
@@ -45,17 +44,9 @@ public class QueryParser {
                 filterConditionRequest.addSubFilter(new SubFilterDetail(subFilter, queryFooter));
             } catch (IllegalArgumentException e) {
                 log.info("유효하지 않는 subFilter type입니다.");
+                throw new IllegalStateException("유효하지 않는 subFilter type입니다.");
             }
         }
-
-        MainFilter mainFilter = filterConditionRequest.getMainFilter();
-        log.info("mainFilter : {}", mainFilter);
-
-        List<SubFilterDetail> subFilters = filterConditionRequest.getSubFilters();
-        for (SubFilterDetail subFilter : subFilters) {
-            log.info("subFilter : {}", subFilter);
-        }
-
         return filterConditionRequest;
     }
 }

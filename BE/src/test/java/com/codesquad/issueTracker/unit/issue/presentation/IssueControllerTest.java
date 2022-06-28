@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
+import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
 import com.codesquad.issueTracker.issue.application.dto.LabelCoverResponse;
 import com.codesquad.issueTracker.unit.ControllerTest;
 
@@ -36,7 +37,7 @@ class IssueControllerTest extends ControllerTest {
         List<IssueCoverResponse> responses = List.of(issue1);
 
         given(issueService.findIssuesByCondition(eq("is:open"), anyLong()))
-            .willReturn(responses);
+            .willReturn(new IssueCoversResponse(responses, 1, 2));
 
         // when
         ResultActions perform = mockMvc.perform(get("/api/issues")
@@ -54,20 +55,22 @@ class IssueControllerTest extends ControllerTest {
             document("get-issue-with-main-filter", getDocumentRequest(), getDocumentResponse(),
                 requestParameters(
                     parameterWithName("query")
-                        .description("is:open(열린 이슈), is:close(닫힌 이슈), is:write_by_me(내가 작성한 이슈), is:assigned_me(나에게 할당된 이슈), is:add_comment_by_me(내가 댓글을 남긴 이슈")
+                        .description("is:open(열린 이슈), is:close(닫힌 이슈), is:write_by_me(내가 작성한 이슈), is:assigned_me(나에게 할당된 이슈), is:add_comment_by_me(내가 댓글을 남긴 이슈)")
                 ),
                 responseFields(
-                    fieldWithPath("[].labelCoverResponses").type(ARRAY).description("라벨 리스트"),
-                    fieldWithPath("[].labelCoverResponses[].labelName").type(STRING).description("라벨 이름"),
-                    fieldWithPath("[].labelCoverResponses[].labelColor").type(STRING).description("라벨 색"),
-                    fieldWithPath("[].labelCoverResponses[].textColor").type(STRING).description("라벨 텍스트 색"),
-                    fieldWithPath("[].title").type(STRING).description("이슈 이름"),
-                    fieldWithPath("[].issueId").type(NUMBER).description("이슈 id"),
-                    fieldWithPath("[].writer").type(STRING).description("작성자 이름"),
-                    fieldWithPath("[].writerImage").type(STRING).description("작성자 이미지"),
-                    fieldWithPath("[].modificationTime").type(STRING).description("최종 수정 시간"),
-                    fieldWithPath("[].milestoneName").type(STRING).description("마일스톤 이름"),
-                    fieldWithPath("[].opened").type(BOOLEAN).description("open / close 여부")
+                    fieldWithPath("issueCoverResponses[].labelCoverResponses").type(ARRAY).description("라벨 리스트"),
+                    fieldWithPath("issueCoverResponses[].labelCoverResponses[].labelName").type(STRING).description("라벨 이름"),
+                    fieldWithPath("issueCoverResponses[].labelCoverResponses[].labelColor").type(STRING).description("라벨 색"),
+                    fieldWithPath("issueCoverResponses[].labelCoverResponses[].textColor").type(STRING).description("라벨 텍스트 색"),
+                    fieldWithPath("issueCoverResponses[].title").type(STRING).description("이슈 이름"),
+                    fieldWithPath("issueCoverResponses[].issueId").type(NUMBER).description("이슈 id"),
+                    fieldWithPath("issueCoverResponses[].writer").type(STRING).description("작성자 이름"),
+                    fieldWithPath("issueCoverResponses[].writerImage").type(STRING).description("작성자 이미지"),
+                    fieldWithPath("issueCoverResponses[].modificationTime").type(STRING).description("최종 수정 시간"),
+                    fieldWithPath("issueCoverResponses[].milestoneName").type(STRING).description("마일스톤 이름"),
+                    fieldWithPath("issueCoverResponses[].opened").type(BOOLEAN).description("open / close 여부"),
+                    fieldWithPath("openIssueCount").type(NUMBER).description("open 수"),
+                    fieldWithPath("closeIssueCount").type(NUMBER).description("close 수")
                     )));
     }
 }

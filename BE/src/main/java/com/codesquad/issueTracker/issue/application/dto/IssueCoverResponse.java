@@ -36,4 +36,20 @@ public class IssueCoverResponse {
         this.milestoneName = milestoneName;
         this.opened = opened;
     }
+
+    public IssueCoverResponse(Issue issue) {
+        Set<AttachedLabel> attachedLabels = issue.getAttachedLabels();
+        this.labelCoverResponses = attachedLabels.stream()
+            .map(AttachedLabel::getLabel)
+            .map(label -> new LabelCoverResponse(label.getName(), label.getLabelColor(), label.getTextColor()))
+            .collect(Collectors.toList());
+
+        this.title = issue.getTitle();
+        this.issueId = issue.getId();
+        this.writer = issue.getUser().getName();
+        this.writerImage = issue.getUser().getImage();
+        this.modificationTime = issue.getModificationTime();
+        this.milestoneName = issue.getMilestone().getName();
+        this.opened = issue.isOpened();
+    }
 }

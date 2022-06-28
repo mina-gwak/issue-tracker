@@ -1,6 +1,13 @@
 import { createGlobalStyle } from 'styled-components';
 
+import NotoSansKR from '@assets/fonts/noto-sans-kr.woff';
+
 const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: "Noto Sans KR";
+    src: url(${NotoSansKR});
+  }
+  
   *,
   :after,
   :before {
@@ -18,6 +25,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: "Noto Sans KR", sans-serif;
     color: ${({ theme }) => theme.colors.grey1};
     font-size: ${({ theme }) => theme.fontSizes.small};
+    background-color: ${({ theme }) => theme.colors.grey6};
   }
   html,
   h1,
@@ -140,6 +148,7 @@ const GlobalStyle = createGlobalStyle`
   }
   a:link,
   a:visited {
+    color: inherit;
     text-decoration: none;
   }
   ul,

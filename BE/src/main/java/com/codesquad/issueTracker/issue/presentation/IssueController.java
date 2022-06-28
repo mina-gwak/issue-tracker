@@ -1,7 +1,5 @@
 package com.codesquad.issueTracker.issue.presentation;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codesquad.issueTracker.issue.application.IssueService;
-import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
+import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +24,7 @@ public class IssueController {
     private final IssueService issueService;
 
     @GetMapping
-    public ResponseEntity<List<IssueCoverResponse>> findIssues(@RequestParam String query, @RequestAttribute Long userId) {
+    public ResponseEntity<IssueCoversResponse> findIssues(@RequestParam String query, @RequestAttribute Long userId) {
         log.info("userID is : {}", userId);
         return ResponseEntity.ok(issueService.findIssuesByCondition(query, userId));
     }
