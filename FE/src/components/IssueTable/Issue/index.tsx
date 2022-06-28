@@ -20,12 +20,12 @@ const Issue = ({
     <S.Wrapper>
       <CheckBox isChecked={true} toggleIsChecked={() => {}} />
       <S.Container>
-        <IssueTitle issueId={issueId} isOpen={isOpen} {...{ title }} labels={labelCoverResponses} />
+        <IssueTitle issueId={issueId} isOpen={isOpen} title={title} labels={labelCoverResponses} />
         <IssueDescription
-          {...{ issueId }}
-          {...{ milestoneName }}
-          {...{ writer }}
-          {...{ modificationTime }}
+          issueId={issueId}
+          milestoneName={milestoneName}
+          writer={writer}
+          modificationTime={modificationTime}
         />
       </S.Container>
       <Image url={writerImage} alt={writer} size={IMAGE_SIZE.SMALL} />
