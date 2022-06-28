@@ -1,15 +1,15 @@
 import * as S from '@components/common/Label/Label.style';
 
 export interface LabelPropsType {
-  name: string;
-  backgroundColor: string;
+  labelName: string;
+  labelColor: string;
   textColor: string;
 }
 
-const Label = ({ name, backgroundColor, textColor }: LabelPropsType) => {
+const Label = ({ labelName, labelColor, textColor }: LabelPropsType) => {
   return (
-    <S.LabelTag backgroundColor={backgroundColor} textColor={textColor}>
-      {name}
+    <S.LabelTag backgroundColor={labelColor} textColor={textColor}>
+      {labelName}
     </S.LabelTag>
   );
 };
