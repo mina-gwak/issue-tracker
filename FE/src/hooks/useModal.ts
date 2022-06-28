@@ -1,22 +1,17 @@
 import { useRecoilState } from 'recoil';
 
-import { modalState } from '@store/atom/dropdown';
+import { defaultState, modalState, ModalStateType } from '@store/atom/dropdown';
 
 interface ReturnUseModalType {
-  toggleModal: (type: string) => () => void;
+  toggleModal: (type: ModalStateType) => () => void;
 }
 
 export function useModal(): ReturnUseModalType {
   const [modalItem, setModalItem] = useRecoilState(modalState);
 
-  const toggleModal = (type: string) => () => {
+  const toggleModal = (type: ModalStateType) => () => {
     setModalItem({
-      issue: false,
-      label: false,
-      milestone: false,
-      author: false,
-      assignee: false,
-      stateModify: false,
+      ...defaultState,
       [type]: !modalItem[type],
     });
   };
