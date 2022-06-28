@@ -64,6 +64,7 @@ export const LabelList = styled.div`
 export const AuthorPopOverWrapper = styled.div`
   position: relative;
   display: inline-block;
+  cursor: pointer;
 `;
 
 export const Description = styled.div`

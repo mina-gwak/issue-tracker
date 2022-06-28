@@ -1,10 +1,10 @@
 import { useRecoilValue } from 'recoil';
 
 import * as S from '@components/IssueTable/TableHeader/TableHeader.style';
+import Modal from '@components/Modal';
+import { POSITION } from '@components/Modal/constants';
 import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
-import Modal from '@components/common/Modal';
-import { POSITION } from '@components/common/Modal/constants';
 import { assignee } from '@data/dropdownData';
 import { useModal } from '@hooks/useModal';
 import { modalState, ModalStateType } from '@store/atom/dropdown';

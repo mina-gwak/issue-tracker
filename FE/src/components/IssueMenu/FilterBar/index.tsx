@@ -1,9 +1,9 @@
 import { useRecoilValue } from 'recoil';
 
 import * as S from '@components/IssueMenu/FilterBar/FilterBar.style';
+import Modal from '@components/Modal';
 import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
-import Modal from '@components/common/Modal';
 import { filter } from '@data/dropdownData';
 import { useModal } from '@hooks/useModal';
 import { modalState } from '@store/atom/dropdown';

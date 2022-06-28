@@ -4,7 +4,6 @@ import { ICON_NAME } from '@components/common/Icon/constants';
 import Image from '@components/common/Image';
 import { IMAGE_SIZE } from '@components/common/Image/constants';
 import Label from '@components/common/Label';
-import PopOver from '@components/common/PopOver';
 import { useIssue } from '@query/issue';
 import { useIssuePopOver } from '@query/issuePopOver';
 import { IssuePopOverDataType, IssueType } from '@type/issueType';
@@ -18,17 +17,11 @@ export interface IssuePopOverPropsType {
 }
 
 const IssuePopOver = ({ issueId }: IssuePopOverPropsType) => {
-  const {
-    data: {
-      isOpen,
-      title,
-      writer,
-      writerImage,
-      labelCoverResponses,
-    } = {} as IssueType,
-  } = useIssue(issueId);
+  const { data: { isOpen, title, writer, writerImage, labelCoverResponses } = {} as IssueType } =
+    useIssue(issueId);
 
-  const { data: { contents, registerTime, assignees } = {} as IssuePopOverDataType } = useIssuePopOver();
+  const { data: { contents, registerTime, assignees } = {} as IssuePopOverDataType } =
+    useIssuePopOver();
 
   const iconName = isOpen ? ICON_NAME.ALERT_CIRCLE : ICON_NAME.ARCHIVE;
 
@@ -43,20 +36,18 @@ const IssuePopOver = ({ issueId }: IssuePopOverPropsType) => {
   };
 
   return (
-    <PopOver>
-      <S.Wrapper {...{ isOpen }}>
+    <S.Wrapper>
+      <S.Container isOpen={isOpen}>
         <S.ContentsWrapper>
           <S.Date>{getDate(registerTime)}</S.Date>
           <S.ContentsContainer>
-            <Icon {...{ iconName }} />
+            <Icon iconName={iconName} />
             <div>
               <S.IssueLink to='이슈 상세 페이지'>
                 <S.Title>{title}</S.Title>
                 <S.IssueNumber>#{issueId}</S.IssueNumber>
               </S.IssueLink>
-              <S.IssueContents>
-                {contents}
-              </S.IssueContents>
+              <S.IssueContents>{contents}</S.IssueContents>
               <S.LabelList>
                 {labelCoverResponses.map((label) => (
                   <li key={label.labelName}>
@@ -78,8 +69,8 @@ const IssuePopOver = ({ issueId }: IssuePopOverPropsType) => {
             <S.UserDescription>{userDescription()}</S.UserDescription>
           </S.UserWrapper>
         )}
-      </S.Wrapper>
-    </PopOver>
+      </S.Container>
+    </S.Wrapper>
   );
 };
 

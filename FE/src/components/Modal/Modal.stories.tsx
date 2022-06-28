@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import Modal, { ModalPropsType } from '@components/common/Modal';
+import Modal, { ModalPropsType } from '@components/Modal/index';
 import { filter } from '@data/dropdownData';
 
 export default {

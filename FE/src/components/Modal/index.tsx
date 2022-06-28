@@ -1,9 +1,9 @@
+import * as S from '@components/Modal/Modal.style';
+import { POSITION } from '@components/Modal/constants';
 import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
 import Image from '@components/common/Image';
 import { IMAGE_SIZE } from '@components/common/Image/constants';
-import * as S from '@components/common/Modal/Modal.style';
-import { POSITION } from '@components/common/Modal/constants';
 import { DropdownType } from '@type/dropdownType';
 
 export interface ModalPropsType {
