@@ -741,7 +741,7 @@ Host: localhost:8080</code></pre>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>query</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">is:open(열린 이슈), is:close(닫힌 이슈), is:write_by_me(내가 작성한 이슈), is:assigned_me(나에게 할당된 이슈), is:add_comment_by_me(내가 댓글을 남긴 이슈</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">is:open(열린 이슈), is:close(닫힌 이슈), is:write_by_me(내가 작성한 이슈), is:assigned_me(나에게 할당된 이슈), is:add_comment_by_me(내가 댓글을 남긴 이슈)</p></td>
 </tr>
 </tbody>
 </table>
@@ -752,26 +752,30 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 435
+Content-Length: 548
 
-[ {
-  "labelCoverResponses" : [ {
-    "labelName" : "Lucid",
-    "labelColor" : "#008672",
-    "textColor" : "white"
-  }, {
-    "labelName" : "BE",
-    "labelColor" : "#000000",
-    "textColor" : "white"
+{
+  "issueCoverResponses" : [ {
+    "labelCoverResponses" : [ {
+      "labelName" : "Lucid",
+      "labelColor" : "#008672",
+      "textColor" : "white"
+    }, {
+      "labelName" : "BE",
+      "labelColor" : "#000000",
+      "textColor" : "white"
+    } ],
+    "title" : "BE Lucid가 작성한 issue",
+    "issueId" : 1,
+    "writer" : "루시드",
+    "writerImage" : "image3",
+    "modificationTime" : "2022-06-28T14:05:21.143646",
+    "milestoneName" : "BE milestone",
+    "opened" : true
   } ],
-  "title" : "BE Lucid가 작성한 issue",
-  "issueId" : 1,
-  "writer" : "루시드",
-  "writerImage" : "image3",
-  "modificationTime" : "2022-06-24T00:30:19.710412",
-  "milestoneName" : "BE milestone",
-  "opened" : true
-} ]</code></pre>
+  "openIssueCount" : 1,
+  "closeIssueCount" : 2
+}</code></pre>
 </div>
 </div>
 </div>
@@ -792,59 +796,69 @@ Content-Length: 435
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].labelCoverResponses</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>issueCoverResponses[].labelCoverResponses</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">라벨 리스트</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].labelCoverResponses[].labelName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>issueCoverResponses[].labelCoverResponses[].labelName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">라벨 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].labelCoverResponses[].labelColor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>issueCoverResponses[].labelCoverResponses[].labelColor</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">라벨 색</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].labelCoverResponses[].textColor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>issueCoverResponses[].labelCoverResponses[].textColor</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">라벨 텍스트 색</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>issueCoverResponses[].title</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">이슈 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].issueId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>issueCoverResponses[].issueId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">이슈 id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].writer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>issueCoverResponses[].writer</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">작성자 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].writerImage</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>issueCoverResponses[].writerImage</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">작성자 이미지</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].modificationTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>issueCoverResponses[].modificationTime</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">최종 수정 시간</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].milestoneName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>issueCoverResponses[].milestoneName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">마일스톤 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].opened</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>issueCoverResponses[].opened</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">open / close 여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>openIssueCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">open 수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>closeIssueCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">close 수</p></td>
 </tr>
 </tbody>
 </table>
@@ -1000,7 +1014,7 @@ Content-Length: 193
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-06-24 00:22:54 +0900
+Last updated 2022-06-28 11:27:37 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
