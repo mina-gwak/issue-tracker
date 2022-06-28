@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { POSITION } from '@components/common/Modal/constants';
+import { POSITION } from '@components/Modal/constants';
 import { flexBetween } from '@styles/mixin';
 
 export const MenuList = styled.div<{ position: string }>`
