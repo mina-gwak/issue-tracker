@@ -1,7 +1,6 @@
-export const calcTwoTimeDifference = (updatedDateTime: string) => {
-  const currentTime = new Date();
-  const updateTime = new Date(updatedDateTime);
-  const diffMinutes = currentTime.getTime() - updateTime.getTime();
+export const calcTwoTimeDifference = (currentDate: Date, updatedDate: string) => {
+  const updateTime = new Date(updatedDate);
+  const diffMinutes = currentDate.getTime() - updateTime.getTime();
   const result = Math.abs(diffMinutes / (1000 * 60));
 
   if (result < 60) return `${result.toFixed()}분전`;
