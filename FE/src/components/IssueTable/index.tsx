@@ -1,26 +1,21 @@
 import Issue from '@components/IssueTable/Issue';
 import * as S from '@components/IssueTable/IssueTable.style';
 import TableHeader from '@components/IssueTable/TableHeader';
-import { API } from '@constants';
-import { issueDummyData } from '@data';
-import useAxios from '@hooks/useAxios';
-import { IssueListType } from '@type/issueType';
+import { useIssues } from '@query/issue';
+import { IssueType } from '@type/issueType';
 
 const IssueTable = () => {
+  const { data } = useIssues();
 
-  const [{ response, isLoading, error }] = useAxios<IssueListType[]>({
-    method: 'get',
-    url: API.ISSUE,
-  });
-
-  console.log(isLoading, response, error);
+  const count: [number, number] = data?.reduce((count, issue) => {
+    issue.isOpen ? count[0]++ : count[1]++;
+    return count;
+  }, [0, 0]) || [0, 0];
 
   return (
     <S.Wrapper>
-      <TableHeader />
-      {issueDummyData.map((issueInfo: IssueListType) => (
-        <Issue {...issueInfo} key={issueInfo.id} />
-      ))}
+      <TableHeader count={count} />
+      {data && data.map((issueInfo: IssueType) => <Issue {...issueInfo} key={issueInfo.issueId} />)}
     </S.Wrapper>
   );
 };
