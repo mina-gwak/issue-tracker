@@ -10,7 +10,7 @@ import { IMAGE_NAME, IMAGE_SIZE } from '@components/common/Image/constants';
 const Header = () => {
   const [isLogoutMenuOpen, setIsLogoutMenuOpen] = useState(false);
 
-  const toggleLogoutMenu = () => setIsLogoutMenuOpen((isLogoutMenuOpen) => !isLogoutMenuOpen);
+  const toggleLogoutMenu = () => setIsLogoutMenuOpen((prevState) => !prevState);
 
   return (
     <S.Wrapper>
