@@ -16,8 +16,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
@@ -82,7 +83,7 @@ class IssueControllerTest extends ControllerTest {
                 )));
     }
 
-    @DisplayName("팝업 데이터와 나에게 할당된 여부를 확인할 수 있다.")
+    @DisplayName("팝업 데이터를 통해 간략한 이슈 정보를 확인할 수 있다.")
     @Test
     void request_popUp_data() throws Exception {
         // given
@@ -93,10 +94,11 @@ class IssueControllerTest extends ControllerTest {
             .willReturn(new PopUpResponse(issue, true));
 
         // when
-        ResultActions perform = mockMvc.perform(RestDocumentationRequestBuilders.get("/api/issues/{issueId}/popUp", issueId)
-            .header("Authorization", "Bearer testToken")
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.ALL));
+        ResultActions perform = mockMvc.perform(
+            RestDocumentationRequestBuilders.get("/api/issues/{issueId}/popUp", issueId)
+                .header("Authorization", "Bearer testToken")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL));
 
         // then
         perform
@@ -113,6 +115,40 @@ class IssueControllerTest extends ControllerTest {
                     fieldWithPath("content").type(STRING).description("이슈 내용 요약"),
                     fieldWithPath("writtenTime").type(STRING).description("이슈가 작성된 시간"),
                     fieldWithPath("assignedMe").type(BOOLEAN).description("나에게 할당되었는지 여부")
+                )));
+    }
+
+    @DisplayName("이슈를 묶어서 상태 변경이 가능하다.")
+    @Test
+    void change_issue_status() throws Exception {
+        // given
+        MultiValueMap<String, String> paraMap = new LinkedMultiValueMap<>();
+        List<String> resultListOfString = List.of("1", "3", "5");
+        List<Long> resultListOfLong = List.of(1L, 3L, 5L);
+
+        paraMap.addAll("id", resultListOfString);
+
+        // when
+        ResultActions perform = mockMvc.perform(put("/api/issues/status")
+            .header("Authorization", "Bearer testToken")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.ALL)
+            .queryParams(paraMap)
+            .queryParam("status", "true"));
+
+        // then
+        perform
+            .andExpect(status().isOk());
+
+        verify(issueService, times(1))
+            .changeIssuesStatus(resultListOfLong, "true");
+
+        // restdocs
+        perform.andDo(
+            document("status-change", getDocumentRequest(), getDocumentResponse(),
+                requestParameters(
+                    parameterWithName("id").description("변경하고자 하는 issueId를 여러개 쿼리 파라미터로 입력"),
+                    parameterWithName("status").description("변경하고자 하는 상태")
                 )));
     }
 }

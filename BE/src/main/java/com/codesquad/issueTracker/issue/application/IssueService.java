@@ -68,4 +68,9 @@ public class IssueService {
 
         return new PopUpResponse(issue, issue.isAssignedThisUser(userId));
     }
+
+    @Transactional
+    public void changeIssuesStatus(List<Long> issueIds, String status) {
+        issueRepository.changeIssuesStatus(issueIds, status);
+    }
 }

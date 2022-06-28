@@ -37,6 +37,11 @@ operation::get-issue-with-main-filter[snippets='http-request,request-parameters,
 === 🔒 이슈 팝업 데이터 조회
 operation::get-popUp-data[snippets='http-request,path-parameters,http-response,response-fields']
 
+[[update-issue-status]]
+=== 🔒 이슈 상태 업데이트
+operation::status-change[snippets='http-request,request-parameters,http-response']
+
+
 [[Milestone-API]]
 == Milestone API
 

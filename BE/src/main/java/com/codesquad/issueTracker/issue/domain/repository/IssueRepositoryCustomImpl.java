@@ -61,6 +61,14 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
             .fetch();
     }
 
+    @Override
+    public Long changeIssuesStatus(List<Long> issueIds, String status) {
+        return queryFactory.update(issue)
+            .set(issue.isOpened, Boolean.valueOf(status))
+            .where(issue.id.in(issueIds))
+            .execute();
+    }
+
     private BooleanBuilder matching(StringPath name, List<SubFilterDetail> filters) {
         if (filters == null) {
             return null;
