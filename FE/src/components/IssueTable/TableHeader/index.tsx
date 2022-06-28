@@ -15,11 +15,11 @@ const TableHeader = ({ count: [openedIssue, closedIssue] }: TableHeaderPropsType
   const [isChecked, setIsChecked] = useState(false);
   const [isAllChecked, setIsAllChecked] = useState(false);
 
-  const toggleIsChecked = () => setIsChecked((isChecked) => !isChecked);
+  const toggleIsChecked = () => setIsChecked((prevState) => !prevState);
 
   return (
     <S.Wrapper>
-      <CheckBox {...{ isChecked }} {...{ toggleIsChecked }} {...{ isAllChecked }} />
+      <CheckBox isChecked={isChecked} toggleIsChecked={toggleIsChecked} isAllChecked={isAllChecked} />
       <S.IssueTabs>
         <li>
           <S.IssueTab>
