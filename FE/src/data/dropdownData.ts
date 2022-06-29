@@ -16,9 +16,9 @@ export const stateModify: DropdownType[] = [
 
 // 데이터 axios O
 export const label: DropdownType[] = [
-  { id: 1, optionName: '레이블이 없는 이슈', colorIcon: '' },
-  { id: 2, optionName: 'FE', colorIcon: '#000' },
-  { id: 3, optionName: 'BE', colorIcon: '#F00' },
+  { id: 1, optionName: '레이블이 없는 이슈', colorCode: '' },
+  { id: 2, optionName: 'FE', colorCode: '#000' },
+  { id: 3, optionName: 'BE', colorCode: '#F00' },
 ];
 
 export const milestone: DropdownType[] = [
@@ -31,12 +31,12 @@ export const assignee: DropdownType[] = [
   {
     id: 1,
     optionName: 'Khan',
-    circleIcon: 'https://avatars.githubusercontent.com/u/93566353?v=4',
+    imageUrl: 'https://avatars.githubusercontent.com/u/93566353?v=4',
   },
   {
     id: 2,
     optionName: 'Jamie',
-    circleIcon: 'https://avatars.githubusercontent.com/u/62706988?v=4',
+    imageUrl: 'https://avatars.githubusercontent.com/u/62706988?v=4',
   },
 ];
 
@@ -44,6 +44,6 @@ export const author: DropdownType[] = [
   {
     id: 1,
     optionName: 'Khan',
-    circleIcon: 'https://avatars.githubusercontent.com/u/93566353?v=4',
+    imageUrl: 'https://avatars.githubusercontent.com/u/93566353?v=4',
   },
 ];

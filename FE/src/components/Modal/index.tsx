@@ -22,11 +22,11 @@ const Modal = ({ data, title, position = POSITION.LEFT }: ModalPropsType) => {
   return (
     <S.MenuList position={position}>
       <S.MenuTitle>{title} 필터</S.MenuTitle>
-      {data.map(({ id, optionName, circleIcon, colorIcon }) => (
+      {data.map(({ id, optionName, imageUrl, colorCode }) => (
         <S.MenuOptionGroup key={id}>
           <S.MenuOptionItem>
-            {circleIcon && <Image url={circleIcon} alt={optionName} size={IMAGE_SIZE.SMALL} />}
-            {colorIcon && <S.CircleColorIcon colorIcon={colorIcon} />}
+            {imageUrl && <Image url={imageUrl} alt={optionName} size={IMAGE_SIZE.SMALL} />}
+            {colorCode && <S.CircleColorIcon colorIcon={colorCode} />}
             <S.MenuItemOption>{optionName}</S.MenuItemOption>
           </S.MenuOptionItem>
           <Icon iconName={checkBoxIcon} />
