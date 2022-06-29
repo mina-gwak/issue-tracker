@@ -16,4 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT NEW com.codesquad.issueTracker.issue.application.dto.FilterOutlineResponse(u.name, u.image) "
         + "FROM User u")
     List<FilterOutlineResponse> findUserOutlineInfo();
+
+    List<User> findByNameIn(List<String> assignees);
 }

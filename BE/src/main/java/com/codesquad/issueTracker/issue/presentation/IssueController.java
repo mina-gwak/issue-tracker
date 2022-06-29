@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codesquad.issueTracker.issue.application.IssueService;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
 import com.codesquad.issueTracker.issue.application.dto.PopUpResponse;
+import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,12 +46,20 @@ public class IssueController {
     }
 
     @PutMapping("/status")
-    public ResponseEntity<Void> changeStatus(@RequestParam MultiValueMap<String, String> paramMap, @RequestParam String status) {
+    public ResponseEntity<Void> changeStatus(@RequestParam MultiValueMap<String, String> paramMap,
+        @RequestParam String status) {
         List<Long> resultList = paramMap.get("id").stream()
             .map(Long::valueOf)
             .collect(Collectors.toList());
 
         issueService.changeIssuesStatus(resultList, status);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> makeIssue(@RequestBody IssueContentsRequest issueContentsRequest, @RequestAttribute Long userId) {
+        log.info("request is occur");
+        issueService.makeIssue(issueContentsRequest, userId);
         return ResponseEntity.ok().build();
     }
 }

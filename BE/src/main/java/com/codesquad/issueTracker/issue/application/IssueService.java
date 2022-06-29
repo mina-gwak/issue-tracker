@@ -15,6 +15,13 @@ import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.issue.domain.MainFilter;
 import com.codesquad.issueTracker.issue.domain.repository.IssueRepository;
 import com.codesquad.issueTracker.issue.infrastructure.QueryParser;
+import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
+import com.codesquad.issueTracker.label.domain.Label;
+import com.codesquad.issueTracker.label.domain.LabelRepository;
+import com.codesquad.issueTracker.milestone.domain.Milestone;
+import com.codesquad.issueTracker.milestone.domain.MilestoneRepository;
+import com.codesquad.issueTracker.user.domain.User;
+import com.codesquad.issueTracker.user.domain.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +33,9 @@ public class IssueService {
 
     private final QueryParser queryParser;
     private final IssueRepository issueRepository;
+    private final UserRepository userRepository;
+    private final LabelRepository labelRepository;
+    private final MilestoneRepository milestoneRepository;
 
     @Transactional(readOnly = true)
     public IssueCoversResponse findIssuesByCondition(String query, Long userId) {
@@ -72,5 +82,26 @@ public class IssueService {
     @Transactional
     public void changeIssuesStatus(List<Long> issueIds, String status) {
         issueRepository.changeIssuesStatus(issueIds, status);
+    }
+
+    @Transactional
+    public void makeIssue(IssueContentsRequest issueContentsRequest, Long userId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new IllegalStateException("없는 유저입니다."));
+
+        Milestone milestone = milestoneRepository.findByName(issueContentsRequest.getMilestone())
+            .orElseThrow(() -> new IllegalStateException("없는 마일스톤 입니다."));
+
+        Issue issue = issueContentsRequest.toEntity(user, milestone);
+
+        List<User> users = userRepository.findByNameIn(issueContentsRequest.getAssignees());
+        issue.assignUser(users);
+
+        List<Label> labels = labelRepository.findByNameIn(issueContentsRequest.getLabels());
+        issue.attachedLabel(labels);
+
+        issue.addFiles(issueContentsRequest.getFileUrl());
+
+        issueRepository.save(issue);
     }
 }
