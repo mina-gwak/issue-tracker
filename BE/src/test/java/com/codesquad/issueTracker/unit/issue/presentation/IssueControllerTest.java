@@ -25,6 +25,7 @@ import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
 import com.codesquad.issueTracker.issue.application.dto.LabelCoverResponse;
 import com.codesquad.issueTracker.issue.application.dto.PopUpResponse;
 import com.codesquad.issueTracker.issue.domain.Issue;
+import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
 import com.codesquad.issueTracker.unit.ControllerTest;
 
 class IssueControllerTest extends ControllerTest {
@@ -87,7 +88,7 @@ class IssueControllerTest extends ControllerTest {
     @Test
     void request_popUp_data() throws Exception {
         // given
-        Issue issue = new Issue("BE Lucid가 작성한 issue", "내용은 이러하다", LocalDateTime.now(), LocalDateTime.now());
+        Issue issue = new Issue("BE Lucid가 작성한 issue", "내용은 이러하다", LocalDateTime.now(), LocalDateTime.now(), null, null);
 
         Long issueId = 1L;
         given(issueService.popUpIssue(eq(issueId), anyLong()))
@@ -103,6 +104,9 @@ class IssueControllerTest extends ControllerTest {
         // then
         perform
             .andExpect(status().isOk());
+
+        verify(issueService, times(1))
+            .popUpIssue(1L, 10L);
 
         // restdocs
         perform.andDo(
@@ -149,6 +153,42 @@ class IssueControllerTest extends ControllerTest {
                 requestParameters(
                     parameterWithName("id").description("변경하고자 하는 issueId를 여러개 쿼리 파라미터로 입력"),
                     parameterWithName("status").description("변경하고자 하는 상태")
+                )));
+    }
+
+    @DisplayName("새로운 이슈를 저장한다.")
+    @Test
+    void save_issue() throws Exception {
+        // given
+        IssueContentsRequest request = new IssueContentsRequest("title1", "content1",
+            List.of("file1", "file2"), List.of("assignee1", "assignee2"), List.of("label1"), "milestone1");
+
+        String content = objectMapper.writeValueAsString(request);
+
+        // when
+        ResultActions perform = mockMvc.perform(post("/api/issues")
+            .header("Authorization", "Bearer testToken")
+            .content(content)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk());
+
+        verify(issueService, times(1))
+            .makeIssue(any(IssueContentsRequest.class), eq(10L));
+
+        // restdocs
+        perform.andDo(
+            document("post-issue-save", getDocumentRequest(), getDocumentResponse(),
+                requestFields(
+                    fieldWithPath("title").description("issue 제목"),
+                    fieldWithPath("content").description("issue 본문"),
+                    fieldWithPath("milestone").description("마일스톤 이름"),
+                    fieldWithPath("fileUrl").description("첨부 파일 url 리스트"),
+                    fieldWithPath("assignees").description("assignee 리스트"),
+                    fieldWithPath("labels").description("label 리스트")
                 )));
     }
 }

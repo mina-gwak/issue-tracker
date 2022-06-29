@@ -58,7 +58,6 @@ public class IssueController {
 
     @PostMapping
     public ResponseEntity<Void> makeIssue(@RequestBody IssueContentsRequest issueContentsRequest, @RequestAttribute Long userId) {
-        log.info("request is occur");
         issueService.makeIssue(issueContentsRequest, userId);
         return ResponseEntity.ok().build();
     }

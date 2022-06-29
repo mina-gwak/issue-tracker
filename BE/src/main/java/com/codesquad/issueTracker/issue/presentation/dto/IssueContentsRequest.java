@@ -8,6 +8,7 @@ import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.milestone.domain.Milestone;
 import com.codesquad.issueTracker.user.domain.User;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class IssueContentsRequest {
     private String title;
     private String content;
