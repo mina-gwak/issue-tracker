@@ -16,7 +16,7 @@ export const pageContentCenter = css`
   ${flexCenter};
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  height: 100vh;
 `;
 
 export interface StyledIconProps {

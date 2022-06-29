@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { pageContentCenter, flexCenter } from '@styles/mixin';
 
 export const Wrapper = styled.div`
-  ${pageContentCenter}
+  ${pageContentCenter};
 `;
 
 export const LoginContainer = styled.div`
