@@ -8,6 +8,18 @@ const smallTextStyle = css`
   font-size: ${({ theme }) => theme.fontSizes.xSmall};
 `;
 
+export const StoryWrapper = styled.div`
+  position: absolute;
+  top: 250px;
+  left: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 100px;
+  background-color: ${({ theme }) => theme.colors.grey5};
+`;
+
 export const Wrapper = styled.div`
   position: absolute;
   bottom: calc(100% + 20px);
