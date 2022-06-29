@@ -15,6 +15,7 @@ const IssueTable = () => {
   return (
     <S.Wrapper>
       <TableHeader count={count} />
+      {data && !data.length && <S.NoIssue>등록된 이슈가 없습니다</S.NoIssue>}
       {data && data.map((issueInfo: IssueType) => <Issue {...issueInfo} key={issueInfo.issueId} />)}
     </S.Wrapper>
   );
