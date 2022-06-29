@@ -1,7 +1,7 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import AuthorPopOver from '@components/IssueTable/PopOver/AuthorPopOver';
-import * as S from '@components/common/PopOver/PopOver.style';
+import * as S from '@components/IssueTable/PopOver/PopOver.style';
 
 export default {
   title: 'Component/IssueTable/AuthorPopOver',
