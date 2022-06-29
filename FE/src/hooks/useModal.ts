@@ -1,6 +1,6 @@
 import { useRecoilState } from 'recoil';
 
-import { defaultState, modalState, ModalStateType } from '@store/atom/dropdown';
+import { defaultState, modalState, ModalStateType } from '@store/dropdown';
 
 interface ReturnUseModalType {
   toggleModal: (type: ModalStateType) => () => void;
