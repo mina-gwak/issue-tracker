@@ -7,7 +7,7 @@ import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
 import { assignee } from '@data/dropdownData';
 import { useModal } from '@hooks/useModal';
-import { modalState, ModalStateType } from '@store/atom/dropdown';
+import { modalState, ModalStateType } from '@store/dropdown';
 
 interface FilterPropsType {
   type: ModalStateType;
