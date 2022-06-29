@@ -47,5 +47,7 @@ insert into comment (content, written_time, user_id, issue_id, editable) values
 insert into assigned_issue (user_id, issue_id) values
 (1, 3),
 (1, 4),
-(2, 5);
+(2, 5),
+(2, 1),
+(2, 2);
 

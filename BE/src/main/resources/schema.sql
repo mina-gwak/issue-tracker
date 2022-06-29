@@ -159,6 +159,25 @@ CREATE TABLE IF NOT EXISTS `attached_label` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `image`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `image` ;
+
+CREATE TABLE IF NOT EXISTS `image` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `image_url` VARCHAR(255) NULL,
+  `issue_id` BIGINT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_image_issue1_idx` (`issue_id` ASC) VISIBLE,
+  CONSTRAINT `fk_image_issue1`
+    FOREIGN KEY (`issue_id`)
+    REFERENCES `issue` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
