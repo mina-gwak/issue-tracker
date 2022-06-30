@@ -4,6 +4,7 @@ import IssueTitle from '@components/IssueTable/Issue/IssueTitle';
 import CheckBox from '@components/common/CheckBox';
 import Image from '@components/common/Image';
 import { IMAGE_SIZE } from '@components/common/Image/constants';
+import useCheckBox from '@hooks/useCheckBox';
 import { IssueType } from '@type/issueType';
 
 const Issue = ({
@@ -16,9 +17,13 @@ const Issue = ({
   modificationTime,
   milestoneName,
 }: IssueType) => {
+  const { getIsChecked, toggleCheckItem } = useCheckBox();
+
+  const isChecked = getIsChecked(issueId);
+
   return (
     <S.Wrapper>
-      <CheckBox isChecked={true} toggleIsChecked={() => {}} />
+      <CheckBox isChecked={isChecked} toggleIsChecked={() => toggleCheckItem(issueId)} />
       <S.Container>
         <IssueTitle issueId={issueId} isOpen={isOpen} title={title} labels={labelCoverResponses} />
         <IssueDescription
