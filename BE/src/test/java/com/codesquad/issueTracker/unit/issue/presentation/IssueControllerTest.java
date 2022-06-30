@@ -20,13 +20,18 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import com.codesquad.issueTracker.comment.domain.Comment;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
+import com.codesquad.issueTracker.issue.application.dto.IssueDetailResponse;
 import com.codesquad.issueTracker.issue.application.dto.LabelCoverResponse;
 import com.codesquad.issueTracker.issue.application.dto.PopUpResponse;
 import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
+import com.codesquad.issueTracker.label.domain.Label;
+import com.codesquad.issueTracker.milestone.domain.Milestone;
 import com.codesquad.issueTracker.unit.ControllerTest;
+import com.codesquad.issueTracker.user.domain.User;
 
 class IssueControllerTest extends ControllerTest {
 
@@ -48,7 +53,6 @@ class IssueControllerTest extends ControllerTest {
         // when
         ResultActions perform = mockMvc.perform(get("/api/issues")
             .header("Authorization", "Bearer testToken")
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.ALL)
             .queryParam("query", "is:open"));
 
@@ -98,7 +102,6 @@ class IssueControllerTest extends ControllerTest {
         ResultActions perform = mockMvc.perform(
             RestDocumentationRequestBuilders.get("/api/issues/{issueId}/popUp", issueId)
                 .header("Authorization", "Bearer testToken")
-                .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.ALL));
 
         // then
@@ -135,7 +138,6 @@ class IssueControllerTest extends ControllerTest {
         // when
         ResultActions perform = mockMvc.perform(put("/api/issues/status")
             .header("Authorization", "Bearer testToken")
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.ALL)
             .queryParams(paraMap)
             .queryParam("status", "true"));
@@ -191,4 +193,72 @@ class IssueControllerTest extends ControllerTest {
                     fieldWithPath("labels").description("label 리스트")
                 )));
     }
+
+    @DisplayName("이슈 단 건을 조회한다.")
+    @Test
+    void find_single_issue() throws Exception {
+        // given
+        Long issueId = 1L;
+        User writer = new User("user1", "nickname1", "image1");
+        Milestone milestone = new Milestone("milestone1", LocalDateTime.now(), "description1");
+        Issue issue = new Issue(1L, "title1", "content1", LocalDateTime.now(), LocalDateTime.now(), writer, milestone);
+
+        User assignee1 = new User("user1", "nickname1", "image1");
+        User assignee2 = new User("user1", "nickname1", "image1");
+        issue.assignUser(List.of(assignee1, assignee2));
+
+        Label label1 = new Label("Lucid", "Lucid's label", "#008672", "white");
+        Label label2 = new Label("BE", "BE's label", "#000000", "white");
+        issue.attachedLabel(List.of(label1, label2));
+
+        Comment contents = new Comment("contents", LocalDateTime.now(), assignee1, issue);
+
+        issue.addFiles(List.of("image1", "image2", "image3"));
+
+        given(issueService.findIssue(issueId))
+            .willReturn(new IssueDetailResponse(issue));
+
+        // when
+        ResultActions perform = mockMvc.perform(
+            RestDocumentationRequestBuilders.get("/api/issues/{issueId}", issueId)
+                .header("Authorization", "Bearer testToken")
+                .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk());
+
+        verify(issueService, times(1))
+            .findIssue(1L);
+
+        // restdocs
+        perform.andDo(
+            document("get-single-issue", getDocumentRequest(), getDocumentResponse(),
+                pathParameters(
+                    parameterWithName("issueId").description("이슈 id")
+                ),
+                responseFields(
+                    fieldWithPath("issueId").type(NUMBER).description("이슈 id"),
+                    fieldWithPath("title").type(STRING).description("이슈 타이틀"),
+                    fieldWithPath("content").type(STRING).description("이슈 컨텐츠"),
+                    fieldWithPath("open").type(BOOLEAN).description("열린 이슈 여부"),
+                    fieldWithPath("writtenTime").type(STRING).description("작성 시간"),
+                    fieldWithPath("writerOutline.name").type(STRING).description("작성자"),
+                    fieldWithPath("writerOutline.imageUrl").type(STRING).description("작성자 이미지"),
+                    fieldWithPath("assignees[].name").type(STRING).description("할당된 유저이름"),
+                    fieldWithPath("assignees[].imageUrl").type(STRING).description("할당된 유저 이미지"),
+                    fieldWithPath("labels[].labelName").type(STRING).description("라벨 이름"),
+                    fieldWithPath("labels[].colorCode").type(STRING).description("라벨 색상 코드"),
+                    fieldWithPath("labels[].textColor").type(STRING).description("라벨 텍스트 컬러"),
+                    fieldWithPath("milestoneInformation.milestoneName").type(STRING).description("마일스톤 이름"),
+                    fieldWithPath("milestoneInformation.allIssueCount").type(NUMBER).description("마일스톤에 할당된 전체 issue 수"),
+                    fieldWithPath("milestoneInformation.closedIssueCount").type(NUMBER).description("마일스톤에 할당된 issue 중 close 된 issue 수"),
+                    fieldWithPath("commentOutlines[].commentUserOutline.name").type(STRING).description("코멘트 단 유저 이름"),
+                    fieldWithPath("commentOutlines[].commentUserOutline.imageUrl").type(STRING).description("코멘트 단 유저 이미지"),
+                    fieldWithPath("commentOutlines[].content").type(STRING).description("코멘트 내용"),
+                    fieldWithPath("commentOutlines[].writtenTime").type(STRING).description("코멘트 단 시간"),
+                    fieldWithPath("imageUrls").type(ARRAY).description("첨부  url 배열")
+                )));
+    }
+
 }
