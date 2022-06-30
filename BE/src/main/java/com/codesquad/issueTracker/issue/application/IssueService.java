@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
+import com.codesquad.issueTracker.issue.application.dto.IssueDetailResponse;
 import com.codesquad.issueTracker.issue.application.dto.PopUpResponse;
 import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.issue.domain.MainFilter;
@@ -103,5 +104,13 @@ public class IssueService {
         issue.addFiles(issueContentsRequest.getFileUrl());
 
         issueRepository.save(issue);
+    }
+
+    @Transactional(readOnly = true)
+    public IssueDetailResponse findIssue(Long id) {
+        Issue issue = issueRepository.findById(id)
+            .orElseThrow(() -> new IllegalStateException("없는 이슈입니다."));
+
+        return new IssueDetailResponse(issue);
     }
 }

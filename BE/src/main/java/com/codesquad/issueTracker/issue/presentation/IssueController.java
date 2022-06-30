@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codesquad.issueTracker.issue.application.IssueService;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
+import com.codesquad.issueTracker.issue.application.dto.IssueDetailResponse;
 import com.codesquad.issueTracker.issue.application.dto.PopUpResponse;
 import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
 
@@ -60,5 +61,10 @@ public class IssueController {
     public ResponseEntity<Void> makeIssue(@RequestBody IssueContentsRequest issueContentsRequest, @RequestAttribute Long userId) {
         issueService.makeIssue(issueContentsRequest, userId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<IssueDetailResponse> findIssue(@PathVariable Long id) {
+        return ResponseEntity.ok(issueService.findIssue(id));
     }
 }

@@ -45,4 +45,12 @@ public class Comment {
         this.user = user;
         this.issue = issue;
     }
+
+    public String getWriterName() {
+        return user.getName();
+    }
+
+    public String getWriterImage() {
+        return user.getImage();
+    }
 }

@@ -39,4 +39,12 @@ public class AssignedIssue {
     public boolean isAssignedThisUser(Long userId) {
         return user.isYourId(userId);
     }
+
+    public String getUserName() {
+        return user.getName();
+    }
+
+    public String getUserImage() {
+        return user.getImage();
+    }
 }

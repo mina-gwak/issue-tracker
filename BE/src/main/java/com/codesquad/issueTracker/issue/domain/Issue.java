@@ -99,4 +99,12 @@ public class Issue {
             images.add(new Image(url, this));
         }
     }
+
+    public String getWriter() {
+        return user.getName();
+    }
+
+    public String getWriterImage() {
+        return user.getImage();
+    }
 }
