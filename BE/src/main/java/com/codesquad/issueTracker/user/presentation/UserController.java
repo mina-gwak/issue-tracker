@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codesquad.issueTracker.authentication.application.OAuthService;
-import com.codesquad.issueTracker.issue.application.dto.FilterOutlineResponse;
-import com.codesquad.issueTracker.issue.application.dto.FilterOutlinesResponse;
 import com.codesquad.issueTracker.user.application.UserService;
+import com.codesquad.issueTracker.user.application.dto.UserOutlineResponse;
+import com.codesquad.issueTracker.user.presentation.dto.UserOutlinesResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,9 +24,9 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<FilterOutlinesResponse> findUsersOutlineInfo() {
-        List<FilterOutlineResponse> filterOutlineResponses = userService.findUserOutlineInfo();
-        return ResponseEntity.ok(new FilterOutlinesResponse(filterOutlineResponses));
+    public ResponseEntity<UserOutlinesResponse> findUsersOutlineInfo() {
+        List<UserOutlineResponse> userOutlineInfo = userService.findUserOutlineInfo();
+        return ResponseEntity.ok(new UserOutlinesResponse(userOutlineInfo));
     }
 
     @GetMapping("/logout")

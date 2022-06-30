@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codesquad.issueTracker.issue.application.dto.FilterOutlineResponse;
-import com.codesquad.issueTracker.issue.application.dto.FilterOutlinesResponse;
 import com.codesquad.issueTracker.milestone.application.MilestoneService;
+import com.codesquad.issueTracker.milestone.application.dto.MilestoneOutlineResponse;
+import com.codesquad.issueTracker.milestone.presentation.dto.MilestoneOutlinesResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,8 +21,8 @@ public class MilestoneController {
     private final MilestoneService milestoneService;
 
     @GetMapping
-    public ResponseEntity<FilterOutlinesResponse> findMilestonesOutlineInfo() {
-        List<FilterOutlineResponse> filterOutlineResponses = milestoneService.findMilestonesOutlineInfo();
-        return ResponseEntity.ok(new FilterOutlinesResponse(filterOutlineResponses));
+    public ResponseEntity<MilestoneOutlinesResponse> findMilestonesOutlineInfo() {
+        List<MilestoneOutlineResponse> milestonesOutlineInfo = milestoneService.findMilestonesOutlineInfo();
+        return ResponseEntity.ok(new MilestoneOutlinesResponse(milestonesOutlineInfo));
     }
 }
