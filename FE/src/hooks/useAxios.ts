@@ -8,20 +8,26 @@ export interface AxiosTypes {
   config?: AxiosRequestConfig;
 }
 
-const instance = axios.create({});
+const accessToken = localStorage.getItem('accessToken') || '';
+
+export const instance = axios.create({
+  headers: {
+    Authorization: `Bearer ${JSON.parse(accessToken)}`,
+  },
+});
 
 const useAxios = <T>({
   method,
   url,
   config,
 }: AxiosTypes): [
-    {
-      response: T | undefined;
-      error: string;
-      isLoading: boolean;
-    },
-    () => void,
-  ] => {
+  {
+    response: T | undefined;
+    error: string;
+    isLoading: boolean;
+  },
+  () => void,
+] => {
   const [response, setResponse] = useState<T>();
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
