@@ -73,6 +73,12 @@ public class Issue {
         this.milestone = milestone;
     }
 
+    public Issue(Long id, String title, String content, LocalDateTime writtenTime,
+        LocalDateTime modificationTime, User user, Milestone milestone) {
+        this(title, content, writtenTime, modificationTime, user, milestone);
+        this.id = id;
+    }
+
     public boolean isAssignedThisUser(Long userId) {
         for (AssignedIssue assignedIssue : assignedIssues) {
             if (assignedIssue.isAssignedThisUser(userId)) {
@@ -106,5 +112,9 @@ public class Issue {
 
     public String getWriterImage() {
         return user.getImage();
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
     }
 }

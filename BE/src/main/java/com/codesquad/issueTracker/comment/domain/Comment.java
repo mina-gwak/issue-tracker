@@ -44,6 +44,7 @@ public class Comment {
         this.writtenTime = writtenTime;
         this.user = user;
         this.issue = issue;
+        this.issue.addComment(this);
     }
 
     public String getWriterName() {

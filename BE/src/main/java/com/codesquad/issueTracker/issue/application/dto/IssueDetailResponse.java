@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.codesquad.issueTracker.issue.domain.Image;
 import com.codesquad.issueTracker.issue.domain.Issue;
+import com.codesquad.issueTracker.user.application.dto.UserOutlineResponse;
 
 import lombok.Getter;
 
@@ -18,8 +19,8 @@ public class IssueDetailResponse {
     private boolean isOpen;
     private LocalDateTime writtenTime;
 
-    private UserOutline writerOutline;
-    private List<UserOutline> assignees;
+    private UserOutlineResponse writerOutline;
+    private List<UserOutlineResponse> assignees;
     private List<LabelOutline> labels;
 
     private MilestoneInformation milestoneInformation;
@@ -32,9 +33,9 @@ public class IssueDetailResponse {
         this.content = issue.getContent();
         this.isOpen = issue.isOpened();
         this.writtenTime = issue.getWrittenTime();
-        this.writerOutline = new UserOutline(issue.getWriter(), issue.getWriterImage());
+        this.writerOutline = new UserOutlineResponse(issue.getWriter(), issue.getWriterImage());
         this.assignees = issue.getAssignedIssues()
-            .stream().map(assignedIssue -> new UserOutline(assignedIssue.getUserName(), assignedIssue.getUserImage()))
+            .stream().map(assignedIssue -> new UserOutlineResponse(assignedIssue.getUserName(), assignedIssue.getUserImage()))
             .collect(Collectors.toList());
         this.labels = issue.getAttachedLabels()
             .stream()

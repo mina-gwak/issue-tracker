@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class LabelOutline {
     private String labelName;
-    private String labelColor;
-    private String testColor;
+    private String colorCode;
+    private String textColor;
 }
