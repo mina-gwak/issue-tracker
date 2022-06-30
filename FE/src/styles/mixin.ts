@@ -20,12 +20,12 @@ export const pageContentCenter = css`
 `;
 
 export interface StyledIconProps {
-  isOpen: boolean;
+  isOpened: boolean;
 }
 
 export const iconStyle = css<StyledIconProps>`
-  ${({ isOpen }) =>
-    isOpen &&
+  ${({ isOpened }) =>
+    isOpened &&
     css`
       path {
         fill: ${({ theme }) => theme.colors.lightBlue};
@@ -33,8 +33,8 @@ export const iconStyle = css<StyledIconProps>`
       }
     `}
 
-  ${({ isOpen }) =>
-    !isOpen &&
+  ${({ isOpened }) =>
+    !isOpened &&
     css`
       path {
         fill: ${({ theme }) => theme.colors.lightPurple};

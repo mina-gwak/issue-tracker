@@ -4,14 +4,11 @@ import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 
-import { worker } from '@mocks/browser';
 import GlobalStyle from '@styles/GlobalStyle';
 import { theme } from '@styles/theme';
 
 import App from './App';
 import '@assets/fonts/font.css';
-
-worker.start();
 
 export const queryClient = new QueryClient();
 

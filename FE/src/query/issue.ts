@@ -1,20 +1,38 @@
-import axios from 'axios';
 import { useQuery } from 'react-query';
 
+import { instance } from '@api';
 import { API } from '@constants';
-import { IssueType } from '@type/issueType';
+import { IssueDataType, IssueType } from '@type/issueType';
 import { ensure } from '@utils/ensure';
 
+type IssueQueryPropsType<T> = (data: IssueDataType) => T;
+
 export const fetchIssues = async <T>(): Promise<T> => {
-  const response = await axios.get(API.ISSUE);
+  const response = await instance.get(`${API.ISSUE}`, {
+    params: {
+      query: 'is:open',
+    },
+  });
+
   return response.data;
 };
 
-type IssueQueryPropsType<T> = (data: IssueType[]) => T;
+export const useIssuesQuery = <T>(select?: IssueQueryPropsType<T>) =>
+  useQuery(['issues'], fetchIssues, {
+    select,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    onError: (err) => console.log(err),
+  });
 
-const useIssuesQuery = <T>(select?: IssueQueryPropsType<T>) =>
-  useQuery(['issues'], fetchIssues, { select });
+export const useIssues = () => useIssuesQuery<IssueType[]>((data) => data.issueCoverResponses);
 
-export const useIssues = () => useIssuesQuery<IssueType[]>();
+export const useIssue = (issueId: number) =>
+  useIssuesQuery<IssueType>((data) =>
+    ensure(data.issueCoverResponses.find((issue) => issue.issueId === issueId)),
+  );
 
-export const useIssue = (issueId: number) => useIssuesQuery<IssueType>((data) => ensure(data.find((issue) => issue.issueId === issueId)))
+export const useIssueIds = () =>
+  useIssuesQuery<number[]>((data) =>
+    ensure(data.issueCoverResponses.map((issue) => issue.issueId)),
+  );

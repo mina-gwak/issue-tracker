@@ -11,18 +11,18 @@ import { LabelType } from '@type/issueType';
 
 interface IssueTitlePropsType {
   issueId: number;
-  isOpen: boolean;
+  isOpened: boolean;
   title: string;
   labels: LabelType[];
 }
 
-const IssueTitle = ({ issueId, isOpen, title, labels }: IssueTitlePropsType) => {
+const IssueTitle = ({ issueId, isOpened, title, labels }: IssueTitlePropsType) => {
   const [isPopOverOpen, setIsPopOverOpen] = useState(false);
 
-  const iconName = isOpen ? ICON_NAME.ALERT_CIRCLE : ICON_NAME.ARCHIVE;
+  const iconName = isOpened ? ICON_NAME.ALERT_CIRCLE : ICON_NAME.ARCHIVE;
 
   return (
-    <S.IssueTitleWrapper isOpen={isOpen}>
+    <S.IssueTitleWrapper isOpened={isOpened}>
       <Icon iconName={iconName} />
       <S.IssuePopOverWrapper
         onMouseEnter={() => setIsPopOverOpen(true)}

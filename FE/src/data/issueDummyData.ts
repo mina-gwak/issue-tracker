@@ -20,7 +20,7 @@ export const issueDummyData: IssueType[] = [
     writerImage: 'http://zipbanchan.godohosting.com/detail_page/3_main/1351/1351_ZIP_P_0108_S.jpg',
     modificationTime: '2022-06-18T03:24:00',
     milestoneName: 'BE course',
-    isOpen: true,
+    opened: true,
   },
   {
     labelCoverResponses: [
@@ -41,7 +41,7 @@ export const issueDummyData: IssueType[] = [
     writerImage: 'http://zipbanchan.godohosting.com/detail_page/3_main/1351/1351_ZIP_P_0108_S.jpg',
     modificationTime: '2022-06-18T03:24:00',
     milestoneName: 'Fe course',
-    isOpen: false,
+    opened: false,
   },
   {
     labelCoverResponses: [],
@@ -51,7 +51,7 @@ export const issueDummyData: IssueType[] = [
     writerImage: 'http://zipbanchan.godohosting.com/detail_page/3_main/1351/1351_ZIP_P_0108_S.jpg',
     modificationTime: '2022-06-18T03:24:00',
     milestoneName: 'Android course',
-    isOpen: true,
+    opened: true,
   },
   {
     labelCoverResponses: [],
@@ -61,7 +61,7 @@ export const issueDummyData: IssueType[] = [
     writerImage: 'http://zipbanchan.godohosting.com/detail_page/3_main/1351/1351_ZIP_P_0108_S.jpg',
     modificationTime: '2022-06-18T03:24:00',
     milestoneName: 'iOS course',
-    isOpen: true,
+    opened: true,
   },
   {
     labelCoverResponses: [],
@@ -71,6 +71,6 @@ export const issueDummyData: IssueType[] = [
     writerImage: 'http://zipbanchan.godohosting.com/detail_page/3_main/1351/1351_ZIP_P_0108_S.jpg',
     modificationTime: '2022-06-18T03:24:00',
     milestoneName: 'Fe course',
-    isOpen: false,
+    opened: false,
   },
 ];
