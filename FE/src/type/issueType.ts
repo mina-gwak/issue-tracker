@@ -33,7 +33,8 @@ export interface IssueDataType {
 }
 
 export interface IssuePopOverDataType {
-  contents: string;
-  registerTime: string;
-  assignees: MemberType[];
+  title: string,
+  content: string;
+  writtenTime: string;
+  assignedMe: boolean;
 }

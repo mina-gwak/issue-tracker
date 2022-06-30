@@ -1,5 +1,5 @@
 export const API = {
   GITHUB_LOGIN_CALLBACK: '/api/oauth/login/github/callback',
   ISSUE: '/api/issues',
-  ISSUE_POPOVER: '/api/issues-popover',
+  ISSUE_POPOVER: (issueId: number) => `/api/issues/${issueId}/popUp`,
 } as const;
