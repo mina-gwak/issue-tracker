@@ -23,9 +23,15 @@ public class UserController {
     private final OAuthService oAuthService;
     private final UserService userService;
 
-    @GetMapping
-    public ResponseEntity<UserOutlinesResponse> findUsersOutlineInfo() {
+    @GetMapping("/writers")
+    public ResponseEntity<UserOutlinesResponse> findWritersOutlineInfo() {
         List<UserOutlineResponse> userOutlineInfo = userService.findUserOutlineInfo();
+        return ResponseEntity.ok(new UserOutlinesResponse(userOutlineInfo));
+    }
+
+    @GetMapping("/assignees")
+    public ResponseEntity<UserOutlinesResponse> findAssigneesOutlineInfo() {
+        List<UserOutlineResponse> userOutlineInfo = userService.findAssignees();
         return ResponseEntity.ok(new UserOutlinesResponse(userOutlineInfo));
     }
 

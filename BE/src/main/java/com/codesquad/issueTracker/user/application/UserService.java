@@ -1,6 +1,7 @@
 package com.codesquad.issueTracker.user.application;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,4 +21,12 @@ public class UserService {
     public List<UserOutlineResponse> findUserOutlineInfo() {
         return userRepository.findUserOutlineInfo();
     }
+
+    public List<UserOutlineResponse> findAssignees() {
+        List<String> assigneeList = List.of("honux", "crong", "jk", "ivy");
+        return userRepository.findByNameIn(assigneeList).stream()
+            .map(user -> new UserOutlineResponse(user.getName(), user.getImage()))
+            .collect(Collectors.toList());
+    }
+
 }

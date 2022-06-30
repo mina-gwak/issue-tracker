@@ -117,4 +117,8 @@ public class Issue {
     public void addComment(Comment comment) {
         comments.add(comment);
     }
+
+    public boolean isNotWrittenBy(User user) {
+        return !this.user.equals(user);
+    }
 }

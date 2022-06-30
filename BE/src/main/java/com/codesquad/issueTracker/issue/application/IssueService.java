@@ -113,4 +113,19 @@ public class IssueService {
 
         return new IssueDetailResponse(issue);
     }
+
+    @Transactional
+    public void deleteIssue(Long id, Long userId) {
+        Issue issue = issueRepository.findById(id)
+            .orElseThrow(() -> new IllegalStateException("없는 이슈입니다."));
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new IllegalStateException("없는 유저입니다."));
+
+        if (issue.isNotWrittenBy(user)) {
+            throw new IllegalStateException("자신의 이슈만 지울 수 있습니다.");
+        }
+
+        issueRepository.deleteById(id);
+        // user에서도 지워야할까?
+    }
 }

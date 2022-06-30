@@ -18,9 +18,14 @@ operation::get-login-token[snippets='http-request,http-response,response-fields'
 [[User-API]]
 == User API
 
-[[User-Filter-정보-발급]]
-=== 🔒 User Filter 정보 발급
-operation::get-user-filter-info[snippets='http-request,http-response,response-fields']
+[[User-Writer-Filter-정보-발급]]
+=== 🔒 User Writer Filter 정보 발급
+operation::get-writer-filter-info[snippets='http-request,http-response,response-fields']
+
+[[User-Assignees-Filter-정보-발급]]
+=== 🔒 User Assignees Filter 정보 발급
+operation::get-assignees-filter-info[snippets='http-request,http-response,response-fields']
+
 
 [[User-logout]]
 === 🔒 로그아웃

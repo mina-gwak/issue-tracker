@@ -1,9 +1,13 @@
-insert into user (name, nickname, image) values
+insert into user (nickname, name, image) values
 ('guest', 'guestMode', 'http://zipbanchan.godohosting.com/detail_page/3_main/1351/1351_ZIP_P_0108_S.jpg'),
 ('leejohy', 'lucid', 'https://avatars.githubusercontent.com/u/62360009?v=4'),
 ('elon', 'tesla', 'https://avatars.githubusercontent.com/u/47338871?v=4'),
 ('han', 'khan', 'https://avatars.githubusercontent.com/u/93566353?v=4'),
-('mina', 'jamie', 'https://avatars.githubusercontent.com/u/62706988?v=4');
+('mina', 'jamie', 'https://avatars.githubusercontent.com/u/62706988?v=4'),
+('jung', 'honux', 'https://avatars.githubusercontent.com/u/2168702?v=4'),
+('jisu', 'crong', 'https://avatars.githubusercontent.com/u/1456761?v=4'),
+('kim', 'jk', 'https://avatars.githubusercontent.com/u/278988?v=4'),
+('Bae', 'ivy', 'https://avatars.githubusercontent.com/u/20774764?v=4');
 
 insert into milestone (name, description, due_date) values
 ('BE_Course', '백엔드입니다.', null),
@@ -23,11 +27,9 @@ insert into issue (title, content, is_opened, written_time, modification_time, u
 ('title2', 'content2', true, null, null, 2, 2),
 ('title3', 'content3', true, null, null, 2, 3),
 ('title4', 'content4', true, null, null, 3, 4),
-('title5', 'content5', true, null, null, 1, 2);
-
-insert into issue (title, content, is_opened, written_time, modification_time, user_id, milestone_id) values
-('title6', 'content5', false, null, null, 1, 2);
-
+('title5', 'content5', true, null, null, 1, 2),
+('title6', 'content6', true, null, null, 5, 3),
+('title7', 'content7', true, null, null, 7, 2);
 
 insert into attached_label (issue_id, label_id) values
 (1, 3),
@@ -49,5 +51,10 @@ insert into assigned_issue (user_id, issue_id) values
 (1, 4),
 (2, 5),
 (2, 1),
-(2, 2);
+(2, 2),
+(6, 3),
+(7, 2),
+(8, 7),
+(9, 5);
+
 

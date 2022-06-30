@@ -19,9 +19,9 @@ import com.codesquad.issueTracker.user.application.dto.UserOutlineResponse;
 
 class UserControllerTest extends ControllerTest {
 
-    @DisplayName("유저 Outline 정보를 불러온다.")
+    @DisplayName("writer Outline 정보를 불러온다.")
     @Test
-    void show_user_outline() throws Exception {
+    void show_writer_outline() throws Exception {
         // given
         UserOutlineResponse rsp1 = new UserOutlineResponse("user1", "image1");
         UserOutlineResponse rsp2 = new UserOutlineResponse("user2", "image2");
@@ -32,7 +32,7 @@ class UserControllerTest extends ControllerTest {
             .willReturn(responseList);
 
         // when
-        ResultActions perform = mockMvc.perform(get("/api/users")
+        ResultActions perform = mockMvc.perform(get("/api/users/writers")
             .header("Authorization", "Bearer testToken")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.ALL));
@@ -45,7 +45,40 @@ class UserControllerTest extends ControllerTest {
             .andExpect(jsonPath("$.userOutlineResponses[1].imageUrl").value("image2"));
 
         perform.andDo(
-            document("get-user-filter-info", getDocumentRequest(), getDocumentResponse(),
+            document("get-writer-filter-info", getDocumentRequest(), getDocumentResponse(),
+                responseFields(
+                    fieldWithPath("userOutlineResponses[].name").description("사용자 이름"),
+                    fieldWithPath("userOutlineResponses[].imageUrl").description("사용자 이미지")
+                )));
+    }
+
+    @DisplayName("assignee Outline 정보를 불러온다.")
+    @Test
+    void show_assignee_outline() throws Exception {
+        // given
+        UserOutlineResponse rsp1 = new UserOutlineResponse("user1", "image1");
+        UserOutlineResponse rsp2 = new UserOutlineResponse("user2", "image2");
+        UserOutlineResponse rsp3 = new UserOutlineResponse("user3", "image3");
+        List<UserOutlineResponse> responseList = List.of(rsp1, rsp2, rsp3);
+
+        given(userService.findAssignees())
+            .willReturn(responseList);
+
+        // when
+        ResultActions perform = mockMvc.perform(get("/api/users/assignees")
+            .header("Authorization", "Bearer testToken")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.userOutlineResponses.length()").value(3))
+            .andExpect(jsonPath("$.userOutlineResponses[1].name").value("user2"))
+            .andExpect(jsonPath("$.userOutlineResponses[1].imageUrl").value("image2"));
+
+        perform.andDo(
+            document("get-assignees-filter-info", getDocumentRequest(), getDocumentResponse(),
                 responseFields(
                     fieldWithPath("userOutlineResponses[].name").description("사용자 이름"),
                     fieldWithPath("userOutlineResponses[].imageUrl").description("사용자 이미지")
