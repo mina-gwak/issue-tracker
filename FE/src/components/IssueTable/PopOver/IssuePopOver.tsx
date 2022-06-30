@@ -17,13 +17,13 @@ export interface IssuePopOverPropsType {
 }
 
 const IssuePopOver = ({ issueId }: IssuePopOverPropsType) => {
-  const { data: { isOpen, title, writer, writerImage, labelCoverResponses } = {} as IssueType } =
+  const { data: { opened, title, writer, writerImage, labelCoverResponses } = {} as IssueType } =
     useIssue(issueId);
 
   const { data: { contents, registerTime, assignees } = {} as IssuePopOverDataType } =
     useIssuePopOver();
 
-  const iconName = isOpen ? ICON_NAME.ALERT_CIRCLE : ICON_NAME.ARCHIVE;
+  const iconName = opened ? ICON_NAME.ALERT_CIRCLE : ICON_NAME.ARCHIVE;
 
   // TODO: 유저의 네임값 가져와서 비교
   const isAuthor = writer === USER;
@@ -37,7 +37,7 @@ const IssuePopOver = ({ issueId }: IssuePopOverPropsType) => {
 
   return (
     <S.Wrapper>
-      <S.Container isOpen={isOpen}>
+      <S.Container isOpened={opened}>
         <S.ContentsWrapper>
           <S.Date>{getDate(registerTime)}</S.Date>
           <S.ContentsContainer>

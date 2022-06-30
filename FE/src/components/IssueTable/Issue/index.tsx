@@ -11,7 +11,7 @@ const Issue = ({
   title,
   labelCoverResponses,
   issueId,
-  isOpen,
+  opened,
   writer,
   writerImage,
   modificationTime,
@@ -25,7 +25,7 @@ const Issue = ({
     <S.Wrapper>
       <CheckBox isChecked={isChecked} toggleIsChecked={() => toggleCheckItem(issueId)} />
       <S.Container>
-        <IssueTitle issueId={issueId} isOpen={isOpen} title={title} labels={labelCoverResponses} />
+        <IssueTitle issueId={issueId} isOpened={opened} title={title} labels={labelCoverResponses} />
         <IssueDescription
           issueId={issueId}
           milestoneName={milestoneName}

@@ -23,7 +23,13 @@ export interface IssueType {
   writerImage: string;
   modificationTime: string;
   milestoneName: string;
-  isOpen: boolean;
+  opened: boolean;
+}
+
+export interface IssueDataType {
+  issueCoverResponses: IssueType[];
+  openIssueCount: number;
+  closeIssueCount: number;
 }
 
 export interface IssuePopOverDataType {

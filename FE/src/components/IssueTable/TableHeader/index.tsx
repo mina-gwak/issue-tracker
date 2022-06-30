@@ -7,10 +7,11 @@ import { filterList } from '@data';
 import useCheckBox from '@hooks/useCheckBox';
 
 export interface TableHeaderPropsType {
-  count: [number, number];
+  openedIssue: number | undefined;
+  closedIssue: number | undefined;
 }
 
-const TableHeader = ({ count: [openedIssue, closedIssue] }: TableHeaderPropsType) => {
+const TableHeader = ({ openedIssue = 0, closedIssue = 0 }: TableHeaderPropsType) => {
   const { isCheckedItems, isAllChecked, toggleIsAllChecked } = useCheckBox();
   const isChecked = isCheckedItems.size > 0;
 
