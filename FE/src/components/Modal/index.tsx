@@ -1,35 +1,83 @@
+import { useRecoilValue, useRecoilState } from 'recoil';
+
+import { IconsType } from '@assets/icons';
 import * as S from '@components/Modal/Modal.style';
 import { POSITION } from '@components/Modal/constants';
 import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
 import Image from '@components/common/Image';
 import { IMAGE_SIZE } from '@components/common/Image/constants';
+import { filterBarArrState, filterBarState } from '@store/filterBar';
 import { DropdownType } from '@type/dropdownType';
 
 export interface ModalPropsType {
   data: DropdownType[];
   title: string;
+  type: string;
   position?: string;
 }
 
-const isChecked = true;
+type isCheckedType = {
+  (value?: string, optionName?: string): IconsType;
+};
 
-const Modal = ({ data, title, position = POSITION.LEFT }: ModalPropsType) => {
-  const checkBoxIcon = isChecked
-    ? ICON_NAME.CHECKBOX_CIRCLE_ACTIVE
-    : ICON_NAME.CHECKBOX_CIRCLE_INITIAL;
+type checkBoxClickHandlerType = {
+  (value?: string, optionName?: string): () => void;
+};
+
+const Modal = ({ data, title, type, position = POSITION.LEFT }: ModalPropsType) => {
+  const filterBarArrValue = useRecoilValue(filterBarArrState);
+  const [filterBarValue, setFilterBarValue] = useRecoilState(filterBarState);
+
+  const isChecked: isCheckedType = (value) => {
+    let checkBoxIcon: IconsType = ICON_NAME.CHECKBOX_CIRCLE_INITIAL;
+
+    if (!value) return checkBoxIcon;
+
+    for (const [objKey, objValue] of filterBarArrValue) {
+      if (Array.isArray(objValue)) {
+        if (objKey === type) {
+          objValue.forEach((item: string) => {
+            if (item === value) checkBoxIcon = ICON_NAME.CHECKBOX_CIRCLE_ACTIVE;
+          });
+        }
+      }
+    }
+    return checkBoxIcon;
+  };
+
+  const checkBoxClickHandler: checkBoxClickHandlerType = (value) => () => {
+    if (!value) return;
+    for (const [objKey, objValue] of filterBarArrValue) {
+      if (Array.isArray(objValue)) {
+        const checkSameValue = objValue.includes(value);
+        if (type === 'is') {
+          setFilterBarValue({ ...filterBarValue, [type]: ['issue', value] });
+        } else {
+          if (!checkSameValue) {
+            setFilterBarValue({ ...filterBarValue, [type]: [value] });
+          }
+          if (checkSameValue) {
+            setFilterBarValue({ ...filterBarValue, [type]: [] });
+          }
+        }
+      }
+    }
+  };
 
   return (
     <S.MenuList position={position}>
       <S.MenuTitle>{title} 필터</S.MenuTitle>
-      {data.map(({ id, optionName, imageUrl, colorCode }) => (
-        <S.MenuOptionGroup key={id}>
+      {data.map(({ optionName, value, imageUrl, colorCode }) => (
+        <S.MenuOptionGroup key={optionName}>
           <S.MenuOptionItem>
             {imageUrl && <Image url={imageUrl} alt={optionName} size={IMAGE_SIZE.SMALL} />}
             {colorCode && <S.CircleColorIcon colorIcon={colorCode} />}
             <S.MenuItemOption>{optionName}</S.MenuItemOption>
           </S.MenuOptionItem>
-          <Icon iconName={checkBoxIcon} />
+          <button onClick={checkBoxClickHandler(value || optionName)}>
+            <Icon iconName={isChecked(value || optionName)} />
+          </button>
         </S.MenuOptionGroup>
       ))}
     </S.MenuList>
