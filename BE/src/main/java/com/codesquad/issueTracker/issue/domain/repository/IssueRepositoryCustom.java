@@ -7,6 +7,4 @@ import com.codesquad.issueTracker.issue.domain.Issue;
 
 public interface IssueRepositoryCustom {
     List<Issue> search(FilterCondition condition, Long userId);
-
-    Long changeIssuesStatus(List<Long> issueIds, String status);
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -21,6 +22,7 @@ import com.codesquad.issueTracker.issue.application.IssueService;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
 import com.codesquad.issueTracker.issue.application.dto.IssueDetailResponse;
 import com.codesquad.issueTracker.issue.application.dto.PopUpResponse;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
 
 import lombok.RequiredArgsConstructor;
@@ -73,4 +75,14 @@ public class IssueController {
         issueService.deleteIssue(issueId, userId);
         return ResponseEntity.ok().build();
     }
+
+    @PatchMapping("/{issueId}")
+    public ResponseEntity<Void> changeIssueTitle(
+        @PathVariable Long issueId,
+        @RequestBody ChangeIssueTitleRequest request,
+        @RequestAttribute Long userId) {
+        issueService.changeIssueTitle(issueId, request, userId);
+        return ResponseEntity.ok().build();
+    }
+
 }

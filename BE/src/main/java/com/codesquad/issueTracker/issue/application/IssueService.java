@@ -19,6 +19,7 @@ import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.issue.domain.MainFilter;
 import com.codesquad.issueTracker.issue.domain.repository.IssueRepository;
 import com.codesquad.issueTracker.issue.infrastructure.QueryParser;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
 import com.codesquad.issueTracker.label.domain.Label;
 import com.codesquad.issueTracker.label.domain.LabelRepository;
@@ -78,17 +79,14 @@ public class IssueService {
 
     @Transactional(readOnly = true)
     public PopUpResponse popUpIssue(Long issueId, Long userId) {
-        Issue issue = issueRepository.findById(issueId)
-            .orElseThrow(() -> new IllegalStateException("유효하지 않은 issueId입니다."));
-
+        Issue issue = findSingleIssue(issueId);
         return new PopUpResponse(issue, issue.isAssignedThisUser(userId));
     }
 
     @Transactional
     public void changeIssuesStatus(List<Long> issueIds, String status, Long userId) {
         List<Issue> issues = issueRepository.findAllById(issueIds);
-        User user = userRepository.findById(userId)
-            .orElseThrow(() -> new IllegalStateException("없는 유저입니다."));
+        User user = findUser(userId);
         for (Issue issue : issues) {
             changeStatusAndAddComment(status, user, issue);
         }
@@ -96,8 +94,7 @@ public class IssueService {
 
     @Transactional
     public void makeIssue(IssueContentsRequest issueContentsRequest, Long userId) {
-        User user = userRepository.findById(userId)
-            .orElseThrow(() -> new IllegalStateException("없는 유저입니다."));
+        User user = findUser(userId);
 
         Milestone milestone = milestoneRepository.findByName(issueContentsRequest.getMilestone())
             .orElseThrow(() -> new IllegalStateException("없는 마일스톤 입니다."));
@@ -117,23 +114,30 @@ public class IssueService {
 
     @Transactional(readOnly = true)
     public IssueDetailResponse findIssue(Long id) {
-        Issue issue = issueRepository.findById(id)
-            .orElseThrow(() -> new IllegalStateException("없는 이슈입니다."));
-
+        Issue issue = findSingleIssue(id);
         return new IssueDetailResponse(issue);
     }
 
     @Transactional
     public void deleteIssue(Long id, Long userId) {
-        Issue issue = issueRepository.findById(id)
-            .orElseThrow(() -> new IllegalStateException("없는 이슈입니다."));
-        User user = userRepository.findById(userId)
-            .orElseThrow(() -> new IllegalStateException("없는 유저입니다."));
+        Issue issue = findSingleIssue(id);
+        User user = findUser(userId);
 
         if (issue.isNotWrittenBy(user)) {
             throw new IllegalStateException("자신의 이슈만 지울 수 있습니다.");
         }
         issueRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void changeIssueTitle(Long issueId, ChangeIssueTitleRequest request, Long userId) {
+        Issue issue = findSingleIssue(issueId);
+        User user = findUser(userId);
+
+        if (issue.isNotWrittenBy(user)) {
+            throw new IllegalStateException("자신이 작성한 이슈만 수정할 수 있습니다.");
+        }
+        issue.updateTitle(request.getTitle());
     }
 
     private void changeStatusAndAddComment(String status, User user, Issue issue) {
@@ -142,13 +146,20 @@ public class IssueService {
         commentRepository.save(new Comment(message, LocalDateTime.now(), user, issue, false));
     }
 
+    private Issue findSingleIssue(Long id) {
+        return issueRepository.findById(id)
+            .orElseThrow(() -> new IllegalStateException("없는 이슈입니다."));
+    }
+
+    private User findUser(Long userId) {
+        return userRepository.findById(userId)
+            .orElseThrow(() -> new IllegalStateException("없는 유저입니다."));
+    }
+
     private String makeStatusMessage(String status) {
-        String message = "issue가 ";
         if (Boolean.parseBoolean(status)) {
-            message += "열렸습니다.";
-            return message;
+            return "issue가 열렸습니다.";
         }
-        message += "닫혔습니다.";
-        return message;
+        return "issue가 닫혔습니다.";
     }
 }
