@@ -46,16 +46,16 @@ public class Issue {
     @JoinColumn(name = "userId")
     private User user;
 
-    @OneToMany(mappedBy = "issue")
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
-    @OneToMany(mappedBy = "issue", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AttachedLabel> attachedLabels = new HashSet<>();
 
-    @OneToMany(mappedBy = "issue", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AssignedIssue> assignedIssues = new HashSet<>();
 
-    @OneToMany(mappedBy = "issue", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Image> images = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -120,5 +120,13 @@ public class Issue {
 
     public boolean isNotWrittenBy(User user) {
         return !this.user.equals(user);
+    }
+
+    public void removeUser() {
+        this.user = null;
+    }
+
+    public void changeStatus(Boolean valueOf) {
+        this.isOpened = valueOf;
     }
 }

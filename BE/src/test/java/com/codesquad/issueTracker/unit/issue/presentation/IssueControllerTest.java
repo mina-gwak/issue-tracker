@@ -136,7 +136,7 @@ class IssueControllerTest extends ControllerTest {
         paraMap.addAll("id", resultListOfString);
 
         // when
-        ResultActions perform = mockMvc.perform(put("/api/issues/status")
+        ResultActions perform = mockMvc.perform(post("/api/issues/status")
             .header("Authorization", "Bearer testToken")
             .accept(MediaType.ALL)
             .queryParams(paraMap)
@@ -147,7 +147,7 @@ class IssueControllerTest extends ControllerTest {
             .andExpect(status().isOk());
 
         verify(issueService, times(1))
-            .changeIssuesStatus(resultListOfLong, "true");
+            .changeIssuesStatus(resultListOfLong, "true", 10L);
 
         // restdocs
         perform.andDo(
@@ -211,7 +211,7 @@ class IssueControllerTest extends ControllerTest {
         Label label2 = new Label("BE", "BE's label", "#000000", "white");
         issue.attachedLabel(List.of(label1, label2));
 
-        Comment contents = new Comment("contents", LocalDateTime.now(), assignee1, issue);
+        Comment contents = new Comment("contents", LocalDateTime.now(), assignee1, issue, true);
 
         issue.addFiles(List.of("image1", "image2", "image3"));
 

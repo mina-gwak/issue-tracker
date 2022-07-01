@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByName(String name);
 
     @Query("SELECT NEW com.codesquad.issueTracker.user.application.dto.UserOutlineResponse(u.name, u.image) "
-        + "FROM User u")
+        + "FROM User u ORDER BY u.name")
     List<UserOutlineResponse> findUserOutlineInfo();
 
     List<User> findByNameIn(List<String> assignees);

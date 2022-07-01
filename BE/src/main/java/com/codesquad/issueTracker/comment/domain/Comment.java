@@ -39,12 +39,13 @@ public class Comment {
     private boolean editable;
 
     public Comment(String content, LocalDateTime writtenTime, User user,
-        Issue issue) {
+        Issue issue, boolean editable) {
         this.content = content;
         this.writtenTime = writtenTime;
         this.user = user;
         this.issue = issue;
         this.issue.addComment(this);
+        this.editable = editable;
     }
 
     public String getWriterName() {

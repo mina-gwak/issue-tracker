@@ -1,5 +1,6 @@
 package com.codesquad.issueTracker.issue.application;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -7,6 +8,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.codesquad.issueTracker.comment.domain.Comment;
+import com.codesquad.issueTracker.comment.domain.CommentRepository;
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
@@ -37,6 +40,7 @@ public class IssueService {
     private final UserRepository userRepository;
     private final LabelRepository labelRepository;
     private final MilestoneRepository milestoneRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional(readOnly = true)
     public IssueCoversResponse findIssuesByCondition(String query, Long userId) {
@@ -81,8 +85,13 @@ public class IssueService {
     }
 
     @Transactional
-    public void changeIssuesStatus(List<Long> issueIds, String status) {
-        issueRepository.changeIssuesStatus(issueIds, status);
+    public void changeIssuesStatus(List<Long> issueIds, String status, Long userId) {
+        List<Issue> issues = issueRepository.findAllById(issueIds);
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new IllegalStateException("없는 유저입니다."));
+        for (Issue issue : issues) {
+            changeStatusAndAddComment(status, user, issue);
+        }
     }
 
     @Transactional
@@ -124,8 +133,22 @@ public class IssueService {
         if (issue.isNotWrittenBy(user)) {
             throw new IllegalStateException("자신의 이슈만 지울 수 있습니다.");
         }
-
         issueRepository.deleteById(id);
-        // user에서도 지워야할까?
+    }
+
+    private void changeStatusAndAddComment(String status, User user, Issue issue) {
+        issue.changeStatus(Boolean.valueOf(status));
+        String message = makeStatusMessage(status);
+        commentRepository.save(new Comment(message, LocalDateTime.now(), user, issue, false));
+    }
+
+    private String makeStatusMessage(String status) {
+        String message = "issue가 ";
+        if (Boolean.parseBoolean(status)) {
+            message += "열렸습니다.";
+            return message;
+        }
+        message += "닫혔습니다.";
+        return message;
     }
 }
