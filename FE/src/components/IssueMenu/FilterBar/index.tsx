@@ -21,10 +21,15 @@ const FilterBar = () => {
           필터
           <Icon iconName={ICON_NAME.SELECT} />
         </S.FilterButton>
-        {modalValue['issue'] && <Modal data={filter} title='이슈' />}
+        {modalValue['issue'] && <Modal data={filter} title='이슈' type='is' />}
       </S.FilterButtonWrapper>
       <S.FilterInputWrapper>
-        <S.FilterInput type='text' placeholder='Search all issues' value={filterBarValue} />
+        <S.FilterInput
+          type='text'
+          placeholder='Search all issues'
+          value={filterBarValue}
+          readOnly
+        />
         <Icon iconName={ICON_NAME.SEARCH} />
       </S.FilterInputWrapper>
     </S.Wrapper>
