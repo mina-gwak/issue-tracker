@@ -1,20 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import axios, { AxiosRequestConfig } from 'axios';
+import { useRecoilValue } from 'recoil';
+
+import { tokenState } from '@store/token';
 
 export interface AxiosTypes {
   method: 'get' | 'post' | 'put' | 'delete' | 'patch';
   url: string;
   config?: AxiosRequestConfig;
 }
-
-const accessToken = localStorage.getItem('accessToken') || '';
-
-export const instance = axios.create({
-  headers: {
-    Authorization: `Bearer ${JSON.parse(accessToken)}`,
-  },
-});
 
 const useAxios = <T>({
   method,
@@ -31,6 +26,18 @@ const useAxios = <T>({
   const [response, setResponse] = useState<T>();
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const { accessToken } = useRecoilValue(tokenState);
+
+  const option = useMemo(() => {
+    if (!accessToken) return;
+    return {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
+  }, [accessToken]);
+
+  const instance = axios.create(option);
 
   const request = () => {
     setIsLoading(true);
