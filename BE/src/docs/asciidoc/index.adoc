@@ -54,6 +54,9 @@ operation::post-issue-save[snippets='http-request,request-fields,http-response']
 === 🔒 이슈 단건 조회
 operation::get-single-issue[snippets='http-request,path-parameters,http-response,response-fields']
 
+[[delete-issue]]
+=== 🔒 이슈 단건 삭제
+operation::delete-single-issue[snippets='http-request,path-parameters,http-response']
 
 [[Milestone-API]]
 == Milestone API

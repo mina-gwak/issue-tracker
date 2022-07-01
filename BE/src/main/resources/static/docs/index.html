@@ -465,6 +465,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#update-issue-status">🔒 이슈 상태 업데이트</a></li>
 <li><a href="#save-issue">🔒 이슈 저장</a></li>
 <li><a href="#find-issue">🔒 이슈 단건 조회</a></li>
+<li><a href="#delete-issue">🔒 이슈 단건 삭제</a></li>
 </ul>
 </li>
 <li><a href="#Milestone-API">Milestone API</a>
@@ -840,7 +841,7 @@ Content-Length: 548
     "issueId" : 1,
     "writer" : "루시드",
     "writerImage" : "image3",
-    "modificationTime" : "2022-06-30T14:57:42.112949",
+    "modificationTime" : "2022-07-01T14:18:56.133312",
     "milestoneName" : "BE milestone",
     "opened" : true
   } ],
@@ -976,12 +977,12 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 156
+Content-Length: 155
 
 {
   "title" : "BE Lucid가 작성한 issue",
   "content" : "내용은 이러하다",
-  "writtenTime" : "2022-06-30T14:57:42.062312",
+  "writtenTime" : "2022-07-01T14:18:56.05422",
   "assignedMe" : true
 }</code></pre>
 </div>
@@ -1033,7 +1034,7 @@ Content-Length: 156
 <h4 id="update-issue-status_http_request"><a class="link" href="#update-issue-status_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/issues/status?id=1&amp;id=3&amp;id=5&amp;status=true HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/issues/status?id=1&amp;id=3&amp;id=5&amp;status=true HTTP/1.1
 Authorization: Bearer testToken
 Accept: */*
 Host: localhost:8080</code></pre>
@@ -1197,13 +1198,13 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 898
+Content-Length: 899
 
 {
   "issueId" : 1,
   "title" : "title1",
   "content" : "content1",
-  "writtenTime" : "2022-06-30T14:57:41.86594",
+  "writtenTime" : "2022-07-01T14:18:55.819921",
   "writerOutline" : {
     "name" : "user1",
     "imageUrl" : "image1"
@@ -1216,12 +1217,12 @@ Content-Length: 898
     "imageUrl" : "image1"
   } ],
   "labels" : [ {
-    "labelName" : "Lucid",
-    "colorCode" : "#008672",
-    "textColor" : "white"
-  }, {
     "labelName" : "BE",
     "colorCode" : "#000000",
+    "textColor" : "white"
+  }, {
+    "labelName" : "Lucid",
+    "colorCode" : "#008672",
     "textColor" : "white"
   } ],
   "milestoneInformation" : {
@@ -1235,9 +1236,9 @@ Content-Length: 898
       "imageUrl" : "image1"
     },
     "content" : "contents",
-    "writtenTime" : "2022-06-30T14:57:41.866795"
+    "writtenTime" : "2022-07-01T14:18:55.821711"
   } ],
-  "imageUrls" : [ "image2", "image1", "image3" ],
+  "imageUrls" : [ "image3", "image2", "image1" ],
   "open" : true
 }</code></pre>
 </div>
@@ -1361,6 +1362,50 @@ Content-Length: 898
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="delete-issue"><a class="link" href="#delete-issue">🔒 이슈 단건 삭제</a></h3>
+<div class="sect3">
+<h4 id="delete-issue_http_request"><a class="link" href="#delete-issue_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/issues/1 HTTP/1.1
+Authorization: Bearer testToken
+Accept: */*
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="delete-issue_path_parameters"><a class="link" href="#delete-issue_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/issues/{issueId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>issueId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이슈 id</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="delete-issue_http_response"><a class="link" href="#delete-issue_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1505,7 +1550,7 @@ Content-Length: 204
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-06-30 14:57:24 +0900
+Last updated 2022-07-01 14:18:20 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

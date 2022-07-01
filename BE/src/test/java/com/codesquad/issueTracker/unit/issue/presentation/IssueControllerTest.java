@@ -261,4 +261,31 @@ class IssueControllerTest extends ControllerTest {
                 )));
     }
 
+    @DisplayName("이슈 한 건을 삭제한다.")
+    @Test
+    void delete_single_issue() throws Exception {
+        // given
+        Long issueId = 1L;
+
+        // when
+        ResultActions perform = mockMvc.perform(
+            RestDocumentationRequestBuilders.delete("/api/issues/{issueId}", issueId)
+                .header("Authorization", "Bearer testToken")
+                .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk());
+
+        verify(issueService, times(1))
+            .deleteIssue(issueId, 10L);
+
+        // restdocs
+        perform.andDo(
+            document("delete-single-issue", getDocumentRequest(), getDocumentResponse(),
+                pathParameters(
+                    parameterWithName("issueId").description("이슈 id")
+                )));
+    }
+
 }
