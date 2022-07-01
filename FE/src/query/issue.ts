@@ -1,6 +1,6 @@
+import axios from 'axios';
 import { useQuery } from 'react-query';
 
-import { instance } from '@api';
 import { API } from '@constants';
 import { IssueDataType, IssueType } from '@type/issueType';
 import { ensure } from '@utils/ensure';
@@ -8,7 +8,12 @@ import { ensure } from '@utils/ensure';
 type IssueQueryPropsType<T> = (data: IssueDataType) => T;
 
 export const fetchIssues = async <T>(): Promise<T> => {
-  const response = await instance.get(`${API.ISSUE}`, {
+  const accessToken = localStorage.getItem('accessToken')!;
+
+  const response = await axios.get(`${API.ISSUE}`, {
+    headers: {
+      Authorization: `Bearer ${JSON.parse(accessToken)}`,
+    },
     params: {
       query: 'is:open',
     },
