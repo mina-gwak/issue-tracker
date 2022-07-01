@@ -1,3 +1,5 @@
+import { useRecoilValue } from 'recoil';
+
 import * as S from '@components/IssueTable/PopOver/PopOver.style';
 import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
@@ -7,11 +9,11 @@ import Label from '@components/common/Label';
 import { API } from '@constants';
 import useAxios from '@hooks/useAxios';
 import { useIssue } from '@query/issue';
+import { userState } from '@store/user';
 import { IssuePopOverDataType, IssueType } from '@type/issueType';
 import { getDate } from '@utils/date';
 
 const MAX_LABEL = 3;
-const USER = 'jamie';
 
 export interface IssuePopOverPropsType {
   issueId: number;
@@ -26,10 +28,11 @@ const IssuePopOver = ({ issueId }: IssuePopOverPropsType) => {
     url: API.ISSUE_POPOVER(issueId),
   });
 
+  const { name } = useRecoilValue(userState);
+
   const iconName = opened ? ICON_NAME.ALERT_CIRCLE : ICON_NAME.ARCHIVE;
 
-  // TODO: 유저의 네임값 가져와서 비교
-  const isAuthor = writer === USER;
+  const isAuthor = writer === name;
   const isAssignee = response?.assignedMe;
 
   const userDescription = () => {
