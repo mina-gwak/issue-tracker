@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.codesquad.issueTracker.issue.application.dto.FilterOutlineResponse;
+import com.codesquad.issueTracker.label.application.dto.LabelOutlineResponse;
 import com.codesquad.issueTracker.unit.ControllerTest;
 
 class LabelControllerTest extends ControllerTest {
@@ -23,10 +23,10 @@ class LabelControllerTest extends ControllerTest {
     @Test
     void show_label_outline() throws Exception {
         // given
-        FilterOutlineResponse rsp1 = new FilterOutlineResponse("Khan", "#1d76db");
-        FilterOutlineResponse rsp2 = new FilterOutlineResponse("Lucid", "#008672");
-        FilterOutlineResponse rsp3 = new FilterOutlineResponse("Jamie", "#561D05");
-        List<FilterOutlineResponse> responseList = List.of(rsp1, rsp2, rsp3);
+        LabelOutlineResponse rsp1 = new LabelOutlineResponse("Khan", "#1d76db");
+        LabelOutlineResponse rsp2 = new LabelOutlineResponse("Lucid", "#008672");
+        LabelOutlineResponse rsp3 = new LabelOutlineResponse("Jamie", "#561D05");
+        List<LabelOutlineResponse> responseList = List.of(rsp1, rsp2, rsp3);
 
         given(labelService.findLabelsOutlineInfo())
             .willReturn(responseList);
@@ -40,15 +40,15 @@ class LabelControllerTest extends ControllerTest {
         // then
         perform
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.filterOutlineResponses.length()").value(3))
-            .andExpect(jsonPath("$.filterOutlineResponses[1].name").value("Lucid"))
-            .andExpect(jsonPath("$.filterOutlineResponses[1].image").value("#008672"));
+            .andExpect(jsonPath("$.labelOutlineResponses.length()").value(3))
+            .andExpect(jsonPath("$.labelOutlineResponses[1].name").value("Lucid"))
+            .andExpect(jsonPath("$.labelOutlineResponses[1].colorCode").value("#008672"));
 
         perform.andDo(
             document("get-label-filter-info", getDocumentRequest(), getDocumentResponse(),
                 responseFields(
-                    fieldWithPath("filterOutlineResponses[].name").description("라벨 이름"),
-                    fieldWithPath("filterOutlineResponses[].image").description("라벨 색")
+                    fieldWithPath("labelOutlineResponses[].name").description("라벨 이름"),
+                    fieldWithPath("labelOutlineResponses[].colorCode").description("라벨 색")
                 )));
     }
 }

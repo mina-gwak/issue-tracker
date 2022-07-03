@@ -1,7 +1,7 @@
 package com.codesquad.issueTracker.issue.application.dto;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import com.codesquad.issueTracker.issue.domain.MainFilter;
 
@@ -11,13 +11,13 @@ import lombok.Getter;
 public class FilterCondition {
 
     private MainFilter mainFilter = MainFilter.OPEN; // default main filter is open
-    private List<SubFilterDetail> subFilters = new ArrayList<>();
+    private MultiValueMap<String, SubFilterDetail> subFilters = new LinkedMultiValueMap<>();
 
     public void changeMainFilter(MainFilter mainFilter) {
         this.mainFilter = mainFilter;
     }
 
     public void addSubFilter(SubFilterDetail subFilterDetail) {
-        subFilters.add(subFilterDetail);
+        subFilters.add(subFilterDetail.getFilterName(), subFilterDetail);
     }
 }

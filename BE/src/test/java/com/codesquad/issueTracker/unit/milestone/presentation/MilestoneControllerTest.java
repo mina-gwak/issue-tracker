@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.codesquad.issueTracker.issue.application.dto.FilterOutlineResponse;
+import com.codesquad.issueTracker.milestone.application.dto.MilestoneOutlineResponse;
 import com.codesquad.issueTracker.unit.ControllerTest;
 
 class MilestoneControllerTest extends ControllerTest {
@@ -23,10 +23,10 @@ class MilestoneControllerTest extends ControllerTest {
     @Test
     void show_milestone_outline() throws Exception {
         // given
-        FilterOutlineResponse rsp1 = new FilterOutlineResponse("milestone1");
-        FilterOutlineResponse rsp2 = new FilterOutlineResponse("milestone2");
-        FilterOutlineResponse rsp3 = new FilterOutlineResponse("milestone3");
-        List<FilterOutlineResponse> responseList = List.of(rsp1, rsp2, rsp3);
+        MilestoneOutlineResponse rsp1 = new MilestoneOutlineResponse("milestone1");
+        MilestoneOutlineResponse rsp2 = new MilestoneOutlineResponse("milestone2");
+        MilestoneOutlineResponse rsp3 = new MilestoneOutlineResponse("milestone3");
+        List<MilestoneOutlineResponse> responseList = List.of(rsp1, rsp2, rsp3);
 
         given(milestoneService.findMilestonesOutlineInfo())
             .willReturn(responseList);
@@ -40,15 +40,13 @@ class MilestoneControllerTest extends ControllerTest {
         // then
         perform
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.filterOutlineResponses.length()").value(3))
-            .andExpect(jsonPath("$.filterOutlineResponses[1].name").value("milestone2"))
-            .andExpect(jsonPath("$.filterOutlineResponses[1].image").value("NO IMAGE"));
+            .andExpect(jsonPath("$.milestoneOutlineResponses.length()").value(3))
+            .andExpect(jsonPath("$.milestoneOutlineResponses[1].milestoneName").value("milestone2"));
 
         perform.andDo(
             document("get-milestone-filter-info", getDocumentRequest(), getDocumentResponse(),
                 responseFields(
-                    fieldWithPath("filterOutlineResponses[].name").description("마일스톤 이름"),
-                    fieldWithPath("filterOutlineResponses[].image").description("마일스톤 default : NO IMAGE")
+                    fieldWithPath("milestoneOutlineResponses[].milestoneName").description("마일스톤 이름")
                 )));
     }
 }

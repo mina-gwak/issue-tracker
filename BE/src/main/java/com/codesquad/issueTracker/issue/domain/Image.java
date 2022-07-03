@@ -8,43 +8,30 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.codesquad.issueTracker.user.domain.User;
-
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class AssignedIssue {
+public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
-    private User user;
+    private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "issueId")
+    @JoinColumn(name = "issue_id")
     private Issue issue;
 
-    public AssignedIssue(User user, Issue issue) {
-        this.user = user;
+    public Image(String imageUrl, Issue issue) {
+        this.imageUrl = imageUrl;
         this.issue = issue;
     }
-
-    public boolean isAssignedThisUser(Long userId) {
-        return user.isYourId(userId);
-    }
-
-    public String getUserName() {
-        return user.getName();
-    }
-
-    public String getUserImage() {
-        return user.getImage();
-    }
 }
+

@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codesquad.issueTracker.issue.application.dto.FilterOutlineResponse;
-import com.codesquad.issueTracker.issue.application.dto.FilterOutlinesResponse;
 import com.codesquad.issueTracker.label.application.LabelService;
+import com.codesquad.issueTracker.label.application.dto.LabelOutlineResponse;
+import com.codesquad.issueTracker.label.presentation.dto.LabelOutlinesResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,8 +21,8 @@ public class LabelController {
     private final LabelService labelService;
 
     @GetMapping
-    public ResponseEntity<FilterOutlinesResponse> findLabelsOutlineInfo() {
-        List<FilterOutlineResponse> filterOutlineResponses = labelService.findLabelsOutlineInfo();
-        return ResponseEntity.ok(new FilterOutlinesResponse(filterOutlineResponses));
+    public ResponseEntity<LabelOutlinesResponse> findLabelsOutlineInfo() {
+        List<LabelOutlineResponse> labelsOutlineInfo = labelService.findLabelsOutlineInfo();
+        return ResponseEntity.ok(new LabelOutlinesResponse(labelsOutlineInfo));
     }
 }

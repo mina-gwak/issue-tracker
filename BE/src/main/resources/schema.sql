@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `written_time` DATETIME NULL,
   `user_id` BIGINT NOT NULL,
   `issue_id` BIGINT NOT NULL,
+  `editable` TINYINT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_comment_user1_idx` (`user_id` ASC) VISIBLE,
   INDEX `fk_comment_issue1_idx` (`issue_id` ASC) VISIBLE,
@@ -153,6 +154,25 @@ CREATE TABLE IF NOT EXISTS `attached_label` (
   CONSTRAINT `fk_attached_label_label1`
     FOREIGN KEY (`label_id`)
     REFERENCES `label` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `image`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `image` ;
+
+CREATE TABLE IF NOT EXISTS `image` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `image_url` VARCHAR(255) NULL,
+  `issue_id` BIGINT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_image_issue1_idx` (`issue_id` ASC) VISIBLE,
+  CONSTRAINT `fk_image_issue1`
+    FOREIGN KEY (`issue_id`)
+    REFERENCES `issue` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

@@ -35,4 +35,16 @@ public class AttachedLabel {
         this.label = label;
         this.issue = issue;
     }
+
+    public String getLabelName() {
+        return label.getName();
+    }
+
+    public String getLabelColor() {
+        return label.getLabelColor();
+    }
+
+    public String getTextColor() {
+        return label.getTextColor();
+    }
 }

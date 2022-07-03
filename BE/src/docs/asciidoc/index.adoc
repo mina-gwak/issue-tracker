@@ -18,9 +18,14 @@ operation::get-login-token[snippets='http-request,http-response,response-fields'
 [[User-API]]
 == User API
 
-[[User-Filter-정보-발급]]
-=== 🔒 User Filter 정보 발급
-operation::get-user-filter-info[snippets='http-request,http-response,response-fields']
+[[User-Writer-Filter-정보-발급]]
+=== 🔒 User Writer Filter 정보 발급
+operation::get-writer-filter-info[snippets='http-request,http-response,response-fields']
+
+[[User-Assignees-Filter-정보-발급]]
+=== 🔒 User Assignees Filter 정보 발급
+operation::get-assignees-filter-info[snippets='http-request,http-response,response-fields']
+
 
 [[User-logout]]
 === 🔒 로그아웃
@@ -33,15 +38,36 @@ operation::request-logout[snippets='http-request,http-response']
 === 🔒 이슈 리스트 조회
 operation::get-issue-with-main-filter[snippets='http-request,request-parameters,http-response,response-fields']
 
+[[get-popUp-data]]
+=== 🔒 이슈 팝업 데이터 조회
+operation::get-popUp-data[snippets='http-request,path-parameters,http-response,response-fields']
+
+[[update-issue-status]]
+=== 🔒 이슈 상태 업데이트
+operation::status-change[snippets='http-request,request-parameters,http-response']
+
+[[save-issue]]
+=== 🔒 이슈 저장
+operation::post-issue-save[snippets='http-request,request-fields,http-response']
+
+[[find-issue]]
+=== 🔒 이슈 단건 조회
+operation::get-single-issue[snippets='http-request,path-parameters,http-response,response-fields']
+
+[[delete-issue]]
+=== 🔒 이슈 단건 삭제
+operation::delete-single-issue[snippets='http-request,path-parameters,http-response']
+
 [[Milestone-API]]
 == Milestone API
 
-[[Milestone-Filter-정보-발급]]
+[[Milestone-Filter-info]]
 === 🔒 Milestone Filter 정보 발급
 operation::get-milestone-filter-info[snippets='http-request,http-response,response-fields']
 
 [[Label-API]]
 == Label API
 
+[[Label-Filter-info]]
 === 🔒 Label Filter 정보 발급
 operation::get-label-filter-info[snippets='http-request,http-response,response-fields']

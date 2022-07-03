@@ -21,6 +21,7 @@ import com.codesquad.issueTracker.milestone.application.MilestoneService;
 import com.codesquad.issueTracker.milestone.presentation.MilestoneController;
 import com.codesquad.issueTracker.user.application.UserService;
 import com.codesquad.issueTracker.user.presentation.UserController;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @AutoConfigureRestDocs
 @WebMvcTest({
@@ -52,6 +53,9 @@ public class ControllerTest {
 
     @Autowired
     protected MockMvc mockMvc;
+
+    @Autowired
+    protected ObjectMapper objectMapper;
 
     @DisplayName("validate token을 제공한다.")
     @BeforeEach
