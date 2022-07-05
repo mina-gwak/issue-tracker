@@ -1,7 +1,7 @@
 import { DropdownType } from '@type/dropdownType';
 
 // 데이터 axios X
-export const filter: DropdownType[] = [
+export const issues: DropdownType[] = [
   { optionName: '열린 이슈', value: 'open' },
   { optionName: '내가 작성한 이슈', value: 'author' },
   { optionName: '나에게 할당된 이슈', value: 'assignee' },
@@ -15,19 +15,19 @@ export const stateModify: DropdownType[] = [
 ];
 
 // 데이터 axios O
-export const label: DropdownType[] = [
-  { optionName: '레이블이 없는 이슈', colorCode: '' },
+export const labels: DropdownType[] = [
+  { optionName: '레이블이 없는 이슈', value: 'none', colorCode: '' },
   { optionName: 'FE', colorCode: '#000' },
   { optionName: 'BE', colorCode: '#F00' },
 ];
 
-export const milestone: DropdownType[] = [
+export const milestones: DropdownType[] = [
   { optionName: '마일스톤이 없는 이슈', value: 'none' },
   { optionName: 'Masters course' },
   { optionName: 'Code-Together course' },
 ];
 
-export const assignee: DropdownType[] = [
+export const assignees: DropdownType[] = [
   {
     optionName: '담당자가 없는 이슈',
     value: 'none',
@@ -42,7 +42,7 @@ export const assignee: DropdownType[] = [
   },
 ];
 
-export const author: DropdownType[] = [
+export const writers: DropdownType[] = [
   {
     optionName: 'Khan',
     imageUrl: 'https://avatars.githubusercontent.com/u/93566353?v=4',

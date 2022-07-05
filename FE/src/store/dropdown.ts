@@ -1,11 +1,11 @@
 import { atom } from 'recoil';
 
 export const defaultState = {
-  issue: false,
-  label: false,
-  milestone: false,
-  author: false,
-  assignee: false,
+  issues: false,
+  labels: false,
+  milestones: false,
+  writers: false,
+  assignees: false,
   stateModify: false,
 };
 

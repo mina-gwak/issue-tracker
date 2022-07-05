@@ -5,7 +5,7 @@ import Modal from '@components/Modal';
 import { POSITION } from '@components/Modal/constants';
 import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
-import { label, milestone, assignee, author } from '@data/dropdownData';
+import { labels, milestones, assignees, writers } from '@data/dropdownData';
 import { useModal } from '@hooks/useModal';
 import { modalState, ModalStateType } from '@store/dropdown';
 import { DropdownType } from '@type/dropdownType';
@@ -16,10 +16,10 @@ interface FilterPropsType {
 }
 
 const fetchData: { [key: string]: DropdownType[] } = {
-  label,
-  milestone,
-  assignee,
-  author,
+  labels,
+  milestones,
+  assignees,
+  writers,
 };
 
 const Filter = ({ type, title }: FilterPropsType) => {
