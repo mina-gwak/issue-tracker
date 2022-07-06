@@ -1,13 +1,16 @@
 import { useState } from 'react';
 
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import { Images } from '@assets/images';
 import * as S from '@components/Header/Header.style';
 import Image from '@components/common/Image';
 import { IMAGE_NAME, IMAGE_SIZE } from '@components/common/Image/constants';
+import { userState } from '@store/user';
 
 const Header = () => {
+  const { name, image } = useRecoilValue(userState);
   const [isLogoutMenuOpen, setIsLogoutMenuOpen] = useState(false);
 
   const toggleLogoutMenu = () => setIsLogoutMenuOpen((prevState) => !prevState);
@@ -22,8 +25,8 @@ const Header = () => {
       <S.LogoutMenuWrapper>
         <S.LogoutMenuButton onClick={toggleLogoutMenu}>
           <Image
-            url='https://avatars.githubusercontent.com/u/93566353?v=4'
-            alt='Khan'
+            url={image}
+            alt={name}
             size={IMAGE_SIZE.MEDIUM}
           />
         </S.LogoutMenuButton>
