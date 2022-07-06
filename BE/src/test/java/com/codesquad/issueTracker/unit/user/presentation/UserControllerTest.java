@@ -45,7 +45,7 @@ class UserControllerTest extends ControllerTest {
             .andExpect(jsonPath("$.usersOutlineResponses[1].imageUrl").value("image2"));
 
         perform.andDo(
-            document("get-writer-filter-info", getDocumentRequest(), getDocumentResponse(),
+            document("get-user-filter-info", getDocumentRequest(), getDocumentResponse(),
                 responseFields(
                     fieldWithPath("usersOutlineResponses[].optionName").description("사용자 이름"),
                     fieldWithPath("usersOutlineResponses[].imageUrl").description("사용자 이미지")
