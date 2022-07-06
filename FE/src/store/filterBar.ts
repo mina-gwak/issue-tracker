@@ -1,10 +1,12 @@
 import { atom, selector } from 'recoil';
 
+export const defaultFilterBarState = {
+  is: ['issue', 'open'],
+};
+
 export const filterBarState = atom({
   key: 'filterBarState',
-  default: {
-    is: ['issue', 'open'],
-  },
+  default: defaultFilterBarState,
 });
 
 export const filterBarArrState = selector({
