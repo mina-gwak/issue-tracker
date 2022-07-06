@@ -165,7 +165,6 @@ public class IssueService {
     private Issue checkEditable(Long issueId, Long userId) {
         Issue issue = findSingleIssue(issueId);
         User user = findUser(userId);
-
         if (issue.isNotWrittenBy(user)) {
             throw new IllegalStateException("자신이 작성한 이슈만 수정할 수 있습니다.");
         }

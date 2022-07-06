@@ -7,4 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentsRequest {
     private String contents;
+
+    public CommentsRequest(String contents) {
+        this.contents = contents;
+    }
 }

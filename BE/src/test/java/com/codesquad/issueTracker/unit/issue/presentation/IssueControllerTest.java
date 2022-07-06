@@ -21,6 +21,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.codesquad.issueTracker.comment.domain.Comment;
+import com.codesquad.issueTracker.issue.application.dto.CommentOutline;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
 import com.codesquad.issueTracker.issue.application.dto.IssueDetailResponse;
@@ -30,6 +31,7 @@ import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeLabelsRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.CommentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
 import com.codesquad.issueTracker.label.domain.Label;
 import com.codesquad.issueTracker.milestone.domain.Milestone;
@@ -95,7 +97,8 @@ class IssueControllerTest extends ControllerTest {
     @Test
     void request_popUp_data() throws Exception {
         // given
-        Issue issue = new Issue("BE Lucid가 작성한 issue", "내용은 이러하다", LocalDateTime.now(), LocalDateTime.now(), null, null);
+        Issue issue = new Issue("BE Lucid가 작성한 issue", "내용은 이러하다", LocalDateTime.now(), LocalDateTime.now(), null,
+            null);
 
         Long issueId = 1L;
         given(issueService.popUpIssue(eq(issueId), anyLong()))
@@ -254,10 +257,14 @@ class IssueControllerTest extends ControllerTest {
                     fieldWithPath("labels[].colorCode").type(STRING).description("라벨 색상 코드"),
                     fieldWithPath("labels[].textColor").type(STRING).description("라벨 텍스트 컬러"),
                     fieldWithPath("milestoneInformation.milestoneName").type(STRING).description("마일스톤 이름"),
-                    fieldWithPath("milestoneInformation.allIssueCount").type(NUMBER).description("마일스톤에 할당된 전체 issue 수"),
-                    fieldWithPath("milestoneInformation.closedIssueCount").type(NUMBER).description("마일스톤에 할당된 issue 중 close 된 issue 수"),
-                    fieldWithPath("commentOutlines[].commentUserOutline.optionName").type(STRING).description("코멘트 단 유저 이름"),
-                    fieldWithPath("commentOutlines[].commentUserOutline.imageUrl").type(STRING).description("코멘트 단 유저 이미지"),
+                    fieldWithPath("milestoneInformation.allIssueCount").type(NUMBER)
+                        .description("마일스톤에 할당된 전체 issue 수"),
+                    fieldWithPath("milestoneInformation.closedIssueCount").type(NUMBER)
+                        .description("마일스톤에 할당된 issue 중 close 된 issue 수"),
+                    fieldWithPath("commentOutlines[].commentUserOutline.optionName").type(STRING)
+                        .description("코멘트 단 유저 이름"),
+                    fieldWithPath("commentOutlines[].commentUserOutline.imageUrl").type(STRING)
+                        .description("코멘트 단 유저 이미지"),
                     fieldWithPath("commentOutlines[].content").type(STRING).description("코멘트 내용"),
                     fieldWithPath("commentOutlines[].writtenTime").type(STRING).description("코멘트 단 시간"),
                     fieldWithPath("commentOutlines[].editable").type(BOOLEAN).description("수정 가능 여부"),
@@ -317,7 +324,6 @@ class IssueControllerTest extends ControllerTest {
         verify(issueService, times(1))
             .changeIssueTitle(eq(issueId), any(ChangeIssueTitleRequest.class), eq(10L));
 
-
         // restdocs
         perform.andDo(
             document("change-issue-title", getDocumentRequest(), getDocumentResponse(),
@@ -354,7 +360,6 @@ class IssueControllerTest extends ControllerTest {
 
         verify(issueService, times(1))
             .changeAssigneeList(eq(issueId), any(ChangeAssigneesRequest.class), eq(10L));
-
 
         // restdocs
         perform.andDo(
@@ -393,7 +398,6 @@ class IssueControllerTest extends ControllerTest {
         verify(issueService, times(1))
             .changeLabelList(eq(issueId), any(ChangeLabelsRequest.class), eq(10L));
 
-
         // restdocs
         perform.andDo(
             document("change-issue-labels", getDocumentRequest(), getDocumentResponse(),
@@ -403,5 +407,60 @@ class IssueControllerTest extends ControllerTest {
                 requestFields(
                     fieldWithPath("labels").description("issue에 할당할 label list")
                 )));
+    }
+
+    @DisplayName("issue에 comments를 추가한다.")
+    @Test
+    void add_comments() throws Exception {
+        // given
+        Long issueId = 1L;
+        CommentsRequest request = new CommentsRequest("issue에 작성된 comments 입니다..");
+        String content = objectMapper.writeValueAsString(request);
+
+        User writer = new User("user1", "nickname1", "image1");
+        Issue issue = new Issue(1L, "title1", "content1", LocalDateTime.now(), LocalDateTime.now(), writer, null);
+
+        Comment comment = new Comment("issue에 작성된 comments 입니다..", LocalDateTime.now(),
+            new User("user1", "name1", "image1"), issue, true);
+
+        given(issueService.addComments(eq(issueId), any(CommentsRequest.class), eq(10L)))
+            .willReturn(new CommentOutline(comment));
+
+        // when
+        ResultActions perform = mockMvc.perform(
+            RestDocumentationRequestBuilders.post("/api/issues/{issueId}/comments", issueId)
+                .header("Authorization", "Bearer testToken")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.commentUserOutline.optionName").value("user1"))
+            .andExpect(jsonPath("$.commentUserOutline.imageUrl").value("image1"))
+            .andExpect(jsonPath("$.content").value("issue에 작성된 comments 입니다.."))
+            .andExpect(jsonPath("$.editable").value(true));
+
+        verify(issueService, times(1))
+            .addComments(eq(issueId), any(CommentsRequest.class), eq(10L));
+
+        // restdocs
+        perform.andDo(
+            document("add-comments", getDocumentRequest(), getDocumentResponse(),
+                pathParameters(
+                    parameterWithName("issueId").description("comment를 추가할 이슈 id")
+                ),
+                requestFields(
+                    fieldWithPath("contents").description("comment 내용")
+                ),
+                responseFields(
+                    fieldWithPath("commentUserOutline.optionName").type(STRING).description("comment 작성자 이름"),
+                    fieldWithPath("commentUserOutline.imageUrl").type(STRING).description("comment 작성자 사진"),
+                    fieldWithPath("content").type(STRING).description("comment 내용"),
+                    fieldWithPath("writtenTime").type(STRING).description("comment 작성된 시간"),
+                    fieldWithPath("editable").type(BOOLEAN).description("comment 수정 가능 여부")
+                )));
+
     }
 }
