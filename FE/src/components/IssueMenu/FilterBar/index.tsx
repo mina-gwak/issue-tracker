@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+
 import { useRecoilValue } from 'recoil';
 
 import * as S from '@components/IssueMenu/FilterBar/FilterBar.style';
@@ -10,18 +12,27 @@ import { modalState } from '@store/dropdown';
 import { filterBarInputValueState } from '@store/filterBar';
 
 const FilterBar = () => {
+  const modalRef = useRef<HTMLDivElement>(null);
   const modalValue: { [key: string]: boolean } = useRecoilValue(modalState);
   const filterBarValue = useRecoilValue(filterBarInputValueState);
-  const { toggleModal } = useModal();
+  const { toggleModal, handleModalClick } = useModal({ modalRef, type: 'issues' });
 
   return (
     <S.Wrapper>
       <S.FilterButtonWrapper>
-        <S.FilterButton onClick={toggleModal('issues')}>
+        <S.FilterButton onClick={toggleModal}>
           필터
           <Icon iconName={ICON_NAME.SELECT} />
         </S.FilterButton>
-        {modalValue['issues'] && <Modal data={issues} title='이슈' type='is' />}
+        {modalValue['issues'] && (
+          <Modal
+            modalRef={modalRef}
+            data={issues}
+            title='이슈'
+            type='is'
+            handleModalClick={handleModalClick}
+          />
+        )}
       </S.FilterButtonWrapper>
       <S.FilterInputWrapper>
         <S.FilterInput

@@ -1,20 +1,36 @@
-import { useRecoilState } from 'recoil';
+import { RefObject } from 'react';
+
+import { useRecoilState, useResetRecoilState } from 'recoil';
 
 import { defaultState, modalState, ModalStateType } from '@store/dropdown';
 
-interface ReturnUseModalType {
-  toggleModal: (type: ModalStateType) => () => void;
+interface UseModalPropsType<T> {
+  modalRef: RefObject<T>;
+  type: ModalStateType;
 }
 
-export function useModal(): ReturnUseModalType {
-  const [modalItem, setModalItem] = useRecoilState(modalState);
+interface UseModalReturnType {
+  toggleModal: () => void;
+  handleModalClick: (event: MouseEvent) => void;
+}
 
-  const toggleModal = (type: ModalStateType) => () => {
+export const useModal = <T extends HTMLElement>({
+  modalRef,
+  type,
+}: UseModalPropsType<T>): UseModalReturnType => {
+  const [modalItem, setModalItem] = useRecoilState(modalState);
+  const resetModalValue = useResetRecoilState(modalState);
+
+  const toggleModal = () => {
     setModalItem({
       ...defaultState,
       [type]: !modalItem[type],
     });
   };
 
-  return { toggleModal };
-}
+  const handleModalClick = (event: MouseEvent) => {
+    if (!modalRef.current?.contains(event.target as Node)) resetModalValue();
+  };
+
+  return { toggleModal, handleModalClick };
+};

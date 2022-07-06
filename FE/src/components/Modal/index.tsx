@@ -1,3 +1,5 @@
+import { RefObject, useEffect } from 'react';
+
 import { useRecoilValue, useRecoilState } from 'recoil';
 
 import { IconsType } from '@assets/icons';
@@ -11,10 +13,12 @@ import { filterBarArrState, filterBarState } from '@store/filterBar';
 import { DropdownType } from '@type/dropdownType';
 
 export interface ModalPropsType {
+  modalRef: RefObject<HTMLDivElement>;
   data: DropdownType[];
   title: string;
   type: string;
   position?: string;
+  handleModalClick: (event: MouseEvent) => void;
 }
 
 type isCheckedType = {
@@ -25,7 +29,14 @@ type checkBoxClickHandlerType = {
   (value?: string, optionName?: string): () => void;
 };
 
-const Modal = ({ data, title, type, position = POSITION.LEFT }: ModalPropsType) => {
+const Modal = ({
+  modalRef,
+  data,
+  title,
+  type,
+  position = POSITION.LEFT,
+  handleModalClick,
+}: ModalPropsType) => {
   const filterBarArrValue = useRecoilValue(filterBarArrState);
   const [filterBarValue, setFilterBarValue] = useRecoilState(filterBarState);
 
@@ -65,8 +76,16 @@ const Modal = ({ data, title, type, position = POSITION.LEFT }: ModalPropsType) 
     }
   };
 
+  useEffect(() => {
+    document.addEventListener('click', handleModalClick, true);
+
+    return () => {
+      document.removeEventListener('click', handleModalClick, true);
+    };
+  }, [modalRef]);
+
   return (
-    <S.MenuList position={position}>
+    <S.MenuList position={position} ref={modalRef}>
       <S.MenuTitle>{title} 필터</S.MenuTitle>
       {data.map(({ optionName, value, imageUrl, colorCode }) => (
         <S.MenuOptionGroup key={optionName}>
