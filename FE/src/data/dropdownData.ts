@@ -3,9 +3,9 @@ import { DropdownType } from '@type/dropdownType';
 // 데이터 axios X
 export const issues: DropdownType[] = [
   { optionName: '열린 이슈', value: 'open' },
-  { optionName: '내가 작성한 이슈', value: 'author' },
-  { optionName: '나에게 할당된 이슈', value: 'assignee' },
-  { optionName: '내가 댓글을 남긴 이슈', value: 'comment' },
+  { optionName: '내가 작성한 이슈', value: 'write_by_me' },
+  { optionName: '나에게 할당된 이슈', value: 'assigned_me' },
+  { optionName: '내가 댓글을 남긴 이슈', value: 'add_comment_by_me' },
   { optionName: '닫힌 이슈', value: 'close' },
 ];
 
