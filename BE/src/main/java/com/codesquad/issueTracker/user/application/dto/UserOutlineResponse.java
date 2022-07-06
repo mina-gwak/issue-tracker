@@ -4,11 +4,11 @@ import lombok.Getter;
 
 @Getter
 public class UserOutlineResponse {
-    private String name;
+    private String optionName;
     private String imageUrl;
 
-    public UserOutlineResponse(String name, String imageUrl) {
-        this.name = name;
+    public UserOutlineResponse(String optionName, String imageUrl) {
+        this.optionName = optionName;
         this.imageUrl = imageUrl;
     }
 }

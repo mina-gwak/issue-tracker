@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.codesquad.issueTracker.comment.domain.Comment;
 import com.codesquad.issueTracker.comment.domain.CommentRepository;
+import com.codesquad.issueTracker.issue.application.dto.CommentOutline;
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
@@ -19,7 +20,10 @@ import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.issue.domain.MainFilter;
 import com.codesquad.issueTracker.issue.domain.repository.IssueRepository;
 import com.codesquad.issueTracker.issue.infrastructure.QueryParser;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeLabelsRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.CommentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
 import com.codesquad.issueTracker.label.domain.Label;
 import com.codesquad.issueTracker.label.domain.LabelRepository;
@@ -109,7 +113,8 @@ public class IssueService {
 
         issue.addFiles(issueContentsRequest.getFileUrl());
 
-        issueRepository.save(issue);
+        // TODO : issue Id 내려줘야하지 않을까?
+        // Issue savedIssue = issueRepository.save(issue);
     }
 
     @Transactional(readOnly = true)
@@ -119,25 +124,52 @@ public class IssueService {
     }
 
     @Transactional
-    public void deleteIssue(Long id, Long userId) {
-        Issue issue = findSingleIssue(id);
-        User user = findUser(userId);
-
-        if (issue.isNotWrittenBy(user)) {
-            throw new IllegalStateException("자신의 이슈만 지울 수 있습니다.");
-        }
-        issueRepository.deleteById(id);
+    public void deleteIssue(Long issueId, Long userId) {
+        Issue issue = checkEditable(issueId, userId);
+        issueRepository.delete(issue);
     }
 
     @Transactional
     public void changeIssueTitle(Long issueId, ChangeIssueTitleRequest request, Long userId) {
+        Issue issue = checkEditable(issueId, userId);
+        issue.updateTitle(request.getTitle());
+    }
+
+    @Transactional
+    public void changeAssigneeList(Long issueId, ChangeAssigneesRequest request, Long userId) {
+        Issue issue = checkEditable(issueId, userId);
+        List<User> assignees = userRepository.findByNameIn(request.getAssignees());
+        issue.updateAssignee(assignees);
+    }
+
+    @Transactional
+    public void changeLabelList(Long issueId, ChangeLabelsRequest request, Long userId) {
+        Issue issue = checkEditable(issueId, userId);
+        List<Label> labels = labelRepository.findByNameIn(request.getLabels());
+        issue.updateLabels(labels);
+    }
+
+    @Transactional
+    public CommentOutline addComments(Long issueId, CommentsRequest request, Long userId) {
+        Issue issue = findSingleIssue(issueId);
+        User user = findUser(userId);
+        Comment comment = new Comment(request.getContents(), LocalDateTime.now(), user, issue, true);
+        Comment savedComment = commentRepository.save(comment);
+        return new CommentOutline(savedComment);
+    }
+
+    @Transactional
+    public void editComments(Long issueId, CommentsRequest request, Long userId) {
+    }
+
+    private Issue checkEditable(Long issueId, Long userId) {
         Issue issue = findSingleIssue(issueId);
         User user = findUser(userId);
 
         if (issue.isNotWrittenBy(user)) {
             throw new IllegalStateException("자신이 작성한 이슈만 수정할 수 있습니다.");
         }
-        issue.updateTitle(request.getTitle());
+        return issue;
     }
 
     private void changeStatusAndAddComment(String status, User user, Issue issue) {

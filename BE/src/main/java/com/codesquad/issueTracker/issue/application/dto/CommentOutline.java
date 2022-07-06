@@ -12,10 +12,12 @@ public class CommentOutline {
     private UserOutlineResponse commentUserOutline;
     private String content;
     private LocalDateTime writtenTime;
+    private boolean editable;
 
     public CommentOutline(Comment comment) {
         this.commentUserOutline = new UserOutlineResponse(comment.getWriterName(), comment.getWriterImage());
         this.content = comment.getContent();
         this.writtenTime = comment.getWrittenTime();
+        this.editable = comment.isEditable();
     }
 }

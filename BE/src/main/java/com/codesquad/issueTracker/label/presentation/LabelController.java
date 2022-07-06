@@ -25,4 +25,6 @@ public class LabelController {
         List<LabelOutlineResponse> labelsOutlineInfo = labelService.findLabelsOutlineInfo();
         return ResponseEntity.ok(new LabelOutlinesResponse(labelsOutlineInfo));
     }
+
+
 }

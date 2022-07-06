@@ -19,10 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codesquad.issueTracker.issue.application.IssueService;
+import com.codesquad.issueTracker.issue.application.dto.CommentOutline;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
 import com.codesquad.issueTracker.issue.application.dto.IssueDetailResponse;
 import com.codesquad.issueTracker.issue.application.dto.PopUpResponse;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeLabelsRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.CommentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
 
 import lombok.RequiredArgsConstructor;
@@ -76,7 +80,7 @@ public class IssueController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/{issueId}")
+    @PatchMapping("/{issueId}/title")
     public ResponseEntity<Void> changeIssueTitle(
         @PathVariable Long issueId,
         @RequestBody ChangeIssueTitleRequest request,
@@ -85,4 +89,39 @@ public class IssueController {
         return ResponseEntity.ok().build();
     }
 
+    @PatchMapping("/{issueId}/assignees")
+    public ResponseEntity<Void> changeAssigneeList(
+        @PathVariable Long issueId,
+        @RequestBody ChangeAssigneesRequest request,
+        @RequestAttribute Long userId) {
+        issueService.changeAssigneeList(issueId, request, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{issueId}/labels")
+    public ResponseEntity<Void> changeLabelList(
+        @PathVariable Long issueId,
+        @RequestBody ChangeLabelsRequest request,
+        @RequestAttribute Long userId) {
+        issueService.changeLabelList(issueId, request, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    // TODO : Docs 추가
+    @PostMapping("/{issueId}/comments")
+    public ResponseEntity<CommentOutline> addComment(
+        @PathVariable Long issueId,
+        @RequestBody CommentsRequest request,
+        @RequestAttribute Long userId) {
+        return ResponseEntity.ok(issueService.addComments(issueId, request, userId));
+    }
+
+    @PatchMapping("/{issueId}/comments")
+    public ResponseEntity<Void> editComment(
+        @PathVariable Long issueId,
+        @RequestBody CommentsRequest request,
+        @RequestAttribute Long userId) {
+        issueService.editComments(issueId, request, userId);
+        return ResponseEntity.ok().build();
+    }
 }

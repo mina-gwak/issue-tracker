@@ -4,11 +4,11 @@ import lombok.Getter;
 
 @Getter
 public class LabelOutlineResponse {
-    private String name;
+    private String optionName;
     private String colorCode;
 
-    public LabelOutlineResponse(String name, String colorCode) {
-        this.name = name;
+    public LabelOutlineResponse(String optionName, String colorCode) {
+        this.optionName = optionName;
         this.colorCode = colorCode;
     }
 }

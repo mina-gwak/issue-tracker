@@ -16,16 +16,22 @@ import com.codesquad.issueTracker.user.presentation.dto.UserOutlinesResponse;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 @RestController
 public class UserController {
 
     private final OAuthService oAuthService;
     private final UserService userService;
 
+    @GetMapping("/users")
+    public ResponseEntity<UserOutlinesResponse> findUsersOutlineInfo() {
+        List<UserOutlineResponse> userOutlineInfo = userService.findUsers();
+        return ResponseEntity.ok(new UserOutlinesResponse(userOutlineInfo));
+    }
+
     @GetMapping("/writers")
     public ResponseEntity<UserOutlinesResponse> findWritersOutlineInfo() {
-        List<UserOutlineResponse> userOutlineInfo = userService.findUserOutlineInfo();
+        List<UserOutlineResponse> userOutlineInfo = userService.findWriters();
         return ResponseEntity.ok(new UserOutlinesResponse(userOutlineInfo));
     }
 
@@ -35,7 +41,7 @@ public class UserController {
         return ResponseEntity.ok(new UserOutlinesResponse(userOutlineInfo));
     }
 
-    @GetMapping("/logout")
+    @GetMapping("/users/logout")
     public ResponseEntity<Void> oAuthLogout(@RequestAttribute String userId) {
         oAuthService.logout(userId);
         return ResponseEntity.noContent().build();

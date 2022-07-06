@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public class MilestoneOutlineResponse {
-    private String milestoneName;
+    private String optionName;
 
-    public MilestoneOutlineResponse(String milestoneName) {
-        this.milestoneName = milestoneName;
+    public MilestoneOutlineResponse(String optionName) {
+        this.optionName = optionName;
     }
 }

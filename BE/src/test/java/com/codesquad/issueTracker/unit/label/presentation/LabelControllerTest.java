@@ -40,15 +40,15 @@ class LabelControllerTest extends ControllerTest {
         // then
         perform
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.labelOutlineResponses.length()").value(3))
-            .andExpect(jsonPath("$.labelOutlineResponses[1].name").value("Lucid"))
-            .andExpect(jsonPath("$.labelOutlineResponses[1].colorCode").value("#008672"));
+            .andExpect(jsonPath("$.labelsOutlineResponses.length()").value(3))
+            .andExpect(jsonPath("$.labelsOutlineResponses[1].optionName").value("Lucid"))
+            .andExpect(jsonPath("$.labelsOutlineResponses[1].colorCode").value("#008672"));
 
         perform.andDo(
             document("get-label-filter-info", getDocumentRequest(), getDocumentResponse(),
                 responseFields(
-                    fieldWithPath("labelOutlineResponses[].name").description("라벨 이름"),
-                    fieldWithPath("labelOutlineResponses[].colorCode").description("라벨 색")
+                    fieldWithPath("labelsOutlineResponses[].optionName").description("라벨 이름"),
+                    fieldWithPath("labelsOutlineResponses[].colorCode").description("라벨 색")
                 )));
     }
 }

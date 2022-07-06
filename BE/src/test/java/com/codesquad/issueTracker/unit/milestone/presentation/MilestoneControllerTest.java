@@ -40,13 +40,13 @@ class MilestoneControllerTest extends ControllerTest {
         // then
         perform
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.milestoneOutlineResponses.length()").value(3))
-            .andExpect(jsonPath("$.milestoneOutlineResponses[1].milestoneName").value("milestone2"));
+            .andExpect(jsonPath("$.milestonesOutlineResponses.length()").value(3))
+            .andExpect(jsonPath("$.milestonesOutlineResponses[1].optionName").value("milestone2"));
 
         perform.andDo(
             document("get-milestone-filter-info", getDocumentRequest(), getDocumentResponse(),
                 responseFields(
-                    fieldWithPath("milestoneOutlineResponses[].milestoneName").description("마일스톤 이름")
+                    fieldWithPath("milestonesOutlineResponses[].optionName").description("마일스톤 이름")
                 )));
     }
 }

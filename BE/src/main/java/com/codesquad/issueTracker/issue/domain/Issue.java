@@ -133,4 +133,14 @@ public class Issue {
     public void updateTitle(String title) {
         this.title = title;
     }
+
+    public void updateAssignee(List<User> assignees) {
+        assignedIssues.clear();
+        assignUser(assignees);
+    }
+
+    public void updateLabels(List<Label> labels) {
+        attachedLabels.clear();
+        attachedLabel(labels);
+    }
 }

@@ -58,6 +58,18 @@ operation::get-single-issue[snippets='http-request,path-parameters,http-response
 === 🔒 이슈 단건 삭제
 operation::delete-single-issue[snippets='http-request,path-parameters,http-response']
 
+[[change-issue-title]]
+=== 🔒 이슈 제목 변경
+operation::change-issue-title[snippets='http-request,path-parameters,request-fields,http-response']
+
+[[change-issue-assignees]]
+=== 🔒 이슈 assignees 변경
+operation::change-issue-assignees[snippets='http-request,path-parameters,request-fields,http-response']
+
+[[change-issue-labels]]
+=== 🔒 이슈 labels 변경
+operation::change-issue-labels[snippets='http-request,path-parameters,request-fields,http-response']
+
 [[Milestone-API]]
 == Milestone API
 

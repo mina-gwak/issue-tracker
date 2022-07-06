@@ -7,4 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChangeIssueTitleRequest {
     private String title;
+
+    public ChangeIssueTitleRequest(String title) {
+        this.title = title;
+    }
 }

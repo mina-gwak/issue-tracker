@@ -9,10 +9,10 @@ import lombok.Getter;
 @Getter
 public class UserOutlinesResponse {
 
-    private List<UserOutlineResponse> userOutlineResponses;
+    private List<UserOutlineResponse> usersOutlineResponses;
 
     public UserOutlinesResponse(
-        List<UserOutlineResponse> userOutlineResponses) {
-        this.userOutlineResponses = userOutlineResponses;
+        List<UserOutlineResponse> usersOutlineResponses) {
+        this.usersOutlineResponses = usersOutlineResponses;
     }
 }

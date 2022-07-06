@@ -43,9 +43,4 @@ public class User {
     public boolean isYourId(Long userId) {
         return this.id.equals(userId);
     }
-
-    public void deleteIssue(Issue issue) {
-        issues.remove(issue);
-        issue.removeUser();
-    }
 }

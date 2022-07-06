@@ -1,11 +1,12 @@
 package com.codesquad.issueTracker.user.application;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.codesquad.issueTracker.issue.domain.repository.AssignedIssueRepository;
+import com.codesquad.issueTracker.issue.domain.repository.IssueRepository;
 import com.codesquad.issueTracker.user.application.dto.UserOutlineResponse;
 import com.codesquad.issueTracker.user.domain.repository.UserRepository;
 
@@ -16,17 +17,23 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final IssueRepository issueRepository;
+    private final AssignedIssueRepository assignedIssueRepository;
 
     @Transactional(readOnly = true)
-    public List<UserOutlineResponse> findUserOutlineInfo() {
+    public List<UserOutlineResponse> findUsers() {
         return userRepository.findUserOutlineInfo();
     }
 
-    public List<UserOutlineResponse> findAssignees() {
-        List<String> assigneeList = List.of("honux", "crong", "jk", "ivy");
-        return userRepository.findByNameIn(assigneeList).stream()
-            .map(user -> new UserOutlineResponse(user.getName(), user.getImage()))
-            .collect(Collectors.toList());
+    @Transactional(readOnly = true)
+    public List<UserOutlineResponse> findWriters() {
+        List<Long> writersId = issueRepository.findWriters();
+        return userRepository.findByIds(writersId);
     }
 
+    @Transactional(readOnly = true)
+    public List<UserOutlineResponse> findAssignees() {
+        List<Long> assigneesId = assignedIssueRepository.findAssignees();
+        return userRepository.findByIds(assigneesId);
+    }
 }

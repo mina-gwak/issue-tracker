@@ -8,10 +8,10 @@ import lombok.Getter;
 
 @Getter
 public class MilestoneOutlinesResponse {
-    private List<MilestoneOutlineResponse> milestoneOutlineResponses;
+    private List<MilestoneOutlineResponse> milestonesOutlineResponses;
 
     public MilestoneOutlinesResponse(
-        List<MilestoneOutlineResponse> milestoneOutlineResponses) {
-        this.milestoneOutlineResponses = milestoneOutlineResponses;
+        List<MilestoneOutlineResponse> milestonesOutlineResponses) {
+        this.milestonesOutlineResponses = milestonesOutlineResponses;
     }
 }

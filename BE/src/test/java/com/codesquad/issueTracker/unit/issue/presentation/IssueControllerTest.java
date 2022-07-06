@@ -27,6 +27,9 @@ import com.codesquad.issueTracker.issue.application.dto.IssueDetailResponse;
 import com.codesquad.issueTracker.issue.application.dto.LabelCoverResponse;
 import com.codesquad.issueTracker.issue.application.dto.PopUpResponse;
 import com.codesquad.issueTracker.issue.domain.Issue;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeLabelsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
 import com.codesquad.issueTracker.label.domain.Label;
 import com.codesquad.issueTracker.milestone.domain.Milestone;
@@ -243,9 +246,9 @@ class IssueControllerTest extends ControllerTest {
                     fieldWithPath("content").type(STRING).description("이슈 컨텐츠"),
                     fieldWithPath("open").type(BOOLEAN).description("열린 이슈 여부"),
                     fieldWithPath("writtenTime").type(STRING).description("작성 시간"),
-                    fieldWithPath("writerOutline.name").type(STRING).description("작성자"),
+                    fieldWithPath("writerOutline.optionName").type(STRING).description("작성자"),
                     fieldWithPath("writerOutline.imageUrl").type(STRING).description("작성자 이미지"),
-                    fieldWithPath("assignees[].name").type(STRING).description("할당된 유저이름"),
+                    fieldWithPath("assignees[].optionName").type(STRING).description("할당된 유저이름"),
                     fieldWithPath("assignees[].imageUrl").type(STRING).description("할당된 유저 이미지"),
                     fieldWithPath("labels[].labelName").type(STRING).description("라벨 이름"),
                     fieldWithPath("labels[].colorCode").type(STRING).description("라벨 색상 코드"),
@@ -253,10 +256,11 @@ class IssueControllerTest extends ControllerTest {
                     fieldWithPath("milestoneInformation.milestoneName").type(STRING).description("마일스톤 이름"),
                     fieldWithPath("milestoneInformation.allIssueCount").type(NUMBER).description("마일스톤에 할당된 전체 issue 수"),
                     fieldWithPath("milestoneInformation.closedIssueCount").type(NUMBER).description("마일스톤에 할당된 issue 중 close 된 issue 수"),
-                    fieldWithPath("commentOutlines[].commentUserOutline.name").type(STRING).description("코멘트 단 유저 이름"),
+                    fieldWithPath("commentOutlines[].commentUserOutline.optionName").type(STRING).description("코멘트 단 유저 이름"),
                     fieldWithPath("commentOutlines[].commentUserOutline.imageUrl").type(STRING).description("코멘트 단 유저 이미지"),
                     fieldWithPath("commentOutlines[].content").type(STRING).description("코멘트 내용"),
                     fieldWithPath("commentOutlines[].writtenTime").type(STRING).description("코멘트 단 시간"),
+                    fieldWithPath("commentOutlines[].editable").type(BOOLEAN).description("수정 가능 여부"),
                     fieldWithPath("imageUrls").type(ARRAY).description("첨부  url 배열")
                 )));
     }
@@ -288,4 +292,116 @@ class IssueControllerTest extends ControllerTest {
                 )));
     }
 
+    @DisplayName("이슈 타이틀을 변경한다.")
+    @Test
+    void change_issue_title() throws Exception {
+        // given
+        Long issueId = 1L;
+
+        ChangeIssueTitleRequest title = new ChangeIssueTitleRequest("changeTitle");
+
+        String content = objectMapper.writeValueAsString(title);
+
+        // when
+        ResultActions perform = mockMvc.perform(
+            RestDocumentationRequestBuilders.patch("/api/issues/{issueId}/title", issueId)
+                .header("Authorization", "Bearer testToken")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk());
+
+        verify(issueService, times(1))
+            .changeIssueTitle(eq(issueId), any(ChangeIssueTitleRequest.class), eq(10L));
+
+
+        // restdocs
+        perform.andDo(
+            document("change-issue-title", getDocumentRequest(), getDocumentResponse(),
+                pathParameters(
+                    parameterWithName("issueId").description("변경할 이슈 id")
+                ),
+                requestFields(
+                    fieldWithPath("title").description("변경할 issue 제목")
+                )));
+    }
+
+    @DisplayName("이슈의 assignees를 변경한다.")
+    @Test
+    void change_issue_assignees() throws Exception {
+        // given
+        Long issueId = 1L;
+
+        ChangeAssigneesRequest request = new ChangeAssigneesRequest(
+            List.of("assignee1", "assignee2", "assignee3"));
+
+        String content = objectMapper.writeValueAsString(request);
+
+        // when
+        ResultActions perform = mockMvc.perform(
+            RestDocumentationRequestBuilders.patch("/api/issues/{issueId}/assignees", issueId)
+                .header("Authorization", "Bearer testToken")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk());
+
+        verify(issueService, times(1))
+            .changeAssigneeList(eq(issueId), any(ChangeAssigneesRequest.class), eq(10L));
+
+
+        // restdocs
+        perform.andDo(
+            document("change-issue-assignees", getDocumentRequest(), getDocumentResponse(),
+                pathParameters(
+                    parameterWithName("issueId").description("변경할 이슈 id")
+                ),
+                requestFields(
+                    fieldWithPath("assignees").description("issue에 할당할 assignees list")
+                )));
+    }
+
+    @DisplayName("이슈의 label list를 변경한다.")
+    @Test
+    void change_issue_labels() throws Exception {
+        // given
+        Long issueId = 1L;
+
+        ChangeLabelsRequest request = new ChangeLabelsRequest(
+            List.of("label1", "label2", "label3"));
+
+        String content = objectMapper.writeValueAsString(request);
+
+        // when
+        ResultActions perform = mockMvc.perform(
+            RestDocumentationRequestBuilders.patch("/api/issues/{issueId}/labels", issueId)
+                .header("Authorization", "Bearer testToken")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk());
+
+        verify(issueService, times(1))
+            .changeLabelList(eq(issueId), any(ChangeLabelsRequest.class), eq(10L));
+
+
+        // restdocs
+        perform.andDo(
+            document("change-issue-labels", getDocumentRequest(), getDocumentResponse(),
+                pathParameters(
+                    parameterWithName("issueId").description("변경할 이슈 id")
+                ),
+                requestFields(
+                    fieldWithPath("labels").description("issue에 할당할 label list")
+                )));
+    }
 }
