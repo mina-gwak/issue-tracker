@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';
@@ -27,9 +27,10 @@ const fetchData: { [key: string]: DropdownType[] } = {
 };
 
 const Filter = ({ type, title }: FilterPropsType) => {
+  const modalRef = useRef<HTMLDivElement>(null);
   const [filterValue, setFilterValue] = useState();
   const modalValue = useRecoilValue(modalState);
-  const { toggleModal } = useModal();
+  const { toggleModal, handleModalClick } = useModal({ modalRef, type });
   const curData = fetchData[type];
 
   const fetchTypeData = async () => {
@@ -44,15 +45,23 @@ const Filter = ({ type, title }: FilterPropsType) => {
 
     setFilterValue(response.data[`${type}OutlineResponses`]);
   };
-  // onMouseEnter={fetchTypeData} 50번째 줄 추카
+  // onMouseEnter={fetchTypeData} 50번째 줄 추가
+
   return (
     <>
-      <S.FilterButton onClick={toggleModal(type)}>
+      <S.FilterButton onClick={toggleModal}>
         {title}
         <Icon iconName={ICON_NAME.SELECT} />
       </S.FilterButton>
       {modalValue[type] && (
-        <Modal data={curData} title={title} position={POSITION.RIGHT} type={type} />
+        <Modal
+          modalRef={modalRef}
+          data={curData}
+          title={title}
+          position={POSITION.RIGHT}
+          type={type}
+          handleModalClick={handleModalClick}
+        />
       )}
     </>
   );
