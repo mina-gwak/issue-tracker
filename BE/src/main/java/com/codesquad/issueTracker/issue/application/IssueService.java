@@ -125,26 +125,26 @@ public class IssueService {
 
     @Transactional
     public void deleteIssue(Long issueId, Long userId) {
-        Issue issue = checkEditable(issueId, userId);
+        Issue issue = checkEditableIssue(issueId, userId);
         issueRepository.delete(issue);
     }
 
     @Transactional
     public void changeIssueTitle(Long issueId, ChangeIssueTitleRequest request, Long userId) {
-        Issue issue = checkEditable(issueId, userId);
+        Issue issue = checkEditableIssue(issueId, userId);
         issue.updateTitle(request.getTitle());
     }
 
     @Transactional
     public void changeAssigneeList(Long issueId, ChangeAssigneesRequest request, Long userId) {
-        Issue issue = checkEditable(issueId, userId);
+        Issue issue = checkEditableIssue(issueId, userId);
         List<User> assignees = userRepository.findByNameIn(request.getAssignees());
         issue.updateAssignee(assignees);
     }
 
     @Transactional
     public void changeLabelList(Long issueId, ChangeLabelsRequest request, Long userId) {
-        Issue issue = checkEditable(issueId, userId);
+        Issue issue = checkEditableIssue(issueId, userId);
         List<Label> labels = labelRepository.findByNameIn(request.getLabels());
         issue.updateLabels(labels);
     }
@@ -159,10 +159,17 @@ public class IssueService {
     }
 
     @Transactional
-    public void editComments(Long issueId, CommentsRequest request, Long userId) {
+    public void editComments(Long commentId, CommentsRequest request, Long userId) {
+        Comment comment = commentRepository.findById(commentId)
+            .orElseThrow(() -> new IllegalStateException("유효하지 않은 comment 입니다."));
+        User user = findUser(userId);
+        if (comment.isNotWrittenBy(user)) {
+            throw new IllegalStateException("자신이 작성한 커멘트만 수정할 수 있습니다.");
+        }
+        comment.editContent(request.getContents());
     }
 
-    private Issue checkEditable(Long issueId, Long userId) {
+    private Issue checkEditableIssue(Long issueId, Long userId) {
         Issue issue = findSingleIssue(issueId);
         User user = findUser(userId);
         if (issue.isNotWrittenBy(user)) {

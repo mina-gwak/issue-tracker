@@ -55,4 +55,12 @@ public class Comment {
     public String getWriterImage() {
         return user.getImage();
     }
+
+    public boolean isNotWrittenBy(User user) {
+        return !this.user.equals(user);
+    }
+
+    public void editContent(String content) {
+        this.content = content;
+    }
 }

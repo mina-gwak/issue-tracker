@@ -107,7 +107,6 @@ public class IssueController {
         return ResponseEntity.ok().build();
     }
 
-    // TODO : Docs 추가
     @PostMapping("/{issueId}/comments")
     public ResponseEntity<CommentOutline> addComment(
         @PathVariable Long issueId,
@@ -116,12 +115,12 @@ public class IssueController {
         return ResponseEntity.ok(issueService.addComments(issueId, request, userId));
     }
 
-    @PatchMapping("/{issueId}/comments")
+    @PatchMapping("/{commentId}/comments")
     public ResponseEntity<Void> editComment(
-        @PathVariable Long issueId,
+        @PathVariable Long commentId,
         @RequestBody CommentsRequest request,
         @RequestAttribute Long userId) {
-        issueService.editComments(issueId, request, userId);
+        issueService.editComments(commentId, request, userId);
         return ResponseEntity.ok().build();
     }
 }
