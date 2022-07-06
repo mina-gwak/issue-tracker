@@ -463,4 +463,38 @@ class IssueControllerTest extends ControllerTest {
                 )));
 
     }
+
+    @DisplayName("comments를 수정한다.")
+    @Test
+    void edit_comments() throws Exception {
+        // given
+        Long commentId = 1L;
+        CommentsRequest request = new CommentsRequest("issue에 작성된 comments 입니다..");
+        String content = objectMapper.writeValueAsString(request);
+
+        // when
+        ResultActions perform = mockMvc.perform(
+            RestDocumentationRequestBuilders.patch("/api/issues/{commentId}/comments", commentId)
+                .header("Authorization", "Bearer testToken")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk());
+
+        verify(issueService, times(1))
+            .editComments(eq(commentId), any(CommentsRequest.class), eq(10L));
+
+        // restdocs
+        perform.andDo(
+            document("edit-comments", getDocumentRequest(), getDocumentResponse(),
+                pathParameters(
+                    parameterWithName("commentId").description("수정할 comment id")
+                ),
+                requestFields(
+                    fieldWithPath("contents").description("수정할 comment 내용")
+                )));
+    }
 }

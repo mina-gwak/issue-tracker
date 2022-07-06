@@ -83,3 +83,14 @@ operation::get-milestone-filter-info[snippets='http-request,http-response,respon
 [[Label-Filter-info]]
 === 🔒 Label Filter 정보 발급
 operation::get-label-filter-info[snippets='http-request,http-response,response-fields']
+
+[[Comment-API]]
+== Comment API
+
+[[add-comment]]
+=== 🔒 comment 추가
+operation::add-comments[snippets='http-request,path-parameters,request-fields,http-response,response-fields']
+
+[[edit-comment]]
+=== 🔒 comment 수정
+operation::edit-comments[snippets='http-request,path-parameters,request-fields,http-response']
