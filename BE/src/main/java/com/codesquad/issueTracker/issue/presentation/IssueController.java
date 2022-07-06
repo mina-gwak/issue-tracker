@@ -42,7 +42,6 @@ public class IssueController {
 
     @GetMapping
     public ResponseEntity<IssueCoversResponse> findIssues(@RequestParam String query, @RequestAttribute Long userId) {
-        log.info("userID is : {}", userId);
         return ResponseEntity.ok(issueService.findIssuesByCondition(query, userId));
     }
 

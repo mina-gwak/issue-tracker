@@ -74,7 +74,7 @@ public class IssueService {
             openCount = result.size();
             closeCount = issues.size() - openCount;
         }
-        return new IssueCoversResponse(result, openCount, closeCount);
+        return new IssueCoversResponse(result, openCount, closeCount, labelRepository.count(), milestoneRepository.count());
     }
 
     private Predicate<Issue> closedPredicate() {

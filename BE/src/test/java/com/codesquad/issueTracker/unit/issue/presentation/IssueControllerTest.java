@@ -44,16 +44,22 @@ class IssueControllerTest extends ControllerTest {
     @Test
     void request_with_main_filter() throws Exception {
         // given
-        LabelCoverResponse label1 = new LabelCoverResponse("Lucid", "#008672", "white");
-        LabelCoverResponse label2 = new LabelCoverResponse("BE", "#000000", "white");
+        User writer = new User("user1", "nickname1", "image1");
+        Milestone milestone = new Milestone("milestone1", LocalDateTime.now(), "description1");
+        Issue issue = new Issue(1L, "title1", "content1", LocalDateTime.now(), LocalDateTime.now(), writer, milestone);
 
-        IssueCoverResponse issue1 = new IssueCoverResponse(List.of(label1, label2), "BE Lucid가 작성한 issue",
-            1L, "루시드", "image3", LocalDateTime.now(), "BE milestone", true);
+        User assignee1 = new User("user1", "nickname1", "image1");
+        User assignee2 = new User("user1", "nickname1", "image1");
+        issue.assignUser(List.of(assignee1, assignee2));
 
-        List<IssueCoverResponse> responses = List.of(issue1);
+        Label label1 = new Label("Lucid", "Lucid's label", "#008672", "white");
+        Label label2 = new Label("BE", "BE's label", "#000000", "white");
+        issue.attachedLabel(List.of(label1, label2));
+
+        IssueCoverResponse responses = new IssueCoverResponse(issue);
 
         given(issueService.findIssuesByCondition(eq("is:open"), anyLong()))
-            .willReturn(new IssueCoversResponse(responses, 1, 2));
+            .willReturn(new IssueCoversResponse(List.of(responses), 1, 2, 3, 4));
 
         // when
         ResultActions perform = mockMvc.perform(get("/api/issues")
@@ -81,6 +87,8 @@ class IssueControllerTest extends ControllerTest {
                         .description("라벨 색"),
                     fieldWithPath("issueCoverResponses[].labelCoverResponses[].textColor").type(STRING)
                         .description("라벨 텍스트 색"),
+                    fieldWithPath("issueCoverResponses[].assignees[].optionName").type(STRING).description("assignee 이름"),
+                    fieldWithPath("issueCoverResponses[].assignees[].imageUrl").type(STRING).description("assignee 이미지"),
                     fieldWithPath("issueCoverResponses[].title").type(STRING).description("이슈 이름"),
                     fieldWithPath("issueCoverResponses[].issueId").type(NUMBER).description("이슈 id"),
                     fieldWithPath("issueCoverResponses[].writer").type(STRING).description("작성자 이름"),
@@ -89,7 +97,9 @@ class IssueControllerTest extends ControllerTest {
                     fieldWithPath("issueCoverResponses[].milestoneName").type(STRING).description("마일스톤 이름"),
                     fieldWithPath("issueCoverResponses[].opened").type(BOOLEAN).description("open / close 여부"),
                     fieldWithPath("openIssueCount").type(NUMBER).description("open 수"),
-                    fieldWithPath("closeIssueCount").type(NUMBER).description("close 수")
+                    fieldWithPath("closeIssueCount").type(NUMBER).description("close 수"),
+                    fieldWithPath("labelCount").type(NUMBER).description("전체 라벨 수"),
+                    fieldWithPath("milestoneCount").type(NUMBER).description("전체 마일스톤 수")
                 )));
     }
 
