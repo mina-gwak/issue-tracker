@@ -1,7 +1,7 @@
 package com.codesquad.issueTracker.issue.application.dto;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,14 +30,15 @@ public class IssueCoverResponse {
     public IssueCoverResponse(Issue issue) {
         Set<AttachedLabel> attachedLabels = issue.getAttachedLabels();
 
-        // TODO : sorting 필요..
         this.labelCoverResponses = attachedLabels.stream()
             .map(AttachedLabel::getLabel)
             .map(label -> new LabelCoverResponse(label.getName(), label.getLabelColor(), label.getTextColor()))
+            .sorted(Comparator.comparing(LabelCoverResponse::getLabelName))
             .collect(Collectors.toList());
 
         this.assignees = issue.getAssignedIssues()
             .stream().map(assignedIssue -> new UserOutlineResponse(assignedIssue.getUserName(), assignedIssue.getUserImage()))
+            .sorted(Comparator.comparing(UserOutlineResponse::getOptionName))
             .collect(Collectors.toList());
 
         this.title = issue.getTitle();
