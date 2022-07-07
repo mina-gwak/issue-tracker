@@ -160,13 +160,24 @@ public class IssueService {
 
     @Transactional
     public void editComments(Long commentId, CommentsRequest request, Long userId) {
+        Comment comment = checkEditableComments(commentId, userId);
+        comment.editContent(request.getContents());
+    }
+
+    @Transactional
+    public void removeComments(Long commentId, Long userId) {
+        Comment comment = checkEditableComments(commentId, userId);
+        commentRepository.delete(comment);
+    }
+
+    private Comment checkEditableComments(Long commentId, Long userId) {
         Comment comment = commentRepository.findById(commentId)
             .orElseThrow(() -> new IllegalStateException("유효하지 않은 comment 입니다."));
         User user = findUser(userId);
         if (comment.isNotWrittenBy(user)) {
             throw new IllegalStateException("자신이 작성한 커멘트만 수정할 수 있습니다.");
         }
-        comment.editContent(request.getContents());
+        return comment;
     }
 
     private Issue checkEditableIssue(Long issueId, Long userId) {

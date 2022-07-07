@@ -507,4 +507,32 @@ class IssueControllerTest extends ControllerTest {
                     fieldWithPath("contents").description("수정할 comment 내용")
                 )));
     }
+
+    @DisplayName("comments를 제거한다.")
+    @Test
+    void remove_comments() throws Exception {
+        // given
+        Long commentId = 1L;
+
+        // when
+        ResultActions perform = mockMvc.perform(
+            RestDocumentationRequestBuilders.delete("/api/issues/{commentId}/comments", commentId)
+                .header("Authorization", "Bearer testToken")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk());
+
+        verify(issueService, times(1))
+            .removeComments(eq(commentId), eq(10L));
+
+        // restdocs
+        perform.andDo(
+            document("remove-comments", getDocumentRequest(), getDocumentResponse(),
+                pathParameters(
+                    parameterWithName("commentId").description("수정할 comment id")
+                )));
+    }
 }
