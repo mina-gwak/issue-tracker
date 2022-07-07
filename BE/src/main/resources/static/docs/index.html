@@ -486,6 +486,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#add-comment">🔒 comment 추가</a></li>
 <li><a href="#edit-comment">🔒 comment 수정</a></li>
+<li><a href="#delete-comment">🔒 comment 삭제</a></li>
 </ul>
 </li>
 </ul>
@@ -906,12 +907,12 @@ Content-Length: 721
 {
   "issueCoverResponses" : [ {
     "labelCoverResponses" : [ {
-      "labelName" : "Lucid",
-      "labelColor" : "#008672",
-      "textColor" : "white"
-    }, {
       "labelName" : "BE",
       "labelColor" : "#000000",
+      "textColor" : "white"
+    }, {
+      "labelName" : "Lucid",
+      "labelColor" : "#008672",
       "textColor" : "white"
     } ],
     "assignees" : [ {
@@ -925,7 +926,7 @@ Content-Length: 721
     "issueId" : 1,
     "writer" : "user1",
     "writerImage" : "image1",
-    "modificationTime" : "2022-07-06T18:00:41.052684",
+    "modificationTime" : "2022-07-07T21:56:44.180553",
     "milestoneName" : "milestone1",
     "opened" : true
   } ],
@@ -1083,12 +1084,12 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 155
+Content-Length: 156
 
 {
   "title" : "BE Lucid가 작성한 issue",
   "content" : "내용은 이러하다",
-  "writtenTime" : "2022-07-06T18:00:40.95791",
+  "writtenTime" : "2022-07-07T21:56:44.071528",
   "assignedMe" : true
 }</code></pre>
 </div>
@@ -1310,7 +1311,7 @@ Content-Length: 946
   "issueId" : 1,
   "title" : "title1",
   "content" : "content1",
-  "writtenTime" : "2022-07-06T18:00:40.431053",
+  "writtenTime" : "2022-07-07T21:56:43.589018",
   "writerOutline" : {
     "optionName" : "user1",
     "imageUrl" : "image1"
@@ -1323,12 +1324,12 @@ Content-Length: 946
     "imageUrl" : "image1"
   } ],
   "labels" : [ {
-    "labelName" : "BE",
-    "colorCode" : "#000000",
-    "textColor" : "white"
-  }, {
     "labelName" : "Lucid",
     "colorCode" : "#008672",
+    "textColor" : "white"
+  }, {
+    "labelName" : "BE",
+    "colorCode" : "#000000",
     "textColor" : "white"
   } ],
   "milestoneInformation" : {
@@ -1342,10 +1343,10 @@ Content-Length: 946
       "imageUrl" : "image1"
     },
     "content" : "contents",
-    "writtenTime" : "2022-07-06T18:00:40.431861",
+    "writtenTime" : "2022-07-07T21:56:43.589679",
     "editable" : true
   } ],
-  "imageUrls" : [ "image2", "image3", "image1" ],
+  "imageUrls" : [ "image3", "image2", "image1" ],
   "open" : true
 }</code></pre>
 </div>
@@ -1954,7 +1955,7 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 213
+Content-Length: 214
 
 {
   "commentUserOutline" : {
@@ -1962,7 +1963,7 @@ Content-Length: 213
     "imageUrl" : "image1"
   },
   "content" : "issue에 작성된 comments 입니다..",
-  "writtenTime" : "2022-07-06T18:00:41.22735",
+  "writtenTime" : "2022-07-07T21:56:44.447053",
   "editable" : true
 }</code></pre>
 </div>
@@ -2087,13 +2088,34 @@ Host: localhost:8080
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="delete-comment"><a class="link" href="#delete-comment">🔒 comment 삭제</a></h3>
+<div class="sect3">
+<h4 id="delete-comment_http_request"><a class="link" href="#delete-comment_http_request">HTTP request</a></h4>
+<div class="paragraph">
+<p>Snippet http-request not found for operation::delete-comments</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="delete-comment_path_parameters"><a class="link" href="#delete-comment_path_parameters">Path parameters</a></h4>
+<div class="paragraph">
+<p>Snippet path-parameters not found for operation::delete-comments</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="delete-comment_http_response"><a class="link" href="#delete-comment_http_response">HTTP response</a></h4>
+<div class="paragraph">
+<p>Snippet http-response not found for operation::delete-comments</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-06 13:01:28 +0900
+Last updated 2022-07-07 21:55:35 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

@@ -122,4 +122,10 @@ public class IssueController {
         issueService.editComments(commentId, request, userId);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{commentId}/comments")
+    public ResponseEntity<Void> removeComment(@PathVariable Long commentId, @RequestAttribute Long userId) {
+        issueService.removeComments(commentId, userId);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -98,3 +98,7 @@ operation::add-comments[snippets='http-request,path-parameters,request-fields,ht
 [[edit-comment]]
 === 🔒 comment 수정
 operation::edit-comments[snippets='http-request,path-parameters,request-fields,http-response']
+
+[[delete-comment]]
+=== 🔒 comment 삭제
+operation::remove-comments[snippets='http-request,path-parameters,http-response']
