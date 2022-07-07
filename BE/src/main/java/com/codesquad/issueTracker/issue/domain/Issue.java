@@ -122,10 +122,6 @@ public class Issue {
         return !this.user.equals(user);
     }
 
-    public void removeUser() {
-        this.user = null;
-    }
-
     public void changeStatus(Boolean valueOf) {
         this.isOpened = valueOf;
     }
