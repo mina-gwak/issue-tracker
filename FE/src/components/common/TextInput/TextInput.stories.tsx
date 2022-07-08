@@ -10,10 +10,23 @@ export default {
     size: INPUT_SIZE.SMALL,
     name: 'id',
     placeholder: '아이디',
-    isValueExist: false,
     disabled: false,
     status: INPUT_STATUS.NORMAL,
-    message: '사용 가능한 아이디입니다!'
+    message: '사용 가능한 아이디입니다!',
+  },
+  argTypes: {
+    size: {
+      control: {
+        type: 'radio',
+      },
+      options: [...Object.values(INPUT_SIZE)],
+    },
+    status: {
+      control: {
+        type: 'radio',
+      },
+      options: [...Object.values(INPUT_STATUS)],
+    },
   },
 } as ComponentMeta<typeof TextInput>;
 
