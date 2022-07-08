@@ -33,7 +33,6 @@ public class LabelController {
         return ResponseEntity.ok(new LabelOutlinesResponse(labelsOutlineInfo));
     }
 
-    // TODO : docs 추가
     @GetMapping("/list")
     public ResponseEntity<LabelListResponse> findLabelsList() {
         return ResponseEntity.ok(labelService.findLabelsList());

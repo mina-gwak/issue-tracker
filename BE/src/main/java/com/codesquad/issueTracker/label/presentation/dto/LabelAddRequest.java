@@ -13,6 +13,13 @@ public class LabelAddRequest {
     private String colorCode;
     private String textColor;
 
+    public LabelAddRequest(String name, String description, String colorCode, String textColor) {
+        this.name = name;
+        this.description = description;
+        this.colorCode = colorCode;
+        this.textColor = textColor;
+    }
+
     public Label toEntity() {
         return new Label(name, description, colorCode, textColor);
     }

@@ -34,6 +34,14 @@ public class Label {
     @OneToMany(mappedBy = "label", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AttachedLabel> attachedLabels = new HashSet<>();
 
+    public Label(Long id, String name, String description, String labelColor, String textColor) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.labelColor = labelColor;
+        this.textColor = textColor;
+    }
+
     public Label(String name, String description, String labelColor, String textColor) {
         this.name = name;
         this.description = description;
