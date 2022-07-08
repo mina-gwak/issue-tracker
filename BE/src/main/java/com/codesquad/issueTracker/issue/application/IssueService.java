@@ -113,8 +113,7 @@ public class IssueService {
 
         issue.addFiles(issueContentsRequest.getFileUrl());
 
-        // TODO : issue Id 내려줘야하지 않을까?
-        // Issue savedIssue = issueRepository.save(issue);
+        issueRepository.save(issue);
     }
 
     @Transactional(readOnly = true)
