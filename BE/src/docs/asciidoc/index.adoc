@@ -15,6 +15,13 @@ operation::get-login-url[snippets='http-request,http-response,response-fields']
 === OAuth 로그인 토큰 발급
 operation::get-login-token[snippets='http-request,http-response,response-fields']
 
+[[File-Upload-API]]
+== File Upload API
+
+[[File-upload]]
+=== File 업로드
+operation::add-file[snippets='http-request,request-parts,http-response,response-fields']
+
 [[User-API]]
 == User API
 
