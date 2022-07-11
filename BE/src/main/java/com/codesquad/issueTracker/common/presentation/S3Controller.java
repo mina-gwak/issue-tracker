@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.codesquad.issueTracker.common.application.S3Uploader;
+import com.codesquad.issueTracker.common.presentation.dto.UploadedFileResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +22,7 @@ public class S3Controller {
     private final S3Uploader uploader;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        return ResponseEntity.ok(uploader.upload(multipartFile, "static"));
+    public ResponseEntity<UploadedFileResponse> upload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+        return ResponseEntity.ok(new UploadedFileResponse(uploader.upload(multipartFile, "static")));
     }
 }

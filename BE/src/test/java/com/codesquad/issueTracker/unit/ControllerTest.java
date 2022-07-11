@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.codesquad.issueTracker.authentication.application.OAuthService;
 import com.codesquad.issueTracker.authentication.infrastructure.JwtTokenProvider;
 import com.codesquad.issueTracker.authentication.presentation.OAuthController;
+import com.codesquad.issueTracker.common.application.S3Uploader;
+import com.codesquad.issueTracker.common.presentation.S3Controller;
 import com.codesquad.issueTracker.issue.application.IssueService;
 import com.codesquad.issueTracker.issue.presentation.IssueController;
 import com.codesquad.issueTracker.label.application.LabelService;
@@ -29,7 +31,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
     OAuthController.class,
     IssueController.class,
     MilestoneController.class,
-    LabelController.class
+    LabelController.class,
+    S3Controller.class
 })
 public class ControllerTest {
 
@@ -51,12 +54,14 @@ public class ControllerTest {
     @MockBean
     protected LabelService labelService;
 
+    @MockBean
+    protected S3Uploader uploader;
+
     @Autowired
     protected MockMvc mockMvc;
 
     @Autowired
     protected ObjectMapper objectMapper;
-
     @DisplayName("validate token을 제공한다.")
     @BeforeEach
     void setUp() {
