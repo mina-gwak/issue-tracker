@@ -9,7 +9,7 @@ import { POSITION } from '@components/Modal/constants';
 import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
 import { API } from '@constants';
-import { labels, milestones, assignees, writers } from '@data/dropdownData';
+import { stateModify } from '@data/dropdownData';
 import { useModal } from '@hooks/useModal';
 import { modalState, ModalStateType } from '@store/dropdown';
 import { DropdownType } from '@type/dropdownType';
@@ -19,22 +19,18 @@ interface FilterPropsType {
   title: string;
 }
 
-const fetchData: { [key: string]: DropdownType[] } = {
-  labels,
-  milestones,
-  assignees,
-  writers,
-};
-
 const Filter = ({ type, title }: FilterPropsType) => {
   const modalRef = useRef<HTMLDivElement>(null);
-  const [filterValue, setFilterValue] = useState();
+  const [filterValue, setFilterValue] = useState<DropdownType[]>();
   const modalValue = useRecoilValue(modalState);
   const { toggleModal, handleModalClick } = useModal({ modalRef, type });
-  const curData = fetchData[type];
 
   const fetchTypeData = async () => {
     if (filterValue) return;
+    if (type === 'stateModify') {
+      setFilterValue(stateModify);
+      return;
+    }
     const accessToken = localStorage.getItem('accessToken')!;
 
     const response = await axios.get(`${API.FILTER(type)}`, {
@@ -43,20 +39,25 @@ const Filter = ({ type, title }: FilterPropsType) => {
       },
     });
 
-    setFilterValue(response.data[`${type}OutlineResponses`]);
+    setFilterValue([
+      {
+        optionName: `${title}이 없는 이슈`,
+        value: 'none',
+      },
+      ...response.data[`${type}OutlineResponses`],
+    ]);
   };
-  // onMouseEnter={fetchTypeData} 50번째 줄 추가
 
   return (
     <>
-      <S.FilterButton onClick={toggleModal}>
+      <S.FilterButton onMouseEnter={fetchTypeData} onClick={toggleModal}>
         {title}
         <Icon iconName={ICON_NAME.SELECT} />
       </S.FilterButton>
       {modalValue[type] && (
         <Modal
           modalRef={modalRef}
-          data={curData}
+          data={filterValue}
           title={title}
           position={POSITION.RIGHT}
           type={type}
