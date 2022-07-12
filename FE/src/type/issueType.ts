@@ -30,10 +30,12 @@ export interface IssueDataType {
   issueCoverResponses: IssueType[];
   openIssueCount: number;
   closeIssueCount: number;
+  labelCount: number;
+  milestoneCount: number;
 }
 
 export interface IssuePopOverDataType {
-  title: string,
+  title: string;
   content: string;
   writtenTime: string;
   assignedMe: boolean;
