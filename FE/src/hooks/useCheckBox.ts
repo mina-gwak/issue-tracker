@@ -1,14 +1,20 @@
 import { useEffect } from 'react';
 
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 
-import { useIssues } from '@query/issue';
+import { useIssuesQuery } from '@query/issue';
 import { isAllCheckedState, isCheckedState } from '@store/checkbox';
+import { filterBarQueryString } from '@store/filterBar';
+import { IssueType } from '@type/issueType';
 
 const useCheckBox = () => {
+  const filterBarValue = useRecoilValue(filterBarQueryString);
+
   const [isCheckedItems, setIsCheckedItems] = useRecoilState(isCheckedState);
   const [isAllChecked, setIsAllChecked] = useRecoilState(isAllCheckedState);
-  const { data } = useIssues();
+  const resetCheckedItems = useResetRecoilState(isCheckedState);
+
+  const { data } = useIssuesQuery<IssueType[]>(filterBarValue, (data) => data.issueCoverResponses);
 
   const getIsChecked = (id: number) => {
     return isCheckedItems.has(id);
@@ -44,6 +50,7 @@ const useCheckBox = () => {
   return {
     isCheckedItems,
     isAllChecked,
+    resetCheckedItems,
     toggleCheckItem,
     toggleIsAllChecked,
     getIsChecked,
