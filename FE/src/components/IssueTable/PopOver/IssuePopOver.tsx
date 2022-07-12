@@ -8,10 +8,12 @@ import { IMAGE_SIZE } from '@components/common/Image/constants';
 import Label from '@components/common/Label';
 import { API } from '@constants';
 import useAxios from '@hooks/useAxios';
-import { useIssue } from '@query/issue';
+import { useIssuesQuery } from '@query/issue';
+import { filterBarQueryString } from '@store/filterBar';
 import { userState } from '@store/user';
 import { IssuePopOverDataType, IssueType } from '@type/issueType';
 import { getDate } from '@utils/date';
+import { ensure } from '@utils/ensure';
 
 const MAX_LABEL = 3;
 
@@ -20,8 +22,12 @@ export interface IssuePopOverPropsType {
 }
 
 const IssuePopOver = ({ issueId }: IssuePopOverPropsType) => {
+  const filterBarValue = useRecoilValue(filterBarQueryString);
+
   const { data: { opened, title, writer, writerImage, labelCoverResponses } = {} as IssueType } =
-    useIssue(issueId);
+    useIssuesQuery(filterBarValue, (data) =>
+      ensure(data.issueCoverResponses.find((issue) => issue.issueId === issueId)),
+    );
 
   const [{ response = null }] = useAxios<IssuePopOverDataType>({
     method: 'get',
