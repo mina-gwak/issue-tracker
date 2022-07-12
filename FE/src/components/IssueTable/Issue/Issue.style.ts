@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { iconStyle, StyledIconProps } from '@styles/mixin';
@@ -81,7 +82,7 @@ export const Text = styled.span`
   color: ${({ theme }) => theme.colors.grey2};
 `;
 
-export const Milestone = styled.div`
+export const Milestone = styled(Link)`
   display: flex;
   align-items: center;
   gap: 8px;
