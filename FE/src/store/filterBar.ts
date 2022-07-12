@@ -31,3 +31,14 @@ export const filterBarInputValueState = selector({
     return returnValue;
   },
 });
+
+export const filterBarQueryString = selector({
+  key: 'filterBarQueryString',
+  get: ({ get }) => {
+    const filterBarInputValueValue = get(filterBarInputValueState);
+    return filterBarInputValueValue
+      .split(' ')
+      .filter((el) => el !== 'is:issue')
+      .join(' ');
+  },
+});
