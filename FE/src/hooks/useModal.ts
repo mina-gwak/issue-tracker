@@ -2,7 +2,7 @@ import { RefObject } from 'react';
 
 import { useRecoilState, useResetRecoilState } from 'recoil';
 
-import { defaultState, modalState, ModalStateType } from '@store/dropdown';
+import { modalState, ModalStateType } from '@store/dropdown';
 
 interface UseModalPropsType<T> {
   modalRef: RefObject<T>;
@@ -23,7 +23,7 @@ export const useModal = <T extends HTMLElement>({
 
   const toggleModal = () => {
     setModalItem({
-      ...defaultState,
+      ...modalItem,
       [type]: !modalItem[type],
     });
   };
