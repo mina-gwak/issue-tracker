@@ -1,6 +1,8 @@
 import { atom } from 'recoil';
 
-export const defaultState = {
+import { ModalListType } from '@type/modalList';
+
+export const defaultState: ModalListType = {
   issues: false,
   labels: false,
   milestones: false,
