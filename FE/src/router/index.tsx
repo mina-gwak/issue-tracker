@@ -1,8 +1,10 @@
 import Error from '@pages/Error';
 import NotFound from '@pages/Error/NotFound';
 import IssueList from '@pages/IssueList';
+import Label from '@pages/Label';
 import Login from '@pages/Login';
 import LoginCallback from '@pages/LoginCallback';
+import Milestone from '@pages/Milestone';
 import ProtectedRoute from '@router/ProtectedRoute';
 import RedirectRoute from '@router/RedirectRoute';
 
@@ -13,7 +15,11 @@ export const routes = [
   { path: '/error', element: <Error /> },
   {
     element: <ProtectedRoute />,
-    children: [{ path: '/issue-list', element: <IssueList /> }],
+    children: [
+      { path: '/issue-list', element: <IssueList /> },
+      { path: '/milestone', element: <Milestone /> },
+      { path: '/label', element: <Label /> },
+    ],
   },
   { path: '*', element: <NotFound /> },
 ];
