@@ -13,7 +13,7 @@ import { filterBarInputValueState } from '@store/filterBar';
 
 const FilterBar = () => {
   const modalRef = useRef<HTMLDivElement>(null);
-  const modalValue: { [key: string]: boolean } = useRecoilValue(modalState);
+  const modalValue = useRecoilValue(modalState);
   const filterBarValue = useRecoilValue(filterBarInputValueState);
   const { toggleModal, handleModalClick } = useModal({ modalRef, type: 'issues' });
 
