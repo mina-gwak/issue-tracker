@@ -77,7 +77,10 @@ class IssueControllerTest extends ControllerTest {
                 requestParameters(
                     parameterWithName("query")
                         .description(
-                            "is:open(열린 이슈), is:close(닫힌 이슈), is:write_by_me(내가 작성한 이슈), is:assigned_me(나에게 할당된 이슈), is:add_comment_by_me(내가 댓글을 남긴 이슈)")
+                            "is:open(열린 이슈), is:close(닫힌 이슈), is:write_by_me(내가 작성한 이슈), is:assigned_me(나에게 할당된 이슈), is:add_comment_by_me(내가 댓글을 남긴 이슈), "
+                                + "label:xx(라벨 필터 적용), "
+                                + "assignee:yy(assignee 필터 적용), "
+                                + "milestone:zz(마일스톤 필터 적용)")
                 ),
                 responseFields(
                     fieldWithPath("issueCoverResponses[].labelCoverResponses").type(ARRAY).description("라벨 리스트"),
