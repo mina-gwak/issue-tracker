@@ -9,6 +9,9 @@ if [ ! -z ${TARGET_PID} ]; then
   sudo kill -15 ${TARGET_PID}
 fi
 
+source /home/ec2-user/.bash_profile
+cd ~
+
 nohup java -jar -Dserver.port=${CURRENT_PORT} /home/ec2-user/issueTracker-deploy/build/libs/* > /home/ec2-user/nohup.out 2>&1 &
 echo "> Now new WAS runs at ${CURRENT_PORT}."
 exit 0
