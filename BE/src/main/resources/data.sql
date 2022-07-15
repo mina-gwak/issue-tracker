@@ -9,11 +9,11 @@ insert into user (nickname, name, image) values
 ('kim', 'jk', 'https://avatars.githubusercontent.com/u/278988?v=4'),
 ('Bae', 'ivy', 'https://avatars.githubusercontent.com/u/20774764?v=4');
 
-insert into milestone (name, description, due_date) values
-('BE_Course', '백엔드입니다.', null),
-('Fe_Course', '프론트입니다.', null),
-('Android_Course', '안드로이드입니다.', null),
-('iOS_Course', 'iOS 입니다.', null);
+insert into milestone (name, description, due_date, is_opened) values
+('BE_Course', '백엔드입니다.', null, true),
+('Fe_Course', '프론트입니다.', null, false),
+('Android_Course', '안드로이드입니다.', null, true),
+('iOS_Course', 'iOS 입니다.', null, true);
 
 insert into label (name, description, label_color, text_color) values
 ('BE', '배겐드', 'blue', 'white'),

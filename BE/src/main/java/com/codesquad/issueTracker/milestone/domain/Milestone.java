@@ -29,6 +29,8 @@ public class Milestone {
     private LocalDateTime dueDate;
     private String description;
 
+    private boolean isOpened;
+
     @OneToMany(mappedBy = "milestone")
     private List<Issue> issues = new ArrayList<>();
 
@@ -36,6 +38,7 @@ public class Milestone {
         this.name = name;
         this.dueDate = dueDate;
         this.description = description;
+        this.isOpened = true;
     }
 
     public long getAllIssueCount() {
@@ -46,5 +49,9 @@ public class Milestone {
         return issues.stream()
             .filter(issue -> !issue.isOpened())
             .count();
+    }
+
+    public long getOpenedIssueCount() {
+        return getAllIssueCount() - getClosedIssueCount();
     }
 }

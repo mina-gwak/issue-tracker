@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS `milestone` (
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
   `due_date` DATETIME NULL,
+  `is_opened` TINYINT NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
