@@ -15,4 +15,8 @@ public interface MilestoneRepository extends JpaRepository<Milestone, Long> {
     List<MilestoneOutlineResponse> findMilestonesOutlineInfo();
 
     Optional<Milestone> findByName(String name);
+
+    List<Milestone> findByIsOpenedTrue();
+
+    List<Milestone> findByIsOpenedFalse();
 }
