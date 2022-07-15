@@ -88,6 +88,10 @@ operation::change-issue-labels[snippets='http-request,path-parameters,request-fi
 === 🔒 Milestone Filter 정보 발급
 operation::get-milestone-filter-info[snippets='http-request,http-response,response-fields']
 
+[[get-Milestone-list]]
+=== 🔒 마일스톤 리스트 조회
+operation::get-milestone-list[snippets='http-request,request-parameters,http-response,response-fields']
+
 [[Label-API]]
 == Label API
 

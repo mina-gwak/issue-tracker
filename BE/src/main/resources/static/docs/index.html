@@ -480,6 +480,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#Milestone-API">Milestone API</a>
 <ul class="sectlevel2">
 <li><a href="#Milestone-Filter-info">🔒 Milestone Filter 정보 발급</a></li>
+<li><a href="#get-Milestone-list">🔒 마일스톤 리스트 조회</a></li>
 </ul>
 </li>
 <li><a href="#Label-API">Label API</a>
@@ -986,7 +987,7 @@ Host: localhost:8080</code></pre>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>query</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">is:open(열린 이슈), is:close(닫힌 이슈), is:write_by_me(내가 작성한 이슈), is:assigned_me(나에게 할당된 이슈), is:add_comment_by_me(내가 댓글을 남긴 이슈)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">is:open(열린 이슈), is:close(닫힌 이슈), is:write_by_me(내가 작성한 이슈), is:assigned_me(나에게 할당된 이슈), is:add_comment_by_me(내가 댓글을 남긴 이슈), label:xx(라벨 필터 적용), assignee:yy(assignee 필터 적용), milestone:zz(마일스톤 필터 적용)</p></td>
 </tr>
 </tbody>
 </table>
@@ -1021,7 +1022,7 @@ Content-Length: 721
     "issueId" : 1,
     "writer" : "user1",
     "writerImage" : "image1",
-    "modificationTime" : "2022-07-11T16:02:31.765656",
+    "modificationTime" : "2022-07-16T01:59:02.900561",
     "milestoneName" : "milestone1",
     "opened" : true
   } ],
@@ -1184,7 +1185,7 @@ Content-Length: 156
 {
   "title" : "BE Lucid가 작성한 issue",
   "content" : "내용은 이러하다",
-  "writtenTime" : "2022-07-11T16:02:31.704487",
+  "writtenTime" : "2022-07-16T01:59:02.829696",
   "assignedMe" : true
 }</code></pre>
 </div>
@@ -1400,13 +1401,13 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 945
+Content-Length: 946
 
 {
   "issueId" : 1,
   "title" : "title1",
   "content" : "content1",
-  "writtenTime" : "2022-07-11T16:02:29.585527",
+  "writtenTime" : "2022-07-16T01:59:02.121039",
   "writerOutline" : {
     "optionName" : "user1",
     "imageUrl" : "image1"
@@ -1419,12 +1420,12 @@ Content-Length: 945
     "imageUrl" : "image1"
   } ],
   "labels" : [ {
-    "labelName" : "Lucid",
-    "colorCode" : "#008672",
-    "textColor" : "white"
-  }, {
     "labelName" : "BE",
     "colorCode" : "#000000",
+    "textColor" : "white"
+  }, {
+    "labelName" : "Lucid",
+    "colorCode" : "#008672",
     "textColor" : "white"
   } ],
   "milestoneInformation" : {
@@ -1438,10 +1439,10 @@ Content-Length: 945
       "imageUrl" : "image1"
     },
     "content" : "contents",
-    "writtenTime" : "2022-07-11T16:02:29.58869",
+    "writtenTime" : "2022-07-16T01:59:02.121751",
     "editable" : true
   } ],
-  "imageUrls" : [ "image2", "image3", "image1" ],
+  "imageUrls" : [ "image1", "image3", "image2" ],
   "open" : true
 }</code></pre>
 </div>
@@ -1902,6 +1903,145 @@ Content-Length: 156
 </table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="get-Milestone-list"><a class="link" href="#get-Milestone-list">🔒 마일스톤 리스트 조회</a></h3>
+<div class="sect3">
+<h4 id="get-Milestone-list_http_request"><a class="link" href="#get-Milestone-list_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/milestones/list?open=true HTTP/1.1
+Authorization: Bearer testToken
+Accept: */*
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="get-Milestone-list_request_parameters"><a class="link" href="#get-Milestone-list_request_parameters">Request parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>open</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true : 열린 이슈, false : 닫힌 이슈</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="get-Milestone-list_http_response"><a class="link" href="#get-Milestone-list_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 686
+
+{
+  "milestoneSingleInfos" : [ {
+    "id" : null,
+    "name" : "m1",
+    "dueDate" : "2022-07-16T01:59:04.531315",
+    "description" : "m1 입니다.",
+    "openIssueCount" : 0,
+    "closeIssueCount" : 0,
+    "ratio" : "NaN"
+  }, {
+    "id" : null,
+    "name" : "m2",
+    "dueDate" : "2022-07-16T01:59:04.53158",
+    "description" : "m2 입니다.",
+    "openIssueCount" : 0,
+    "closeIssueCount" : 0,
+    "ratio" : "NaN"
+  }, {
+    "id" : null,
+    "name" : "m3",
+    "dueDate" : "2022-07-16T01:59:04.531595",
+    "description" : "m3 입니다.",
+    "openIssueCount" : 0,
+    "closeIssueCount" : 0,
+    "ratio" : "NaN"
+  } ],
+  "openMilestoneCount" : 2,
+  "closeMilestoneCount" : 3
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="get-Milestone-list_response_fields"><a class="link" href="#get-Milestone-list_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>milestoneSingleInfos[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">마일스톤 아이디 - long type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>milestoneSingleInfos[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">마일스톤 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>milestoneSingleInfos[].dueDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">마일스톤 완료 예정 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>milestoneSingleInfos[].description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">마일스톤 상세</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>milestoneSingleInfos[].openIssueCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">열린 이슈 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>milestoneSingleInfos[].closeIssueCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">닫힌 이슈 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>milestoneSingleInfos[].ratio</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">닫힌 이슈 / 총 이슈 비율</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>openMilestoneCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">열린 마일스톤 수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>closeMilestoneCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">닫힌 마일스톤 수</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2356,7 +2496,7 @@ Content-Length: 214
     "imageUrl" : "image1"
   },
   "content" : "issue에 작성된 comments 입니다..",
-  "writtenTime" : "2022-07-11T16:02:32.660376",
+  "writtenTime" : "2022-07-16T01:59:03.430081",
   "editable" : true
 }</code></pre>
 </div>
@@ -2532,7 +2672,7 @@ Host: localhost:8080</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-11 16:01:40 +0900
+Last updated 2022-07-16 01:55:04 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
