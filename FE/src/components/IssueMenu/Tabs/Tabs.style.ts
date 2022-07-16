@@ -12,9 +12,10 @@ export const TabContainer = styled.div`
   overflow: hidden;
 `;
 
-export const Tab = styled(Link)`
+export const Tab = styled(Link)<{ active: string }>`
   ${flexCenter};
   width: 50%;
+  background-color: ${({ active, theme }) => (active === 'true' ? theme.colors.grey4 : undefined)};
   color: ${({ theme }) => theme.colors.black};
   transition: all 200ms;
 
