@@ -11,6 +11,9 @@ export const ICON_NAME = {
   SELECT: 'Select',
   CHECKBOX_CIRCLE_ACTIVE: 'CheckBoxCircleActive',
   CHECKBOX_CIRCLE_INITIAL: 'CheckBoxCircleInitial',
+  EDIT_ICON: 'EditIcon',
+  DELETE_ICON: 'DeleteIcon',
+  REFRESH_ICON: 'RefreshIcon',
 } as const;
 
 export const ICON_SIZE = {
