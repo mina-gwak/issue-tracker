@@ -20,7 +20,7 @@ const outlineStyles = css<OutlineStylesType>`
 
       &:hover {
         color: ${({ theme }) => theme.colors.darkBlue};
-        background-color: ${({ theme }) => theme.colors.darkBlue};
+        border: 2px solid ${({ theme }) => theme.colors.darkBlue};
       }
 
       &:focus {
