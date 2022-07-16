@@ -5,9 +5,12 @@ import CheckBoxCircleActive from '@assets/icons/checkBoxCircleActive.svg';
 import CheckBoxCircleInitial from '@assets/icons/checkBoxCircleInitial.svg';
 import CheckBoxDisabled from '@assets/icons/checkBoxDisabled.svg';
 import CheckBoxInitial from '@assets/icons/checkBoxInitial.svg';
+import DeleteIcon from '@assets/icons/deleteIcon.svg';
+import EditIcon from '@assets/icons/editIcon.svg';
 import Github from '@assets/icons/github.svg';
 import Label from '@assets/icons/label.svg';
 import Milestone from '@assets/icons/milestone.svg';
+import RefreshIcon from '@assets/icons/refreshIcon.svg';
 import Search from '@assets/icons/search.svg';
 import Select from '@assets/icons/select.svg';
 
@@ -24,6 +27,9 @@ export const Icons = {
   Select,
   CheckBoxCircleActive,
   CheckBoxCircleInitial,
+  EditIcon,
+  DeleteIcon,
+  RefreshIcon,
 } as const;
 
 export type IconsType = keyof typeof Icons;
