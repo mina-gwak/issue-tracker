@@ -139,4 +139,20 @@ public class Issue {
         attachedLabels.clear();
         attachedLabel(labels);
     }
+
+    public String getUsername() {
+        return user.getName();
+    }
+
+    public String getUserImage() {
+        return user.getImage();
+    }
+
+    public String getMilestoneName() {
+        return milestone.getName();
+    }
+
+    public void deleteComment(Comment comment) {
+        comments.remove(comment);
+    }
 }
