@@ -12,17 +12,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.print.DocFlavor;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.codesquad.issueTracker.milestone.application.dto.MilestoneOutlineResponse;
 import com.codesquad.issueTracker.milestone.application.dto.MilestoneSingleInfoResponse;
 import com.codesquad.issueTracker.milestone.application.dto.MilestonesResponse;
 import com.codesquad.issueTracker.milestone.domain.Milestone;
+import com.codesquad.issueTracker.milestone.presentation.dto.MilestoneContentRequest;
 import com.codesquad.issueTracker.unit.ControllerTest;
 
 class MilestoneControllerTest extends ControllerTest {
@@ -105,6 +105,110 @@ class MilestoneControllerTest extends ControllerTest {
                     fieldWithPath("milestoneSingleInfos[].ratio").type(STRING).description("닫힌 이슈 / 총 이슈 비율"),
                     fieldWithPath("openMilestoneCount").type(NUMBER).description("열린 마일스톤 수"),
                     fieldWithPath("closeMilestoneCount").type(NUMBER).description("닫힌 마일스톤 수")
+                )));
+    }
+
+    @DisplayName("마일스톤을 추가한다.")
+    @Test
+    void add_milestone() throws Exception {
+        // given
+        MilestoneContentRequest request = new MilestoneContentRequest("milestone1", LocalDateTime.now(), "마일스톤입니다.");
+
+        String content = objectMapper.writeValueAsString(request);
+
+        // when
+        ResultActions perform = mockMvc.perform(post("/api/milestones")
+            .header("Authorization", "Bearer testToken")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content)
+            .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk());
+
+        verify(milestoneService, times(1))
+            .createMilestone(eq(request));
+
+        // docs
+        perform.andDo(
+            document("make-milestone", getDocumentRequest(), getDocumentResponse(),
+                requestFields(
+                    fieldWithPath("name").description("마일스톤 이름"),
+                    fieldWithPath("dueDate").description(
+                        "마일스톤 완료일. yyyy-MM-ddTHH:mm:ss 형태로 전송(ex : 2022-07-16T00:00:00)"),
+                    fieldWithPath("description").description("마일스톤 설명")
+                )));
+    }
+
+    @DisplayName("마일스톤을 수정 한다.")
+    @Test
+    void edit_milestone() throws Exception {
+        // given
+        MilestoneContentRequest request = new MilestoneContentRequest("milestone1", LocalDateTime.now(), "마일스톤입니다.");
+        String content = objectMapper.writeValueAsString(request);
+
+        Long milestoneId = 1L;
+
+        // when
+        ResultActions perform = mockMvc.perform(
+            RestDocumentationRequestBuilders.patch("/api/milestones/{milestoneId}", milestoneId)
+                .header("Authorization", "Bearer testToken")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content)
+                .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk());
+
+        verify(milestoneService, times(1))
+            .editMilestone(eq(1L), eq(request));
+
+        // docs
+        perform.andDo(
+            document("edit-milestone", getDocumentRequest(), getDocumentResponse(),
+                pathParameters(
+                    parameterWithName("milestoneId").description("마일스톤 아이디")
+                ),
+                requestFields(
+                    fieldWithPath("name").description("마일스톤 이름"),
+                    fieldWithPath("dueDate").description(
+                        "마일스톤 완료일. yyyy-MM-ddTHH:mm:ss 형태로 전송(ex : 2022-07-16T00:00:00)"),
+                    fieldWithPath("description").description("마일스톤 설명")
+                )));
+    }
+
+    @DisplayName("마일스톤의 상태를 변경한다.")
+    @Test
+    void change_milestone_status() throws Exception {
+        // given
+        Long milestoneId = 1L;
+        String open = "true";
+
+        // when
+        ResultActions perform = mockMvc.perform(
+            RestDocumentationRequestBuilders.patch("/api/milestones/{milestoneId}/change", milestoneId)
+                .header("Authorization", "Bearer testToken")
+                .queryParam("open", open)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk());
+
+        verify(milestoneService, times(1))
+            .changeStatus(eq(1L), eq(open));
+
+        // docs
+        perform.andDo(
+            document("change-milestone-status", getDocumentRequest(), getDocumentResponse(),
+                pathParameters(
+                    parameterWithName("milestoneId").description("마일스톤 아이디")
+                ),
+                requestParameters(
+                    parameterWithName("open").description("마일스톤 open/close를 true/false로 전달한다.")
                 )));
     }
 }

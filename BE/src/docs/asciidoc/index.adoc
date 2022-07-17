@@ -92,6 +92,18 @@ operation::get-milestone-filter-info[snippets='http-request,http-response,respon
 === 🔒 마일스톤 리스트 조회
 operation::get-milestone-list[snippets='http-request,request-parameters,http-response,response-fields']
 
+[[create-Milestone-list]]
+=== 🔒 마일스톤 생성
+operation::make-milestone[snippets='http-request,request-fields,http-response']
+
+[[edit-Milestone-list]]
+=== 🔒 마일스톤 내용 수정
+operation::edit-milestone[snippets='http-request,path-parameters,request-fields,http-response']
+
+[[change-Milestone-status]]
+=== 🔒 마일스톤 상태 변경
+operation::change-milestone-status[snippets='http-request,path-parameters,request-parameters,http-response']
+
 [[Label-API]]
 == Label API
 
