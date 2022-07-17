@@ -11,6 +11,7 @@ import com.codesquad.issueTracker.milestone.application.dto.MilestonesResponse;
 import com.codesquad.issueTracker.milestone.domain.Milestone;
 import com.codesquad.issueTracker.milestone.domain.MilestoneRepository;
 import com.codesquad.issueTracker.milestone.application.dto.MilestoneOutlineResponse;
+import com.codesquad.issueTracker.milestone.presentation.dto.MilestoneContentRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,5 +41,29 @@ public class MilestoneService {
             .map(MilestoneSingleInfoResponse::new)
             .collect(Collectors.toList());
         return new MilestonesResponse(closeList, closeList.size(), (int)milestoneCount - closeList.size());
+    }
+
+    @Transactional
+    public void createMilestone(MilestoneContentRequest request) {
+        Milestone milestone = request.toEntity();
+        milestoneRepository.save(milestone);
+    }
+
+    @Transactional
+    public void editMilestone(Long milestoneId, MilestoneContentRequest request) {
+        Milestone milestone = findSingleMilestone(milestoneId);
+        milestone.update(request.getName(), request.getDescription(), request.getDueDate());
+    }
+
+    @Transactional
+    public void changeStatus(Long milestoneId, String open) {
+        boolean isOpened = Boolean.parseBoolean(open);
+        Milestone milestone = findSingleMilestone(milestoneId);
+        milestone.changeOpenOrClose(isOpened);
+    }
+
+    private Milestone findSingleMilestone(Long milestoneId) {
+        return milestoneRepository.findById(milestoneId)
+            .orElseThrow(() -> new IllegalArgumentException("없는 마일스톤 입니다."));
     }
 }

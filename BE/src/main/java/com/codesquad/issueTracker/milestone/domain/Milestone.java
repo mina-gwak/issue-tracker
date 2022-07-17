@@ -54,4 +54,14 @@ public class Milestone {
     public long getOpenedIssueCount() {
         return getAllIssueCount() - getClosedIssueCount();
     }
+
+    public void update(String name, String description, LocalDateTime dueDate) {
+        this.name = name;
+        this.description = description;
+        this.dueDate = dueDate;
+    }
+
+    public void changeOpenOrClose(boolean isOpened) {
+        this.isOpened = isOpened;
+    }
 }
