@@ -2,7 +2,6 @@ package com.codesquad.issueTracker.issue.application;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -51,34 +50,22 @@ public class IssueService {
     public IssueCoversResponse findIssuesByCondition(String query, Long userId) {
         FilterCondition condition = queryParser.makeFilterCondition(query);
         List<Issue> issues = issueRepository.search(condition, userId);
-
-        Predicate<Issue> isOpened;
-        boolean closeCheck = false;
-        if (condition.getMainFilter().equals(MainFilter.CLOSE)) {
-            isOpened = closedPredicate();
-            closeCheck = true;
-        } else {
-            isOpened = closedPredicate().negate();
-        }
+        long allIssueCount = issueRepository.count();
 
         List<IssueCoverResponse> result = issues.stream()
-            .filter(isOpened)
             .map(IssueCoverResponse::new)
             .collect(Collectors.toList());
 
-        int openCount, closeCount;
-        if (closeCheck) {
+        long openCount, closeCount;
+        if (condition.getMainFilter().equals(MainFilter.CLOSE)) {
             closeCount = result.size();
-            openCount = issues.size() - closeCount;
+            openCount = allIssueCount - closeCount;
         } else {
             openCount = result.size();
-            closeCount = issues.size() - openCount;
+            closeCount = allIssueCount - openCount;
         }
-        return new IssueCoversResponse(result, openCount, closeCount, labelRepository.count(), milestoneRepository.count());
-    }
-
-    private Predicate<Issue> closedPredicate() {
-        return issue -> !issue.isOpened();
+        return new IssueCoversResponse(result, openCount, closeCount, labelRepository.count(),
+            milestoneRepository.count());
     }
 
     @Transactional(readOnly = true)
@@ -166,6 +153,7 @@ public class IssueService {
     @Transactional
     public void removeComments(Long commentId, Long userId) {
         Comment comment = checkEditableComments(commentId, userId);
+        comment.removeRelationWithIssue();
         commentRepository.delete(comment);
     }
 

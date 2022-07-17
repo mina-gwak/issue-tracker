@@ -26,7 +26,7 @@ insert into issue (title, content, is_opened, written_time, modification_time, u
 ('title1', 'content1', true, null, null, 1, 1),
 ('title2', 'content2', true, null, null, 2, 2),
 ('title3', 'content3', true, null, null, 2, 3),
-('title4', 'content4', true, null, null, 3, 4),
+('title4', 'content4', false, null, null, 3, 4),
 ('title5', 'content5', true, null, null, 1, 2),
 ('title6', 'content6', true, null, null, 5, 3),
 ('title7', 'content7', true, null, null, 7, 2);

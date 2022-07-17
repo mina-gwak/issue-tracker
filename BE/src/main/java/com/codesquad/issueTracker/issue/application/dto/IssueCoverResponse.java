@@ -43,10 +43,10 @@ public class IssueCoverResponse {
 
         this.title = issue.getTitle();
         this.issueId = issue.getId();
-        this.writer = issue.getUser().getName();
-        this.writerImage = issue.getUser().getImage();
+        this.writer = issue.getUsername();
+        this.writerImage = issue.getUserImage();
         this.modificationTime = issue.getModificationTime();
-        this.milestoneName = issue.getMilestone().getName();
+        this.milestoneName = issue.getMilestoneName();
         this.opened = issue.isOpened();
     }
 }
