@@ -26,6 +26,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         String token = resolveToken(request);
         log.debug("token is : {}", token);
         String userId = tokenProvider.parsePayload(token);
+
+        // Todo : 임시 자격(삭제 예정)
         if (userId.equals("1")) {
             log.info("테스트 유저 접속");
             request.setAttribute("userId", Long.parseLong(userId));
