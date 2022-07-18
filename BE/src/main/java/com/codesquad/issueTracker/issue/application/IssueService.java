@@ -4,11 +4,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.codesquad.issueTracker.comment.domain.Comment;
 import com.codesquad.issueTracker.comment.domain.CommentRepository;
+import com.codesquad.issueTracker.common.infrastructure.aspect.LogExecutionTime;
 import com.codesquad.issueTracker.issue.application.dto.CommentOutline;
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
@@ -46,10 +48,11 @@ public class IssueService {
     private final MilestoneRepository milestoneRepository;
     private final CommentRepository commentRepository;
 
+    @LogExecutionTime
     @Transactional(readOnly = true)
-    public IssueCoversResponse findIssuesByCondition(String query, Long userId) {
+    public IssueCoversResponse findIssuesByCondition(String query, Long userId, Pageable pageable) {
         FilterCondition condition = queryParser.makeFilterCondition(query);
-        List<Issue> issues = issueRepository.search(condition, userId);
+        List<Issue> issues = issueRepository.search(condition, userId, pageable);
         long allIssueCount = issueRepository.count();
 
         List<IssueCoverResponse> result = issues.stream()

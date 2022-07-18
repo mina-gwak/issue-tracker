@@ -3,6 +3,7 @@ package com.codesquad.issueTracker.common.infrastructure.aspect;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -21,8 +22,9 @@ public class LogAspect {
         stopWatch.start();
         Object proceed = joinPoint.proceed();
         stopWatch.stop();
+        MethodSignature signature = (MethodSignature)joinPoint.getSignature();
+        log.info("method position : {}", signature.getMethod());
         log.info(stopWatch.prettyPrint());
-
         return proceed;
     }
 }

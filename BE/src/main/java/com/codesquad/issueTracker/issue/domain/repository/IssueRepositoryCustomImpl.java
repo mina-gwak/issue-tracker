@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.MultiValueMap;
 
@@ -36,9 +37,8 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
     public IssueRepositoryCustomImpl(EntityManager entityManager) {
         this.queryFactory = new JPAQueryFactory(entityManager);
     }
-
     @Override
-    public List<Issue> search(FilterCondition condition, Long userId) {
+    public List<Issue> search(FilterCondition condition, Long userId, Pageable pageable) {
 
         QUser assignedUser = new QUser("assignedUser");
         MultiValueMap<String, SubFilterDetail> subFilters = condition.getSubFilters();
@@ -57,6 +57,8 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
                 matching(milestone.name, subFilters.get("MILESTONE")),
                 matching(label.name, subFilters.get("LABEL")),
                 matching(assignedUser.name, subFilters.get("ASSIGNEE")))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
             .distinct()
             .fetch();
     }

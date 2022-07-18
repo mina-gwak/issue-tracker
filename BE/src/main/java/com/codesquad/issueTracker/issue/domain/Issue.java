@@ -3,6 +3,7 @@ package com.codesquad.issueTracker.issue.domain;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -154,5 +155,20 @@ public class Issue {
 
     public void deleteComment(Comment comment) {
         comments.remove(comment);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Issue issue = (Issue)o;
+        return Objects.equals(getId(), issue.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
