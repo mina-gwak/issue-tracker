@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.MultiValueMap;
 
@@ -36,19 +37,18 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
     public IssueRepositoryCustomImpl(EntityManager entityManager) {
         this.queryFactory = new JPAQueryFactory(entityManager);
     }
-
     @Override
-    public List<Issue> search(FilterCondition condition, Long userId) {
+    public List<Issue> search(FilterCondition condition, Long userId, Pageable pageable) {
 
         QUser assignedUser = new QUser("assignedUser");
         MultiValueMap<String, SubFilterDetail> subFilters = condition.getSubFilters();
 
         return queryFactory.selectFrom(issue)
             .join(issue.user, user).fetchJoin()
+            .leftJoin(issue.milestone, milestone).fetchJoin()
             .leftJoin(issue.assignedIssues, assignedIssue)
             .leftJoin(assignedIssue.user, assignedUser)
             .leftJoin(issue.comments, comment)
-            .leftJoin(issue.milestone, milestone).fetchJoin()
             .leftJoin(issue.attachedLabels, attachedLabel)
             .leftJoin(attachedLabel.label, label)
 
@@ -57,6 +57,8 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
                 matching(milestone.name, subFilters.get("MILESTONE")),
                 matching(label.name, subFilters.get("LABEL")),
                 matching(assignedUser.name, subFilters.get("ASSIGNEE")))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
             .distinct()
             .fetch();
     }
@@ -74,13 +76,19 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
 
     private Predicate addMainCondition(MainFilter condition, Long userId,
         QUser assignedUser) {
+        if (condition.equals(MainFilter.OPEN)) {
+            return issue.isOpened.eq(true);
+        }
+        if (condition.equals(MainFilter.CLOSE)) {
+            return issue.isOpened.eq(false);
+        }
         if (condition.equals(MainFilter.WRITE_BY_ME)) {
             return issue.user.id.eq(userId);
         }
         if (condition.equals(MainFilter.ADD_COMMENT_BY_ME)) {
             return comment.user.id.eq(userId);
         }
-        // TODO : 만약 이 필터이며, subfilter에서 Assign_me도 할당된다면?
+        // TODO : 만약 이 필터이며, subfilter에서 Assign_me도 할당된다면 어떻게 처리해야할 지?
         if (condition.equals(MainFilter.ASSIGNED_ME)) {
             return assignedUser.id.eq(userId);
         }

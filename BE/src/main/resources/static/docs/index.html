@@ -967,7 +967,7 @@ Host: localhost:8080</code></pre>
 <h4 id="show-Issue-List_http_request"><a class="link" href="#show-Issue-List_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/issues?query=is:open HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/issues?page=0&amp;size=10&amp;query=is:open HTTP/1.1
 Authorization: Bearer testToken
 Accept: */*
 Host: localhost:8080</code></pre>
@@ -988,6 +988,14 @@ Host: localhost:8080</code></pre>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">원하는 페이지, 기본 0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">원하는 사이즈, 기본 10</p></td>
+</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>query</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">is:open(열린 이슈), is:close(닫힌 이슈), is:write_by_me(내가 작성한 이슈), is:assigned_me(나에게 할당된 이슈), is:add_comment_by_me(내가 댓글을 남긴 이슈), label:xx(라벨 필터 적용), assignee:yy(assignee 필터 적용), milestone:zz(마일스톤 필터 적용)</p></td>
@@ -1025,7 +1033,7 @@ Content-Length: 721
     "issueId" : 1,
     "writer" : "user1",
     "writerImage" : "image1",
-    "modificationTime" : "2022-07-17T14:48:29.929226",
+    "modificationTime" : "2022-07-18T20:34:27.114319",
     "milestoneName" : "milestone1",
     "opened" : true
   } ],
@@ -1188,7 +1196,7 @@ Content-Length: 156
 {
   "title" : "BE Lucid가 작성한 issue",
   "content" : "내용은 이러하다",
-  "writtenTime" : "2022-07-17T14:48:29.835836",
+  "writtenTime" : "2022-07-18T20:34:27.081229",
   "assignedMe" : true
 }</code></pre>
 </div>
@@ -1410,7 +1418,7 @@ Content-Length: 946
   "issueId" : 1,
   "title" : "title1",
   "content" : "content1",
-  "writtenTime" : "2022-07-17T14:48:29.459354",
+  "writtenTime" : "2022-07-18T20:34:26.628148",
   "writerOutline" : {
     "optionName" : "user1",
     "imageUrl" : "image1"
@@ -1423,12 +1431,12 @@ Content-Length: 946
     "imageUrl" : "image1"
   } ],
   "labels" : [ {
-    "labelName" : "Lucid",
-    "colorCode" : "#008672",
-    "textColor" : "white"
-  }, {
     "labelName" : "BE",
     "colorCode" : "#000000",
+    "textColor" : "white"
+  }, {
+    "labelName" : "Lucid",
+    "colorCode" : "#008672",
     "textColor" : "white"
   } ],
   "milestoneInformation" : {
@@ -1442,10 +1450,10 @@ Content-Length: 946
       "imageUrl" : "image1"
     },
     "content" : "contents",
-    "writtenTime" : "2022-07-17T14:48:29.460597",
+    "writtenTime" : "2022-07-18T20:34:26.629172",
     "editable" : true
   } ],
-  "imageUrls" : [ "image3", "image1", "image2" ],
+  "imageUrls" : [ "image2", "image1", "image3" ],
   "open" : true
 }</code></pre>
 </div>
@@ -1952,7 +1960,7 @@ Content-Length: 687
   "milestoneSingleInfos" : [ {
     "id" : null,
     "name" : "m1",
-    "dueDate" : "2022-07-17T14:48:30.367816",
+    "dueDate" : "2022-07-18T20:34:27.617365",
     "description" : "m1 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -1960,7 +1968,7 @@ Content-Length: 687
   }, {
     "id" : null,
     "name" : "m2",
-    "dueDate" : "2022-07-17T14:48:30.367884",
+    "dueDate" : "2022-07-18T20:34:27.617398",
     "description" : "m2 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -1968,7 +1976,7 @@ Content-Length: 687
   }, {
     "id" : null,
     "name" : "m3",
-    "dueDate" : "2022-07-17T14:48:30.367893",
+    "dueDate" : "2022-07-18T20:34:27.617405",
     "description" : "m3 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2055,12 +2063,12 @@ Content-Length: 687
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer testToken
 Accept: */*
-Content-Length: 115
+Content-Length: 112
 Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-07-17T14:48:30.421561",
+  "dueDate" : "2022-07-18T20:34:27.664",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2124,7 +2132,7 @@ Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-07-17T14:48:30.488119",
+  "dueDate" : "2022-07-18T20:34:27.723804",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2715,7 +2723,7 @@ Content-Length: 214
     "imageUrl" : "image1"
   },
   "content" : "issue에 작성된 comments 입니다..",
-  "writtenTime" : "2022-07-17T14:48:30.078362",
+  "writtenTime" : "2022-07-18T20:34:27.337991",
   "editable" : true
 }</code></pre>
 </div>
@@ -2891,7 +2899,7 @@ Host: localhost:8080</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-17 14:43:39 +0900
+Last updated 2022-07-17 14:52:28 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

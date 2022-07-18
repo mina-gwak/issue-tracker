@@ -9,11 +9,14 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.ResultActions;
@@ -56,15 +59,19 @@ class IssueControllerTest extends ControllerTest {
         Label label2 = new Label("BE", "BE's label", "#000000", "white");
         issue.attachedLabel(List.of(label1, label2));
 
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
         IssueCoverResponse responses = new IssueCoverResponse(issue);
 
-        given(issueService.findIssuesByCondition(eq("is:open"), anyLong()))
+        given(issueService.findIssuesByCondition(eq("is:open"), anyLong(), eq(pageRequest)))
             .willReturn(new IssueCoversResponse(List.of(responses), 1, 2, 3, 4));
 
         // when
         ResultActions perform = mockMvc.perform(get("/api/issues")
             .header("Authorization", "Bearer testToken")
             .accept(MediaType.ALL)
+            .queryParam("page", "0")
+            .queryParam("size", "10")
             .queryParam("query", "is:open"));
 
         // then
@@ -75,6 +82,8 @@ class IssueControllerTest extends ControllerTest {
         perform.andDo(
             document("get-issue-with-main-filter", getDocumentRequest(), getDocumentResponse(),
                 requestParameters(
+                    parameterWithName("page").description("원하는 페이지, 기본 0"),
+                    parameterWithName("size").description("원하는 사이즈, 기본 10"),
                     parameterWithName("query")
                         .description(
                             "is:open(열린 이슈), is:close(닫힌 이슈), is:write_by_me(내가 작성한 이슈), is:assigned_me(나에게 할당된 이슈), is:add_comment_by_me(내가 댓글을 남긴 이슈), "
@@ -90,8 +99,10 @@ class IssueControllerTest extends ControllerTest {
                         .description("라벨 색"),
                     fieldWithPath("issueCoverResponses[].labelCoverResponses[].textColor").type(STRING)
                         .description("라벨 텍스트 색"),
-                    fieldWithPath("issueCoverResponses[].assignees[].optionName").type(STRING).description("assignee 이름"),
-                    fieldWithPath("issueCoverResponses[].assignees[].imageUrl").type(STRING).description("assignee 이미지"),
+                    fieldWithPath("issueCoverResponses[].assignees[].optionName").type(STRING)
+                        .description("assignee 이름"),
+                    fieldWithPath("issueCoverResponses[].assignees[].imageUrl").type(STRING)
+                        .description("assignee 이미지"),
                     fieldWithPath("issueCoverResponses[].title").type(STRING).description("이슈 이름"),
                     fieldWithPath("issueCoverResponses[].issueId").type(NUMBER).description("이슈 id"),
                     fieldWithPath("issueCoverResponses[].writer").type(STRING).description("작성자 이름"),

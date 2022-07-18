@@ -8,13 +8,13 @@ import lombok.Getter;
 public class IssueCoversResponse {
 
     private List<IssueCoverResponse> issueCoverResponses;
-    private int openIssueCount;
-    private int closeIssueCount;
+    private long openIssueCount;
+    private long closeIssueCount;
     private long labelCount;
     private long milestoneCount;
 
     public IssueCoversResponse(
-        List<IssueCoverResponse> issueCoverResponses, int openIssueCount, int closeIssueCount, long labelCount,
+        List<IssueCoverResponse> issueCoverResponses, long openIssueCount, long closeIssueCount, long labelCount,
         long milestoneCount) {
         this.issueCoverResponses = issueCoverResponses;
         this.openIssueCount = openIssueCount;

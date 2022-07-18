@@ -63,4 +63,8 @@ public class Comment {
     public void editContent(String content) {
         this.content = content;
     }
+
+    public void removeRelationWithIssue() {
+        issue.deleteComment(this);
+    }
 }
