@@ -32,6 +32,7 @@ const TextInput = ({
     <S.Wrapper status={status}>
       <S.InputBox size={size} isValueExist={isValueExist} disabled={disabled}>
         <S.TextInput
+          type='text'
           id={name}
           name={name}
           disabled={disabled}
