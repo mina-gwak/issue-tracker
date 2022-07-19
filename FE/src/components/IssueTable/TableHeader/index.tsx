@@ -18,7 +18,7 @@ const TableHeader = ({ openedIssue = 0, closedIssue = 0 }: TableHeaderPropsType)
   const filterBarArrValue = useRecoilValue(filterBarArrState);
   const [filterBarValue, setFilterBarValue] = useRecoilState(filterBarState);
   const { isCheckedItems, isAllChecked, toggleIsAllChecked } = useCheckBox();
-  const isChecked: boolean = isCheckedItems.size > 0;
+  const isChecked = isCheckedItems.size > 0;
 
   const issueTabClickHandler = (value: string) => () => {
     for (const [, objValue] of filterBarArrValue) {
