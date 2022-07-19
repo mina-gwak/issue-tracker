@@ -10,6 +10,7 @@ import EditIcon from '@assets/icons/editIcon.svg';
 import Github from '@assets/icons/github.svg';
 import Label from '@assets/icons/label.svg';
 import Milestone from '@assets/icons/milestone.svg';
+import Paperclip from '@assets/icons/paperclip.svg'
 import RefreshIcon from '@assets/icons/refreshIcon.svg';
 import Search from '@assets/icons/search.svg';
 import Select from '@assets/icons/select.svg';
@@ -18,18 +19,19 @@ export const Icons = {
   Archive,
   AlertCircle,
   CheckBoxActive,
+  CheckBoxCircleActive,
+  CheckBoxCircleInitial,
   CheckBoxDisabled,
   CheckBoxInitial,
+  DeleteIcon,
+  EditIcon,
   Github,
   Label,
   Milestone,
+  Paperclip,
+  RefreshIcon,
   Search,
   Select,
-  CheckBoxCircleActive,
-  CheckBoxCircleInitial,
-  EditIcon,
-  DeleteIcon,
-  RefreshIcon,
 } as const;
 
 export type IconsType = keyof typeof Icons;
