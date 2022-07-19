@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
+import { TextInputPropsType } from '@components/common/TextInput';
 import { INPUT_SIZE, INPUT_STATUS } from '@components/common/TextInput/constants';
-import { TextInputPropsType } from '@components/common/TextInput/index';
 
 type InputBoxProps = Pick<TextInputPropsType, 'size' | 'disabled'> & { isValueExist: boolean };
 
