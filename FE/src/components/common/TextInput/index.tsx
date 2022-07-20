@@ -12,16 +12,16 @@ export interface TextInputPropsType {
   size: InputSizeValues;
   name: string;
   placeholder: string;
-  disabled: boolean;
-  status: InputStatusValues;
-  message: string;
+  disabled?: boolean;
+  status?: InputStatusValues;
+  message?: string;
 }
 
 const TextInput = ({
   size = INPUT_SIZE.SMALL,
   name,
   placeholder,
-  disabled,
+  disabled = false,
   status = INPUT_STATUS.NORMAL,
   message,
 }: TextInputPropsType) => {
