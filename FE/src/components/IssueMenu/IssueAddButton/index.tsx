@@ -5,7 +5,7 @@ import { BUTTON_SIZE } from '@components/common/Button/constants';
 
 const IssueAddButton = () => {
   return (
-    <Link to='/issue-list'>
+    <Link to='/add-issue'>
       <Button size={BUTTON_SIZE.SMALL} onClick={() => {}}>
         <span> + 이슈 작성</span>
       </Button>
