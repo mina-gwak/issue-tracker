@@ -32,7 +32,7 @@ class RedisTokenRepositoryTest {
         Assertions.assertThat(redisTokenRepository.findByKey(key).get()).isEqualTo(refreshToken);
     }
 
-    @DisplayName("username을 통해 지우게 되면 더이상 조회되지 않는다.")
+    @DisplayName("username을 key로 전달하여 지우게 되면 더이상 조회되지 않는다.")
     @Test
     void delete_and_find_token_invalid() throws InterruptedException {
         // when
