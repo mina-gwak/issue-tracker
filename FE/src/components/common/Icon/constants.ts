@@ -1,4 +1,5 @@
 export const ICON_NAME = {
+  ADD: 'Add',
   ARCHIVE: 'Archive',
   ALERT_CIRCLE: 'AlertCircle',
   CHECKBOX_ACTIVE: 'CheckBoxActive',
