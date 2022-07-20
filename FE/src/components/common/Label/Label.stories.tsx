@@ -6,9 +6,9 @@ export default {
   title: 'Common/Label',
   component: Label,
   args: {
-    name: 'Document',
-    backgroundColor: '#000',
-    textColor: '#fff',
+    labelName: 'Document',
+    labelColor: '#000000',
+    textColor: '#ffffff',
   },
 } as ComponentMeta<typeof Label>;
 
