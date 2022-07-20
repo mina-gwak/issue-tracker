@@ -1,3 +1,4 @@
+import Add from '@assets/icons/add.svg'
 import AlertCircle from '@assets/icons/alertCircle.svg';
 import Archive from '@assets/icons/archive.svg';
 import CheckBoxActive from '@assets/icons/checkBoxActive.svg';
@@ -16,6 +17,7 @@ import Search from '@assets/icons/search.svg';
 import Select from '@assets/icons/select.svg';
 
 export const Icons = {
+  Add,
   Archive,
   AlertCircle,
   CheckBoxActive,
