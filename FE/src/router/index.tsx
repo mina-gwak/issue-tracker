@@ -1,3 +1,4 @@
+import AddIssue from '@pages/AddIssue';
 import Error from '@pages/Error';
 import NotFound from '@pages/Error/NotFound';
 import IssueList from '@pages/IssueList';
@@ -19,6 +20,7 @@ export const routes = [
       { path: '/issue-list', element: <IssueList /> },
       { path: '/milestone', element: <Milestone /> },
       { path: '/label', element: <Label /> },
+      { path: '/add-issue', element: <AddIssue /> },
     ],
   },
   { path: '*', element: <NotFound /> },
