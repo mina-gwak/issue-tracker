@@ -57,3 +57,7 @@ logging:
     org.hibernate.SQL: debug
     com.codesquad.issueTracker: debug
 
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
