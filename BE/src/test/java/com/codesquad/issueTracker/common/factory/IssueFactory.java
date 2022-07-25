@@ -8,11 +8,14 @@ import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.milestone.domain.Milestone;
 import com.codesquad.issueTracker.user.domain.User;
 
+import reactor.util.annotation.Nullable;
+
 public class IssueFactory {
 
     private IssueFactory() {
 
     }
+
     public static List<Issue> mockIssueList(List<User> users, List<Milestone> milestones) {
         List<Issue> list = new ArrayList<>();
         for (int i = 0; i < users.size(); i++) {
@@ -21,4 +24,10 @@ public class IssueFactory {
         }
         return list;
     }
+
+    public static Issue mockSingleIssue(int num, User user, Milestone milestone) {
+        return new Issue("title" + num, "contents" + num, LocalDateTime.now(), LocalDateTime.now(),
+            user, milestone);
+    }
+
 }
