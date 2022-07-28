@@ -5,11 +5,13 @@ import javax.annotation.PreDestroy;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import redis.embedded.RedisServer;
 
 @Configuration
-public class EmbeddedRedisConfig {
+@Profile("!prod")
+public class EmbeddedRedisConfiguration {
 
     @Value("${spring.redis.port}")
     private int redisPort;

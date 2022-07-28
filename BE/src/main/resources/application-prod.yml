@@ -1,0 +1,60 @@
+spring:
+  datasource:
+    url: ${DATA_SOURCE}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${USERNAME}
+    password: ${PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+    database: mysql
+    show-sql: true
+
+  cache:
+    type: redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+  sql:
+    init:
+      mode: never
+
+jwt:
+  token:
+    #    ms 단위
+    access-validate-time: 360000000 # 1000시간
+    refresh-validate-time: 720000000 # 2000시간
+    token-secret: ${JWT_TOKEN_SECRET}
+
+oauth:
+  github:
+    token-server-uri: "https://github.com/login/oauth/access_token"
+    oauth-server-uri: "https://api.github.com/user"
+    oauth-login-uri: "https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&scope=user"
+    client-id: ${GITHUB_CLIENT_ID}
+    client-secret: ${GITHUB_CLIENT_SECRET}
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+    s3:
+      bucket: ${S3_BUCKET_NAME}
+    region:
+      static: ${S3_REGION}
+    stack:
+      auto: false
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    com.codesquad.issueTracker: debug
+
