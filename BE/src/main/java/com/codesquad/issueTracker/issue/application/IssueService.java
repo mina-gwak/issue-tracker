@@ -54,22 +54,12 @@ public class IssueService {
     public IssueCoversResponse findIssuesByCondition(String query, Long userId, Pageable pageable) {
         FilterCondition condition = queryParser.makeFilterCondition(query);
         List<Issue> issues = issueRepository.search(condition, userId, pageable);
-        long allIssueCount = issueRepository.count();
 
         List<IssueCoverResponse> result = issues.stream()
             .map(IssueCoverResponse::new)
             .collect(Collectors.toList());
 
-        long openCount, closeCount;
-        if (condition.getMainFilter().equals(MainFilter.CLOSE)) {
-            closeCount = result.size();
-            openCount = allIssueCount - closeCount;
-        } else {
-            openCount = result.size();
-            closeCount = allIssueCount - openCount;
-        }
-        return new IssueCoversResponse(result, openCount, closeCount, labelRepository.count(),
-            milestoneRepository.count());
+        return makeIssueCoversResponse(condition, result);
     }
 
     @Cacheable(value = "PopUpResponse", key = "#issueId", cacheManager = "cacheManager", unless = "#issueId == ''")
@@ -90,21 +80,8 @@ public class IssueService {
 
     @Transactional
     public void makeIssue(IssueContentsRequest issueContentsRequest, Long userId) {
-        User user = findUser(userId);
-
-        Milestone milestone = milestoneRepository.findByName(issueContentsRequest.getMilestone())
-            .orElseThrow(() -> new IllegalStateException("없는 마일스톤 입니다."));
-
-        Issue issue = issueContentsRequest.toEntity(user, milestone);
-
-        List<User> users = userRepository.findByNameIn(issueContentsRequest.getAssignees());
-        issue.assignUser(users);
-
-        List<Label> labels = labelRepository.findByNameIn(issueContentsRequest.getLabels());
-        issue.attachedLabel(labels);
-
-        issue.addFiles(issueContentsRequest.getFileUrl());
-
+        Issue issue = makeBasicIssue(issueContentsRequest, userId);
+        assignAdditional(issueContentsRequest, issue);
         issueRepository.save(issue);
     }
 
@@ -162,6 +139,20 @@ public class IssueService {
         commentRepository.delete(comment);
     }
 
+    private IssueCoversResponse makeIssueCoversResponse(FilterCondition condition, List<IssueCoverResponse> result) {
+        long allIssueCount = issueRepository.count();
+        long openCount, closeCount;
+        if (condition.getMainFilter().equals(MainFilter.CLOSE)) {
+            closeCount = result.size();
+            openCount = allIssueCount - closeCount;
+        } else {
+            openCount = result.size();
+            closeCount = allIssueCount - openCount;
+        }
+        return new IssueCoversResponse(result, openCount, closeCount, labelRepository.count(),
+            milestoneRepository.count());
+    }
+
     private Comment checkEditableComments(Long commentId, Long userId) {
         Comment comment = commentRepository.findById(commentId)
             .orElseThrow(() -> new IllegalStateException("유효하지 않은 comment 입니다."));
@@ -202,5 +193,22 @@ public class IssueService {
             return "issue가 열렸습니다.";
         }
         return "issue가 닫혔습니다.";
+    }
+
+    private Issue makeBasicIssue(IssueContentsRequest issueContentsRequest, Long userId) {
+        User user = findUser(userId);
+        Milestone milestone = milestoneRepository.findByName(issueContentsRequest.getMilestone())
+            .orElseThrow(() -> new IllegalStateException("없는 마일스톤 입니다."));
+        return issueContentsRequest.toEntity(user, milestone);
+    }
+
+    private void assignAdditional(IssueContentsRequest issueContentsRequest, Issue issue) {
+        List<User> users = userRepository.findByNameIn(issueContentsRequest.getAssignees());
+        issue.assignUser(users);
+
+        List<Label> labels = labelRepository.findByNameIn(issueContentsRequest.getLabels());
+        issue.attachedLabel(labels);
+
+        issue.addFiles(issueContentsRequest.getFileUrl());
     }
 }
