@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,6 +72,7 @@ public class IssueService {
             milestoneRepository.count());
     }
 
+    @Cacheable(value = "PopUpResponse", key = "#issueId", cacheManager = "cacheManager", unless = "#issueId == ''")
     @Transactional(readOnly = true)
     public PopUpResponse popUpIssue(Long issueId, Long userId) {
         Issue issue = findSingleIssue(issueId);
