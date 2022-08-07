@@ -30,7 +30,7 @@ export const FormContainer = styled.div`
   gap: 32px;
 `;
 
-export const FormWrapper = styled.form`
+export const FormWrapper = styled.div`
   display: flex;
   gap: 32px;
 `;
