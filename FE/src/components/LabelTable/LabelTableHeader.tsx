@@ -1,12 +1,10 @@
-import React from 'react';
-
 import styled from 'styled-components';
 
 interface TableHeaderPropsType {
   labelCount: number;
 }
 
-const TableHeader = ({ labelCount }: TableHeaderPropsType) => {
+const LabelTableHeader = ({ labelCount }: TableHeaderPropsType) => {
   return <LabelTableTitle>{labelCount}개의 레이블</LabelTableTitle>;
 };
 
@@ -20,4 +18,4 @@ const LabelTableTitle = styled.div`
   padding: 0 32px;
 `;
 
-export default TableHeader;
+export default LabelTableHeader;

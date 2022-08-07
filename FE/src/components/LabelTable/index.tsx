@@ -2,7 +2,7 @@ import { useRecoilValueLoadable } from 'recoil';
 import styled from 'styled-components';
 
 import LabelItem from '@components/LabelTable/LabelItem';
-import TableHeader from '@components/LabelTable/TableHeader';
+import LabelTableHeader from '@components/LabelTable/LabelTableHeader';
 import Loading from '@pages/Loading';
 import { getLabelData } from '@store/label';
 import { LabelTabType } from '@type/label';
@@ -14,7 +14,7 @@ const LabelTable = () => {
     case 'hasValue':
       return (
         <Wrapper>
-          <TableHeader labelCount={labelData.contents.labelCount} />
+          <LabelTableHeader labelCount={labelData.contents.labelCount} />
           {labelData.contents.labelDetails.map((label: LabelTabType) => (
             <LabelItem key={label.id} data={label} />
           ))}
