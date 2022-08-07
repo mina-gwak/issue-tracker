@@ -8,4 +8,9 @@ export const API = {
   LABEL_CREATE: () => `/api/labels/`,
   LABEL_UPDATE: (id: number) => `/api/labels/${id}`,
   LABEL_DELETE: (id: number) => `/api/labels/${id}`,
+  MILESTONE: () => `/api/milestones/list`,
+  MILESTONE_CREATE: () => `/api/milestones/`,
+  MILESTONE_UPDATE: (id: number) => `/api/milestones/${id}`,
+  MILESTONE_DELETE: (id: number) => `/api/milestones/${id}`,
+  MILESTONE_OPEN_CLOSE: (id: number) => `/api/milestones/${id}/change`,
 } as const;
