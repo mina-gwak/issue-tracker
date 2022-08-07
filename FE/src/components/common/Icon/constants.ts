@@ -14,6 +14,9 @@ export const ICON_NAME = {
   EDIT_ICON: 'EditIcon',
   DELETE_ICON: 'DeleteIcon',
   REFRESH_ICON: 'RefreshIcon',
+  OPEN_MILESTONE: 'OpenMilestone',
+  CLOSE_MILESTONE: 'CloseMilestone',
+  CALENDAR: 'Calendar',
 } as const;
 
 export const ICON_SIZE = {
