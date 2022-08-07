@@ -1,9 +1,8 @@
 import { useState } from 'react';
 
-import styled from 'styled-components';
-
 import InputForm from '@components/InputForm';
 import InputRadio from '@components/InputRadio';
+import * as S from '@components/LabelCreateEditForm/LabelCreateEditForm.style';
 import LabelBadge from '@components/LabelTable/LabelBadge';
 import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
@@ -47,18 +46,18 @@ const LabelCreateEdit = ({
   };
 
   return (
-    <LabelEditBlock>
+    <S.LabelEditWrapper>
       <LabelBadge colorCode={labelBadgeColorCode} textColor={labelBadgeTextColor} name={name} />
-      <LabelEdit>
+      <S.LabelEdit>
         <InputForm placeholder={name} {...titleInput} />
         <InputForm placeholder={description} {...descriptionInput} />
-        <LabelEditColor>
+        <S.LabelEditColor>
           <InputForm placeholder={colorCode} {...colorInput}>
             <button onClick={handleClickRefreshColor}>
               <Icon iconName={ICON_NAME.REFRESH_ICON} />
             </button>
           </InputForm>
-          <RadioButtonContainer>
+          <S.RadioButtonContainer>
             <span>텍스트 색상</span>
             {textColorArr.map((item) => (
               <InputRadio
@@ -68,48 +67,11 @@ const LabelCreateEdit = ({
                 onChange={handleChangeRadioButton}
               />
             ))}
-          </RadioButtonContainer>
-        </LabelEditColor>
-      </LabelEdit>
-    </LabelEditBlock>
+          </S.RadioButtonContainer>
+        </S.LabelEditColor>
+      </S.LabelEdit>
+    </S.LabelEditWrapper>
   );
 };
-
-const RadioButton = styled.input``;
-
-const RadioButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-
-  gap: 12px;
-
-  width: 30%;
-  height: 40px;
-  background-color: ${({ theme }) => theme.colors.grey5};
-  border: 1px solid ${({ theme }) => theme.colors.grey6};
-  border-radius: 11px;
-  margin: 20px 40px;
-  padding: 30px 24px;
-`;
-
-const LabelEditBlock = styled.div`
-  display: grid;
-  grid-template-columns: 10% 90%;
-  align-items: center;
-  margin-bottom: 1rem;
-`;
-
-const LabelEdit = styled.div`
-  display: flex;
-  flex-direction: column;
-  & > div {
-    margin-bottom: 1rem;
-  }
-`;
-
-const LabelEditColor = styled.div`
-  display: flex;
-  align-items: center;
-`;
 
 export default LabelCreateEdit;

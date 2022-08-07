@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction } from 'react';
 
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import styled from 'styled-components';
 
+import * as S from '@components/MilestoneTable/MilestoneTable.style';
 import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
 import ProgressBar from '@components/common/ProgressBar';
@@ -37,99 +37,50 @@ const MilestoneInfo = ({ data, setEditMode }: MilestoneInfoPropsType) => {
   const handleEdit = () => setEditMode(true);
 
   return (
-    <MilestoneItemBlock>
-      <LeftContainer>
-        <Title>
+    <S.MilestoneItemWrapper>
+      <S.LeftContainer>
+        <S.MilestoneInfoTitle>
           <div>
             <Icon iconName={ICON_NAME.OPEN_MILESTONE} />
-            <IconText>{name}</IconText>
+            <S.IconText>{name}</S.IconText>
           </div>
           <div>
             <Icon iconName={ICON_NAME.CALENDAR} />
-            <IconText>{dueDate} </IconText>
+            <S.IconText>{dueDate} </S.IconText>
           </div>
-        </Title>
-        <Description>{description}</Description>
-      </LeftContainer>
+        </S.MilestoneInfoTitle>
+        <S.Description>{description}</S.Description>
+      </S.LeftContainer>
 
-      <RightContainer>
-        <EditIcons>
-          <IconContainer onClick={handleOpenClose}>
+      <S.RightContainer>
+        <S.EditIcons>
+          <S.IconContainer onClick={handleOpenClose}>
             <Icon iconName={ICON_NAME.CLOSE_MILESTONE} />
-            {isOpenMilestone ? <IconText>닫기</IconText> : <IconText>열기</IconText>}
-          </IconContainer>
-          <IconContainer onClick={handleEdit}>
+            {isOpenMilestone ? <S.IconText>닫기</S.IconText> : <S.IconText>열기</S.IconText>}
+          </S.IconContainer>
+          <S.IconContainer onClick={handleEdit}>
             <Icon iconName={ICON_NAME.EDIT_ICON} />
-            <IconText>편집</IconText>
-          </IconContainer>
-          <IconContainer onClick={handleDelete}>
+            <S.IconText>편집</S.IconText>
+          </S.IconContainer>
+          <S.IconContainer onClick={handleDelete}>
             <Icon iconName={ICON_NAME.DELETE_ICON} />
-            <DeleteIcon>삭제</DeleteIcon>
-          </IconContainer>
-        </EditIcons>
+            <S.DeleteIcon>삭제</S.DeleteIcon>
+          </S.IconContainer>
+        </S.EditIcons>
 
         <div>
           <ProgressBar progress={Number(progress(openIssueCount, closeIssueCount))} />
-          <State>
+          <S.StateContainer>
             <div>{Number(progress(openIssueCount, closeIssueCount))}%</div>
             <div>
-              <IconText> 열린 이슈({openIssueCount}) </IconText>
-              <IconText>닫힌 이슈({closeIssueCount})</IconText>
+              <S.IconText> 열린 이슈({openIssueCount}) </S.IconText>
+              <S.IconText>닫힌 이슈({closeIssueCount})</S.IconText>
             </div>
-          </State>
+          </S.StateContainer>
         </div>
-      </RightContainer>
-    </MilestoneItemBlock>
+      </S.RightContainer>
+    </S.MilestoneItemWrapper>
   );
 };
-
-const MilestoneItemBlock = styled.div`
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid ${({ theme }) => theme.colors.grey2};
-  padding: 10px;
-`;
-
-const Title = styled.div`
-  display: flex;
-  div {
-    padding-left: 12px;
-  }
-`;
-
-const LeftContainer = styled.div``;
-
-const Description = styled.div`
-  display: flex;
-  padding-top: 5px;
-  margin-left: 12px;
-`;
-
-const RightContainer = styled.div`
-  width: 245px;
-`;
-
-const EditIcons = styled.div`
-  cursor: pointer;
-  display: flex;
-  font-size: ${({ theme }) => theme.fontSizes.xSmall}px;
-  justify-content: flex-end;
-`;
-const IconContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 20px;
-`;
-const IconText = styled.span`
-  margin-left: 5px;
-`;
-const DeleteIcon = styled.div`
-  color: ${({ theme }) => theme.colors.red};
-`;
-const State = styled.div`
-  display: flex;
-  justify-content: space-between;
-  font-size: ${({ theme }) => theme.fontSizes.xSmall}px;
-`;
 
 export default MilestoneInfo;

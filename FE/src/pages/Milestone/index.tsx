@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
 import { useSetRecoilState } from 'recoil';
-import styled from 'styled-components';
 
 import MilestoneCreateEditForm from '@components/MilestoneCreateEditForm';
 import MilestoneTable from '@components/MilestoneTable';
 import TabsPageHeader from '@components/TabsPageHeader';
+import * as S from '@pages/Milestone/Milestone.style';
 import { labelMilestoneActiveState } from '@store/labelMilestoneActive';
 
 const Milestone = () => {
@@ -19,7 +19,7 @@ const Milestone = () => {
   }, []);
 
   return (
-    <Wrapper>
+    <S.Wrapper>
       <TabsPageHeader isCreateTabs={isCreateMilestone} setIsCreateTabs={setIsCreateMilestone} />
       {isCreateMilestone && (
         <MilestoneCreateEditForm
@@ -29,14 +29,8 @@ const Milestone = () => {
         />
       )}
       <MilestoneTable />
-    </Wrapper>
+    </S.Wrapper>
   );
 };
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 1440px;
-  padding: 0 80px;
-  margin: 0 auto 120px;
-`;
+
 export default Milestone;

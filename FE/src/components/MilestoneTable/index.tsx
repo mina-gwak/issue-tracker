@@ -1,20 +1,20 @@
 import React from 'react';
 
 import { useRecoilValueLoadable } from 'recoil';
-import styled from 'styled-components';
 
 import MilestoneItem from '@components/MilestoneTable/MilestoneItem';
+import * as S from '@components/MilestoneTable/MilestoneTable.style';
 import MilestoneTableHeader from '@components/MilestoneTable/MilestoneTableHeader';
+import Error from '@pages/Error';
 import Loading from '@pages/Loading';
 import { getMilestoneData } from '@store/milestone';
-
 const MilestoneTable = () => {
   const milestoneData = useRecoilValueLoadable(getMilestoneData);
 
   switch (milestoneData.state) {
     case 'hasValue':
       return (
-        <Wrapper>
+        <S.Wrapper>
           <MilestoneTableHeader
             milestoneOpenCount={milestoneData.contents.openMilestoneCount}
             milestoneCloseCount={milestoneData.contents.closeMilestoneCount}
@@ -24,24 +24,13 @@ const MilestoneTable = () => {
               <MilestoneItem data={data} />
             </React.Fragment>
           ))}
-        </Wrapper>
+        </S.Wrapper>
       );
     case 'loading':
       return <Loading />;
     case 'hasError':
-      throw milestoneData.contents;
+      return <Error />;
   }
 };
-
-const Wrapper = styled.div`
-  width: 1280px;
-  border: 1px solid ${({ theme }) => theme.colors.grey4};
-  border-radius: 11px;
-  overflow: hidden;
-
-  & > *:last-child {
-    border-radius: 0 0 11px 11px;
-  }
-`;
 
 export default MilestoneTable;
