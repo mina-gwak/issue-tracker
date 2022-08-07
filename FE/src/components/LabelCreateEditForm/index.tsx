@@ -69,10 +69,10 @@ const LabelCreateEditForm = ({
       </div>
       <ButtonContainer>
         <Button size={BUTTON_SIZE.SMALL} outline={true} onClick={handelClickCancel}>
-          <span> X 취소</span>
+          <span> ❌ 취소</span>
         </Button>
         <Button size={BUTTON_SIZE.SMALL} onClick={handleSubmitClick}>
-          <span> ★ 편집</span>
+          <span> ➕ 완료</span>
         </Button>
       </ButtonContainer>
     </LabelEditFormWrapper>
