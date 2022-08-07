@@ -13,9 +13,9 @@ import Image from '@components/common/Image';
 import { IMAGE_SIZE } from '@components/common/Image/constants';
 import { API } from '@constants';
 import useCheckBox from '@hooks/useCheckBox';
+import { queryClient } from '@src';
 import { filterBarArrState, filterBarState } from '@store/filterBar';
 import { DropdownType } from '@type/dropdownType';
-import { queryClient } from '@utils/queryClient';
 
 export interface ModalPropsType {
   modalRef: RefObject<HTMLDivElement>;

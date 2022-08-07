@@ -1,16 +1,18 @@
 import ReactDOM from 'react-dom/client';
 import { QueryClientProvider } from 'react-query';
+import { QueryClient } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 
 import GlobalStyle from '@styles/GlobalStyle';
 import { theme } from '@styles/theme';
-import { queryClient } from '@utils/queryClient';
 
 import App from './App';
 
 import '@assets/fonts/font.css';
+
+export const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(

@@ -1,3 +1,4 @@
+import Add from '@assets/icons/add.svg';
 import AlertCircle from '@assets/icons/alertCircle.svg';
 import Archive from '@assets/icons/archive.svg';
 import Calendar from '@assets/icons/calendar.svg';
@@ -13,26 +14,29 @@ import Github from '@assets/icons/github.svg';
 import Label from '@assets/icons/label.svg';
 import Milestone from '@assets/icons/milestone.svg';
 import OpenMilestone from '@assets/icons/openMilestone.svg';
+import Paperclip from '@assets/icons/paperclip.svg';
 import RefreshIcon from '@assets/icons/refreshIcon.svg';
 import Search from '@assets/icons/search.svg';
 import Select from '@assets/icons/select.svg';
 
 export const Icons = {
+  Add,
   Archive,
   AlertCircle,
   CheckBoxActive,
+  CheckBoxCircleActive,
+  CheckBoxCircleInitial,
   CheckBoxDisabled,
   CheckBoxInitial,
+  DeleteIcon,
+  EditIcon,
   Github,
   Label,
   Milestone,
+  Paperclip,
+  RefreshIcon,
   Search,
   Select,
-  CheckBoxCircleActive,
-  CheckBoxCircleInitial,
-  EditIcon,
-  DeleteIcon,
-  RefreshIcon,
   OpenMilestone,
   CloseMilestone,
   Calendar,
