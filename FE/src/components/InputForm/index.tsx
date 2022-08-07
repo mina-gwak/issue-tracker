@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 interface InputFormType {
   placeholder?: string;
-  value?: string;
   inputValue: string;
   onChange?: ({ target }: { target: HTMLInputElement }) => void;
   children?: ReactNode;
