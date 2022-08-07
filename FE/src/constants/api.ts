@@ -13,4 +13,5 @@ export const API = {
   MILESTONE_UPDATE: (id: number) => `/api/milestones/${id}`,
   MILESTONE_DELETE: (id: number) => `/api/milestones/${id}`,
   MILESTONE_OPEN_CLOSE: (id: number) => `/api/milestones/${id}/change`,
+  FILE_UPLOAD: '/api/common/upload',
 } as const;
