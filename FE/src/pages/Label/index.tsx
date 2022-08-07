@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useSetRecoilState } from 'recoil';
-import styled from 'styled-components';
 
 import LabelCreateEditForm from '@components/LabelCreateEditForm';
 import LabelTable from '@components/LabelTable';
 import TabsPageHeader from '@components/TabsPageHeader';
+import * as S from '@pages/Label/Label.style';
 import { labelMilestoneActiveState } from '@store/labelMilestoneActive';
-
 const Label = () => {
   const [isCreateLabel, setIsCreateLabel] = useState(false);
   const setLabelMilestoneActiveValue = useSetRecoilState(labelMilestoneActiveState);
@@ -19,21 +18,14 @@ const Label = () => {
   }, []);
 
   return (
-    <Wrapper>
+    <S.Wrapper>
       <TabsPageHeader isCreateTabs={isCreateLabel} setIsCreateTabs={setIsCreateLabel} />
       {isCreateLabel && (
         <LabelCreateEditForm title='새로운 레이블 추가' handelClickCancel={handelClickCancel} />
       )}
       <LabelTable />
-    </Wrapper>
+    </S.Wrapper>
   );
 };
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 1440px;
-  padding: 0 80px;
-  margin: 0 auto 120px;
-`;
 export default Label;

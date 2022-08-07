@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-
-import styled from 'styled-components';
+import { useState } from 'react';
 
 import { TextColorArrType } from '@type/label';
 
@@ -19,7 +17,7 @@ const InputRadio = ({ value, onChange, name }: InputRadioPropsType) => {
   };
   return (
     <div>
-      <RadioButton
+      <input
         type='radio'
         id={value.id}
         value={value.colorCode}
@@ -31,7 +29,5 @@ const InputRadio = ({ value, onChange, name }: InputRadioPropsType) => {
     </div>
   );
 };
-
-const RadioButton = styled.input``;
 
 export default InputRadio;

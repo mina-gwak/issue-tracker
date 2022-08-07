@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { useSetRecoilState } from 'recoil';
-import styled from 'styled-components';
 
 import LabelCreateEdit from '@components/LabelCreateEditForm/LabelCreateEdit';
+import * as S from '@components/LabelCreateEditForm/LabelCreateEditForm.style';
 import Button from '@components/common/Button';
 import { BUTTON_SIZE } from '@components/common/Button/constants';
 import { defaultLabelData } from '@data/labelData';
@@ -11,7 +11,6 @@ import useInput from '@hooks/useInput';
 import { labelTrigger } from '@store/label';
 import { LabelTabType } from '@type/label';
 import { createLabel, editLabel } from '@utils/api/fetchLabel';
-
 interface LabelCreateEditFormType {
   title: string;
   data?: LabelTabType;
@@ -51,8 +50,8 @@ const LabelCreateEditForm = ({
   };
 
   return (
-    <LabelEditFormWrapper title={title}>
-      <Title>{title}</Title>
+    <S.LabelEditFormWrapper title={title}>
+      <S.Title>{title}</S.Title>
       <div>
         <LabelCreateEdit
           {...{
@@ -67,35 +66,16 @@ const LabelCreateEditForm = ({
           }}
         />
       </div>
-      <ButtonContainer>
+      <S.ButtonContainer>
         <Button size={BUTTON_SIZE.SMALL} outline={true} onClick={handelClickCancel}>
           <span> ❌ 취소</span>
         </Button>
         <Button size={BUTTON_SIZE.SMALL} onClick={handleSubmitClick}>
           <span> ➕ 완료</span>
         </Button>
-      </ButtonContainer>
-    </LabelEditFormWrapper>
+      </S.ButtonContainer>
+    </S.LabelEditFormWrapper>
   );
 };
-
-const LabelEditFormWrapper = styled.div<{ title: string }>`
-  padding: 2rem;
-  margin-bottom: 1.5rem;
-  border: 1px solid ${({ theme }) => theme.colors.grey4};
-
-  border-radius: ${({ title }) => (title === '새로운 레이블 추가' ? 16 : '')}px;
-`;
-
-const Title = styled.span`
-  font-size: 2rem;
-  margin-bottom: 3rem;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 5px;
-`;
 
 export default LabelCreateEditForm;
