@@ -4,8 +4,8 @@ import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import LabelCreateEditForm from '@components/LabelCreateEditForm';
-import LabelPageHeader from '@components/LabelPageHeader';
 import LabelTable from '@components/LabelTable';
+import TabsPageHeader from '@components/TabsPageHeader';
 import { labelMilestoneActiveState } from '@store/labelMilestoneActive';
 
 const Label = () => {
@@ -13,13 +13,14 @@ const Label = () => {
   const setLabelMilestoneActiveValue = useSetRecoilState(labelMilestoneActiveState);
 
   const handelClickCancel = () => setIsCreateLabel(false);
+
   useEffect(() => {
     setLabelMilestoneActiveValue({ label: true, milestone: false });
   }, []);
 
   return (
     <Wrapper>
-      <LabelPageHeader isCreateLabel={isCreateLabel} setIsCreateLabel={setIsCreateLabel} />
+      <TabsPageHeader isCreateTabs={isCreateLabel} setIsCreateTabs={setIsCreateLabel} />
       {isCreateLabel && (
         <LabelCreateEditForm title='새로운 레이블 추가' handelClickCancel={handelClickCancel} />
       )}

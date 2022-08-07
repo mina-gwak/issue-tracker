@@ -20,7 +20,6 @@ export const getLabelsData = async (): Promise<LabelDataType> => {
 
 export const createLabel = async (newLabelData: LabelCreateType) => {
   const accessToken = localStorage.getItem('accessToken')!;
-  console.log(newLabelData);
   try {
     const response = await axios.post(
       `${API.LABEL_CREATE()}`,
@@ -32,7 +31,7 @@ export const createLabel = async (newLabelData: LabelCreateType) => {
       },
     );
     if (response.status === 200) return true;
-    else throw Error('잘못된 생성입니다.');
+    else throw Error('잘못된 요청입니다.');
   } catch (error) {
     throw error;
   }
@@ -52,7 +51,7 @@ export const editLabel = async (id: number, newLabelData: LabelCreateType) => {
       },
     );
     if (response.status === 200) return true;
-    else throw Error('잘못된 생성입니다.');
+    else throw Error('잘못된 요청입니다.');
   } catch (error) {
     throw error;
   }
@@ -68,7 +67,7 @@ export const deleteLabel = async (id: number) => {
     });
 
     if (response.status === 200) return true;
-    else throw Error('잘못된 생성입니다.');
+    else throw Error('잘못된 요청입니다.');
   } catch (err) {
     throw err;
   }
