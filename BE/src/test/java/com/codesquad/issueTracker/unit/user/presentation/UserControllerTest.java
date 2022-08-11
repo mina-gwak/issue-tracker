@@ -73,15 +73,15 @@ class UserControllerTest extends ControllerTest {
         // then
         perform
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.usersOutlineResponses.length()").value(3))
-            .andExpect(jsonPath("$.usersOutlineResponses[1].optionName").value("user2"))
-            .andExpect(jsonPath("$.usersOutlineResponses[1].imageUrl").value("image2"));
+            .andExpect(jsonPath("$.writersOutlineResponses.length()").value(3))
+            .andExpect(jsonPath("$.writersOutlineResponses[1].optionName").value("user2"))
+            .andExpect(jsonPath("$.writersOutlineResponses[1].imageUrl").value("image2"));
 
         perform.andDo(
             document("get-writer-filter-info", getDocumentRequest(), getDocumentResponse(),
                 responseFields(
-                    fieldWithPath("usersOutlineResponses[].optionName").description("사용자 이름"),
-                    fieldWithPath("usersOutlineResponses[].imageUrl").description("사용자 이미지")
+                    fieldWithPath("writersOutlineResponses[].optionName").description("작성자 이름"),
+                    fieldWithPath("writersOutlineResponses[].imageUrl").description("작성자 이미지")
                 )));
     }
 
@@ -106,15 +106,15 @@ class UserControllerTest extends ControllerTest {
         // then
         perform
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.usersOutlineResponses.length()").value(3))
-            .andExpect(jsonPath("$.usersOutlineResponses[1].optionName").value("user2"))
-            .andExpect(jsonPath("$.usersOutlineResponses[1].imageUrl").value("image2"));
+            .andExpect(jsonPath("$.assigneesOutlineResponses.length()").value(3))
+            .andExpect(jsonPath("$.assigneesOutlineResponses[1].optionName").value("user2"))
+            .andExpect(jsonPath("$.assigneesOutlineResponses[1].imageUrl").value("image2"));
 
         perform.andDo(
             document("get-assignees-filter-info", getDocumentRequest(), getDocumentResponse(),
                 responseFields(
-                    fieldWithPath("usersOutlineResponses[].optionName").description("사용자 이름"),
-                    fieldWithPath("usersOutlineResponses[].imageUrl").description("사용자 이미지")
+                    fieldWithPath("assigneesOutlineResponses[].optionName").description("할당자 이름"),
+                    fieldWithPath("assigneesOutlineResponses[].imageUrl").description("할당자 이미지")
                 )));
     }
 
