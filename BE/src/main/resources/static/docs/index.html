@@ -819,10 +819,10 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 217
+Content-Length: 219
 
 {
-  "usersOutlineResponses" : [ {
+  "writersOutlineResponses" : [ {
     "optionName" : "user1",
     "imageUrl" : "image1"
   }, {
@@ -853,14 +853,14 @@ Content-Length: 217
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>usersOutlineResponses[].optionName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>writersOutlineResponses[].optionName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">사용자 이름</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성자 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>usersOutlineResponses[].imageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>writersOutlineResponses[].imageUrl</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">사용자 이미지</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성자 이미지</p></td>
 </tr>
 </tbody>
 </table>
@@ -886,10 +886,10 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 217
+Content-Length: 221
 
 {
-  "usersOutlineResponses" : [ {
+  "assigneesOutlineResponses" : [ {
     "optionName" : "user1",
     "imageUrl" : "image1"
   }, {
@@ -920,14 +920,14 @@ Content-Length: 217
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>usersOutlineResponses[].optionName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>assigneesOutlineResponses[].optionName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">사용자 이름</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">할당자 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>usersOutlineResponses[].imageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>assigneesOutlineResponses[].imageUrl</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">사용자 이미지</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">할당자 이미지</p></td>
 </tr>
 </tbody>
 </table>
@@ -1033,7 +1033,7 @@ Content-Length: 721
     "issueId" : 1,
     "writer" : "user1",
     "writerImage" : "image1",
-    "modificationTime" : "2022-07-18T20:34:27.114319",
+    "modificationTime" : "2022-08-11T17:57:13.960199",
     "milestoneName" : "milestone1",
     "opened" : true
   } ],
@@ -1196,7 +1196,7 @@ Content-Length: 156
 {
   "title" : "BE Lucid가 작성한 issue",
   "content" : "내용은 이러하다",
-  "writtenTime" : "2022-07-18T20:34:27.081229",
+  "writtenTime" : "2022-08-11T17:57:13.919678",
   "assignedMe" : true
 }</code></pre>
 </div>
@@ -1418,7 +1418,7 @@ Content-Length: 946
   "issueId" : 1,
   "title" : "title1",
   "content" : "content1",
-  "writtenTime" : "2022-07-18T20:34:26.628148",
+  "writtenTime" : "2022-08-11T17:57:13.515855",
   "writerOutline" : {
     "optionName" : "user1",
     "imageUrl" : "image1"
@@ -1450,7 +1450,7 @@ Content-Length: 946
       "imageUrl" : "image1"
     },
     "content" : "contents",
-    "writtenTime" : "2022-07-18T20:34:26.629172",
+    "writtenTime" : "2022-08-11T17:57:13.515934",
     "editable" : true
   } ],
   "imageUrls" : [ "image2", "image1", "image3" ],
@@ -1954,13 +1954,13 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 687
+Content-Length: 685
 
 {
   "milestoneSingleInfos" : [ {
     "id" : null,
     "name" : "m1",
-    "dueDate" : "2022-07-18T20:34:27.617365",
+    "dueDate" : "2022-08-11T17:57:14.4405",
     "description" : "m1 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -1968,7 +1968,7 @@ Content-Length: 687
   }, {
     "id" : null,
     "name" : "m2",
-    "dueDate" : "2022-07-18T20:34:27.617398",
+    "dueDate" : "2022-08-11T17:57:14.440515",
     "description" : "m2 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -1976,7 +1976,7 @@ Content-Length: 687
   }, {
     "id" : null,
     "name" : "m3",
-    "dueDate" : "2022-07-18T20:34:27.617405",
+    "dueDate" : "2022-08-11T17:57:14.440519",
     "description" : "m3 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2063,12 +2063,12 @@ Content-Length: 687
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer testToken
 Accept: */*
-Content-Length: 112
+Content-Length: 114
 Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-07-18T20:34:27.664",
+  "dueDate" : "2022-08-11T17:57:14.49295",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2127,12 +2127,12 @@ Host: localhost:8080
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer testToken
 Accept: */*
-Content-Length: 115
+Content-Length: 114
 Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-07-18T20:34:27.723804",
+  "dueDate" : "2022-08-11T17:57:14.54566",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2723,7 +2723,7 @@ Content-Length: 214
     "imageUrl" : "image1"
   },
   "content" : "issue에 작성된 comments 입니다..",
-  "writtenTime" : "2022-07-18T20:34:27.337991",
+  "writtenTime" : "2022-08-11T17:57:14.137931",
   "editable" : true
 }</code></pre>
 </div>

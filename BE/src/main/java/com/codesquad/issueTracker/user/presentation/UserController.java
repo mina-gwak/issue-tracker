@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codesquad.issueTracker.authentication.application.OAuthService;
 import com.codesquad.issueTracker.user.application.UserService;
 import com.codesquad.issueTracker.user.application.dto.UserOutlineResponse;
+import com.codesquad.issueTracker.user.presentation.dto.AssigneesOutlineResponse;
 import com.codesquad.issueTracker.user.presentation.dto.UserOutlinesResponse;
+import com.codesquad.issueTracker.user.presentation.dto.WriterOutlinesResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,15 +32,15 @@ public class UserController {
     }
 
     @GetMapping("/writers")
-    public ResponseEntity<UserOutlinesResponse> findWritersOutlineInfo() {
+    public ResponseEntity<WriterOutlinesResponse> findWritersOutlineInfo() {
         List<UserOutlineResponse> userOutlineInfo = userService.findWriters();
-        return ResponseEntity.ok(new UserOutlinesResponse(userOutlineInfo));
+        return ResponseEntity.ok(new WriterOutlinesResponse(userOutlineInfo));
     }
 
     @GetMapping("/assignees")
-    public ResponseEntity<UserOutlinesResponse> findAssigneesOutlineInfo() {
+    public ResponseEntity<AssigneesOutlineResponse> findAssigneesOutlineInfo() {
         List<UserOutlineResponse> userOutlineInfo = userService.findAssignees();
-        return ResponseEntity.ok(new UserOutlinesResponse(userOutlineInfo));
+        return ResponseEntity.ok(new AssigneesOutlineResponse(userOutlineInfo));
     }
 
     @GetMapping("/users/logout")

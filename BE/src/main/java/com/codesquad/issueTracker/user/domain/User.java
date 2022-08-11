@@ -2,6 +2,7 @@ package com.codesquad.issueTracker.user.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,6 +35,13 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Issue> issues = new ArrayList<>();
 
+    public User(Long id, String name, String nickname, String image) {
+        this.id = id;
+        this.name = name;
+        this.nickname = nickname;
+        this.image = image;
+    }
+
     public User(String name, String nickname, String image) {
         this.name = name;
         this.nickname = nickname;
@@ -42,5 +50,20 @@ public class User {
 
     public boolean isYourId(Long userId) {
         return this.id.equals(userId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        User user = (User)o;
+        return Objects.equals(getId(), user.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

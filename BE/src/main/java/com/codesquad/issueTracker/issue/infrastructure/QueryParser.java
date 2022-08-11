@@ -14,39 +14,48 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class QueryParser {
 
-    public FilterCondition makeFilterCondition(String query) {
-        String[] result = query.split(" ");
+    public FilterCondition makeFilterCondition(String filterQuery) {
+        String[] filters = filterQuery.split(" ");
+        return extractFilter(filters);
+    }
 
+    private FilterCondition extractFilter(String[] filters) {
         FilterCondition filterConditionRequest = new FilterCondition();
-        for (String s : result) {
-            String[] tmp = s.split(":");
+
+        for (String filter : filters) {
+            String[] tmp = filter.split(":");
 
             String queryHeader = tmp[0];
             String queryFooter = tmp[1];
 
-            // main filter parser
             if (queryHeader.equals("is")) {
-                MainFilter mainFilter;
-                try {
-                    mainFilter = EnumUtils.findEnumInsensitiveCase(MainFilter.class, tmp[1]);
-                    filterConditionRequest.changeMainFilter(mainFilter);
-                } catch (IllegalArgumentException e) {
-                    log.info("유효하지 않는 mainFilter 타입입니다.");
-                    throw new IllegalStateException("유효하지 않는 mainFilter 타입입니다.");
-                }
+                changeMainFilter(filterConditionRequest, tmp);
                 continue;
             }
-
-            // sub filter parser
-            SubFilter subFilter;
-            try {
-                subFilter = EnumUtils.findEnumInsensitiveCase(SubFilter.class, queryHeader);
-                filterConditionRequest.addSubFilter(new SubFilterDetail(subFilter, queryFooter));
-            } catch (IllegalArgumentException e) {
-                log.info("유효하지 않는 subFilter type입니다.");
-                throw new IllegalStateException("유효하지 않는 subFilter type입니다.");
-            }
+            addSubFilter(filterConditionRequest, queryHeader, queryFooter);
         }
         return filterConditionRequest;
+    }
+
+    private void changeMainFilter(FilterCondition filterConditionRequest, String[] tmp) {
+        MainFilter mainFilter;
+        try {
+            mainFilter = EnumUtils.findEnumInsensitiveCase(MainFilter.class, tmp[1]);
+            filterConditionRequest.changeMainFilter(mainFilter);
+        } catch (IllegalArgumentException e) {
+            log.info("유효하지 않는 mainFilter 타입입니다.");
+            throw new IllegalStateException("유효하지 않는 mainFilter 타입입니다.");
+        }
+    }
+
+    private void addSubFilter(FilterCondition filterConditionRequest, String queryHeader, String queryFooter) {
+        SubFilter subFilter;
+        try {
+            subFilter = EnumUtils.findEnumInsensitiveCase(SubFilter.class, queryHeader);
+            filterConditionRequest.addSubFilter(new SubFilterDetail(subFilter, queryFooter));
+        } catch (IllegalArgumentException e) {
+            log.info("유효하지 않는 subFilter type입니다.");
+            throw new IllegalStateException("유효하지 않는 subFilter type입니다.");
+        }
     }
 }
