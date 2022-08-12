@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -23,6 +24,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if (HttpMethod.OPTIONS.matches(request.getMethod())) {
+            return true;
+        }
         String token = resolveToken(request);
         log.debug("token is : {}", token);
         String userId = tokenProvider.parsePayload(token);
@@ -35,7 +39,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         }
 
         if (oAuthService.isLogout(userId)) {
-            log.info("로그인이 필요합니다.");
+            log.info("{}에 접근을 위해 로그인이 필요합니다.", request.getRequestURI());
             return false;
         }
         request.setAttribute("userId", Long.parseLong(userId));
