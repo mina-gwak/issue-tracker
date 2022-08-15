@@ -2,6 +2,7 @@ package com.codesquad.issueTracker.user.application;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,19 +22,19 @@ public class UserService {
     private final AssignedIssueRepository assignedIssueRepository;
 
     @Transactional(readOnly = true)
-    public List<UserOutlineResponse> findUsers() {
-        return userRepository.findUserOutlineInfo();
+    public List<UserOutlineResponse> findUsers(Pageable pageable) {
+        return userRepository.findUserOutlineInfo(pageable);
     }
 
     @Transactional(readOnly = true)
-    public List<UserOutlineResponse> findWriters() {
-        List<Long> writersId = issueRepository.findWriters();
+    public List<UserOutlineResponse> findWriters(Pageable pageable) {
+        List<Long> writersId = issueRepository.findWriters(pageable);
         return userRepository.findByIds(writersId);
     }
 
     @Transactional(readOnly = true)
-    public List<UserOutlineResponse> findAssignees() {
-        List<Long> assigneesId = assignedIssueRepository.findAssignees();
+    public List<UserOutlineResponse> findAssignees(Pageable pageable) {
+        List<Long> assigneesId = assignedIssueRepository.findAssignees(pageable);
         return userRepository.findByIds(assigneesId);
     }
 }

@@ -4,6 +4,7 @@ import static com.codesquad.issueTracker.docs.RestDocsUtils.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -28,11 +30,14 @@ class UserControllerTest extends ControllerTest {
         UserOutlineResponse rsp3 = new UserOutlineResponse("user3", "image3");
         List<UserOutlineResponse> responseList = List.of(rsp1, rsp2, rsp3);
 
-        given(userService.findUsers())
+        PageRequest request = PageRequest.of(0, 3);
+        given(userService.findUsers(request))
             .willReturn(responseList);
 
         // when
         ResultActions perform = mockMvc.perform(get("/api/users")
+            .queryParam("page", "0")
+            .queryParam("size", "3")
             .header("Authorization", "Bearer testToken")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.ALL));
@@ -46,6 +51,10 @@ class UserControllerTest extends ControllerTest {
 
         perform.andDo(
             document("get-user-filter-info", getDocumentRequest(), getDocumentResponse(),
+                requestParameters(
+                    parameterWithName("page").description("원하는 페이지, 기본 0"),
+                    parameterWithName("size").description("원하는 사이즈, 기본 10")
+                ),
                 responseFields(
                     fieldWithPath("usersOutlineResponses[].optionName").description("사용자 이름"),
                     fieldWithPath("usersOutlineResponses[].imageUrl").description("사용자 이미지")
@@ -61,11 +70,15 @@ class UserControllerTest extends ControllerTest {
         UserOutlineResponse rsp3 = new UserOutlineResponse("user3", "image3");
         List<UserOutlineResponse> responseList = List.of(rsp1, rsp2, rsp3);
 
-        given(userService.findWriters())
+        PageRequest request = PageRequest.of(0, 3);
+
+        given(userService.findWriters(request))
             .willReturn(responseList);
 
         // when
         ResultActions perform = mockMvc.perform(get("/api/writers")
+            .queryParam("page", "0")
+            .queryParam("size", "3")
             .header("Authorization", "Bearer testToken")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.ALL));
@@ -79,6 +92,10 @@ class UserControllerTest extends ControllerTest {
 
         perform.andDo(
             document("get-writer-filter-info", getDocumentRequest(), getDocumentResponse(),
+                requestParameters(
+                    parameterWithName("page").description("원하는 페이지, 기본 0"),
+                    parameterWithName("size").description("원하는 사이즈, 기본 10")
+                ),
                 responseFields(
                     fieldWithPath("writersOutlineResponses[].optionName").description("작성자 이름"),
                     fieldWithPath("writersOutlineResponses[].imageUrl").description("작성자 이미지")
@@ -94,11 +111,15 @@ class UserControllerTest extends ControllerTest {
         UserOutlineResponse rsp3 = new UserOutlineResponse("user3", "image3");
         List<UserOutlineResponse> responseList = List.of(rsp1, rsp2, rsp3);
 
-        given(userService.findAssignees())
+        PageRequest request = PageRequest.of(0, 3);
+
+        given(userService.findAssignees(request))
             .willReturn(responseList);
 
         // when
         ResultActions perform = mockMvc.perform(get("/api/assignees")
+            .queryParam("page", "0")
+            .queryParam("size", "3")
             .header("Authorization", "Bearer testToken")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.ALL));
@@ -112,6 +133,10 @@ class UserControllerTest extends ControllerTest {
 
         perform.andDo(
             document("get-assignees-filter-info", getDocumentRequest(), getDocumentResponse(),
+                requestParameters(
+                    parameterWithName("page").description("원하는 페이지, 기본 0"),
+                    parameterWithName("size").description("원하는 사이즈, 기본 10")
+                ),
                 responseFields(
                     fieldWithPath("assigneesOutlineResponses[].optionName").description("할당자 이름"),
                     fieldWithPath("assigneesOutlineResponses[].imageUrl").description("할당자 이미지")

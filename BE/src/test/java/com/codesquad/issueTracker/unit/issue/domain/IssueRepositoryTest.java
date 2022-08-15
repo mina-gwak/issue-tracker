@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.codesquad.issueTracker.common.factory.IssueFactory;
@@ -127,7 +128,7 @@ public class IssueRepositoryTest {
     @Test
     void find_writers_id_order_by_id() {
         // when
-        List<Long> writers = issueRepository.findWriters();
+        List<Long> writers = issueRepository.findWriters(Pageable.ofSize(3));
 
         // then
         assertThat(writers).containsAll(List.of(1L, 2L, 3L));

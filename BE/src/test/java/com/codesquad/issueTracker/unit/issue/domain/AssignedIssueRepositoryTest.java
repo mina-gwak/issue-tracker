@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.codesquad.issueTracker.common.factory.IssueFactory;
@@ -74,7 +75,10 @@ public class AssignedIssueRepositoryTest {
         entityManager.flush();
         entityManager.clear();
 
-        List<Long> assigneesId = assignedIssueRepository.findAssignees();
+        // when
+        List<Long> assigneesId = assignedIssueRepository.findAssignees(
+            Pageable.ofSize(10)
+        );
 
         // then
         assertThat(assigneeList2.size()).isEqualTo(3);

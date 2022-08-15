@@ -1,6 +1,7 @@
 package com.codesquad.issueTracker.unit.user.domain;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.codesquad.issueTracker.user.application.dto.UserOutlineResponse;
@@ -72,7 +74,7 @@ public class UserRepositoryTest {
     @DisplayName("전체 유저의 Outline 정보를 조회한다.")
     @Test
     void find_all_users_outline_info() {
-        List<UserOutlineResponse> info = userRepository.findUserOutlineInfo();
+        List<UserOutlineResponse> info = userRepository.findUserOutlineInfo(any(Pageable.class));
 
         assertThat(info.size()).isEqualTo(3);
         assertThat(info.get(1).getOptionName()).isEqualTo("user2");

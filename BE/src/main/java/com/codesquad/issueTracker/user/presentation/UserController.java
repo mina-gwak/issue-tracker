@@ -2,6 +2,8 @@ package com.codesquad.issueTracker.user.presentation;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -26,20 +28,20 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users")
-    public ResponseEntity<UserOutlinesResponse> findUsersOutlineInfo() {
-        List<UserOutlineResponse> userOutlineInfo = userService.findUsers();
+    public ResponseEntity<UserOutlinesResponse> findUsersOutlineInfo(@PageableDefault Pageable pageable) {
+        List<UserOutlineResponse> userOutlineInfo = userService.findUsers(pageable);
         return ResponseEntity.ok(new UserOutlinesResponse(userOutlineInfo));
     }
 
     @GetMapping("/writers")
-    public ResponseEntity<WriterOutlinesResponse> findWritersOutlineInfo() {
-        List<UserOutlineResponse> userOutlineInfo = userService.findWriters();
+    public ResponseEntity<WriterOutlinesResponse> findWritersOutlineInfo(@PageableDefault Pageable pageable) {
+        List<UserOutlineResponse> userOutlineInfo = userService.findWriters(pageable);
         return ResponseEntity.ok(new WriterOutlinesResponse(userOutlineInfo));
     }
 
     @GetMapping("/assignees")
-    public ResponseEntity<AssigneesOutlineResponse> findAssigneesOutlineInfo() {
-        List<UserOutlineResponse> userOutlineInfo = userService.findAssignees();
+    public ResponseEntity<AssigneesOutlineResponse> findAssigneesOutlineInfo(@PageableDefault Pageable pageable) {
+        List<UserOutlineResponse> userOutlineInfo = userService.findAssignees(pageable);
         return ResponseEntity.ok(new AssigneesOutlineResponse(userOutlineInfo));
     }
 

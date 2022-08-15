@@ -3,6 +3,7 @@ package com.codesquad.issueTracker.issue.domain.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,6 +24,6 @@ public interface IssueRepository extends JpaRepository<Issue, Long>, IssueReposi
     Optional<Issue> findById(Long aLong);
 
     @Query("SELECT DISTINCT i.user.id FROM Issue i ORDER BY i.user.id")
-    List<Long> findWriters();
+    List<Long> findWriters(Pageable pageable);
 
 }
