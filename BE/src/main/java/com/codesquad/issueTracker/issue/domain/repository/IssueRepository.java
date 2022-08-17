@@ -26,4 +26,6 @@ public interface IssueRepository extends JpaRepository<Issue, Long>, IssueReposi
     @Query("SELECT DISTINCT i.user.id FROM Issue i ORDER BY i.user.id")
     List<Long> findWriters(Pageable pageable);
 
+    @Query("SELECT count(i.id) FROM Issue i WHERE i.isOpened = true")
+    Long findOpenCount();
 }

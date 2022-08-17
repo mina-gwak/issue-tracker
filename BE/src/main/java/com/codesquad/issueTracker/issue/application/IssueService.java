@@ -59,7 +59,7 @@ public class IssueService {
             .map(IssueCoverResponse::new)
             .collect(Collectors.toList());
 
-        return makeIssueCoversResponse(condition, result);
+        return makeIssueCoversResponse(result);
     }
 
     @Cacheable(value = "PopUpResponse", key = "#issueId", cacheManager = "cacheManager", unless = "#issueId == ''")
@@ -139,17 +139,10 @@ public class IssueService {
         commentRepository.delete(comment);
     }
 
-    private IssueCoversResponse makeIssueCoversResponse(FilterCondition condition, List<IssueCoverResponse> result) {
+    private IssueCoversResponse makeIssueCoversResponse(List<IssueCoverResponse> result) {
         long allIssueCount = issueRepository.count();
-        long openCount, closeCount;
-        if (condition.getMainFilter().equals(MainFilter.CLOSE)) {
-            closeCount = result.size();
-            openCount = allIssueCount - closeCount;
-        } else {
-            openCount = result.size();
-            closeCount = allIssueCount - openCount;
-        }
-        return new IssueCoversResponse(result, openCount, closeCount, labelRepository.count(),
+        long openCount = issueRepository.findOpenCount();
+        return new IssueCoversResponse(result, openCount, allIssueCount - openCount, labelRepository.count(),
             milestoneRepository.count());
     }
 

@@ -78,6 +78,9 @@ public class IssueServiceTest {
         given(issueRepository.count())
             .willReturn(20L);
 
+        given(issueRepository.findOpenCount())
+            .willReturn(10L);
+
         given(labelRepository.count())
             .willReturn(5L);
 
