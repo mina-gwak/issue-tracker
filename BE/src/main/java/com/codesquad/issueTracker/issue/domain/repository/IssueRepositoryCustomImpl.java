@@ -54,9 +54,9 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
 
             .where(
                 addMainCondition(condition.getMainFilter(), userId, assignedUser),
-                matching(milestone.name, subFilters.get("MILESTONE")),
-                matching(label.name, subFilters.get("LABEL")),
-                matching(assignedUser.name, subFilters.get("ASSIGNEE")))
+                matching(milestone.name, subFilters.get("MILESTONES")),
+                matching(label.name, subFilters.get("LABELS")),
+                matching(assignedUser.name, subFilters.get("ASSIGNEES")))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .distinct()

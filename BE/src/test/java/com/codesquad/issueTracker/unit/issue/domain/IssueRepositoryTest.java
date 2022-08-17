@@ -152,7 +152,7 @@ public class IssueRepositoryTest {
     @Test
     void find_with_filter_no_pageable() {
         // given
-        SubFilterDetail subFilter = new SubFilterDetail(SubFilter.MILESTONE, "mileStoneName0");
+        SubFilterDetail subFilter = new SubFilterDetail(SubFilter.MILESTONES, "mileStoneName0");
         FilterCondition filterCondition = new FilterCondition();
         filterCondition.addSubFilter(subFilter);
         PageRequest request = PageRequest.of(0, 10);

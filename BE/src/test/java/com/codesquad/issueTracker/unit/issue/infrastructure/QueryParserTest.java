@@ -20,15 +20,15 @@ public class QueryParserTest {
     @Test
     void filter_parsing_success() {
         // given
-        String filterQuery = "is:open label:BE milestone:m1 label:FE";
+        String filterQuery = "is:open labels:BE milestones:m1 labels:FE";
 
         // when
         FilterCondition filterCondition = queryParser.makeFilterCondition(filterQuery);
 
         // then
         assertThat(filterCondition.getMainFilter()).isEqualTo(MainFilter.OPEN);
-        assertThat(filterCondition.getSubFilters().get("LABEL").size()).isEqualTo(2);
-        assertThat(filterCondition.getSubFilters().get("MILESTONE").size()).isEqualTo(1);
+        assertThat(filterCondition.getSubFilters().get("LABELS").size()).isEqualTo(2);
+        assertThat(filterCondition.getSubFilters().get("MILESTONES").size()).isEqualTo(1);
     }
 
     @ParameterizedTest
