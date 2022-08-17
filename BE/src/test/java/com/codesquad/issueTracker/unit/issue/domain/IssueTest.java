@@ -67,10 +67,10 @@ public class IssueTest {
     void false_if_issue_assigned_this_user() {
         // given
         long userId = 1L;
-        issue.assignUser(List.of(UserFactory.mockSingleUserWithId(userId)));
+        issue.assignUser(List.of(UserFactory.mockSingleUserWithId(2L)));
 
         // when
-        boolean issueAssignedThisUser = issue.isAssignedThisUser(2L);
+        boolean issueAssignedThisUser = issue.isAssignedThisUser(userId);
 
         // then
         assertFalse(issueAssignedThisUser);
@@ -98,8 +98,8 @@ public class IssueTest {
     @Test
     void update_assignee_list() {
         // given
-        List<User> users = List.of(UserFactory.mockSingleUserWithId(1L), UserFactory.mockSingleUserWithId(2L));
-        issue.assignUser(users);
+        List<User> oldUsers = List.of(UserFactory.mockSingleUserWithId(1L), UserFactory.mockSingleUserWithId(2L));
+        issue.assignUser(oldUsers);
 
         // when
         List<User> updateUsers = List.of(UserFactory.mockSingleUserWithId(3L), UserFactory.mockSingleUserWithId(4L),
@@ -114,7 +114,7 @@ public class IssueTest {
 
         assertTrue(assignedIssues.stream()
             .map(AssignedIssue::getUser)
-            .noneMatch(users::contains));
+            .noneMatch(oldUsers::contains));
 
         assertTrue(assignedIssues.stream()
             .map(AssignedIssue::getUser)
@@ -125,8 +125,8 @@ public class IssueTest {
     @Test
     void update_label_list() {
         // given
-        List<Label> labels = List.of(LabelFactory.mockSingleLabel(1), LabelFactory.mockSingleLabel(2));
-        issue.attachedLabel(labels);
+        List<Label> oldLabels = List.of(LabelFactory.mockSingleLabel(1), LabelFactory.mockSingleLabel(2));
+        issue.attachedLabel(oldLabels);
 
         // when
         List<Label> updateLabelList = List.of(LabelFactory.mockSingleLabel(3), LabelFactory.mockSingleLabel(4), LabelFactory.mockSingleLabel(5));
@@ -140,7 +140,7 @@ public class IssueTest {
 
         assertTrue(attachedLabels.stream()
             .map(AttachedLabel::getLabel)
-            .noneMatch(labels::contains));
+            .noneMatch(oldLabels::contains));
 
         assertTrue(attachedLabels.stream()
             .map(AttachedLabel::getLabel)
