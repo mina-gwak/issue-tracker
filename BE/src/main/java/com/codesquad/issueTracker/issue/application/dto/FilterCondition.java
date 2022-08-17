@@ -4,6 +4,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.codesquad.issueTracker.issue.domain.MainFilter;
+import com.codesquad.issueTracker.issue.domain.SubFilter;
 
 import lombok.Getter;
 
@@ -18,6 +19,9 @@ public class FilterCondition {
     }
 
     public void addSubFilter(SubFilterDetail subFilterDetail) {
+        if (mainFilter.equals(MainFilter.ASSIGNED_ME) && subFilterDetail.getFilterName().equals(SubFilter.ASSIGNEES.name())) {
+            changeMainFilter(MainFilter.OPEN);
+        }
         subFilters.add(subFilterDetail.getFilterName(), subFilterDetail);
     }
 }

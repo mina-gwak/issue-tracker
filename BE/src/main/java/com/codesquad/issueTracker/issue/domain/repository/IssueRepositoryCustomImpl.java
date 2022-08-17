@@ -88,7 +88,6 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
         if (condition.equals(MainFilter.ADD_COMMENT_BY_ME)) {
             return comment.user.id.eq(userId);
         }
-        // TODO : 만약 이 필터이며, subfilter에서 Assign_me도 할당된다면 어떻게 처리해야할 지?
         if (condition.equals(MainFilter.ASSIGNED_ME)) {
             return assignedUser.id.eq(userId);
         }
