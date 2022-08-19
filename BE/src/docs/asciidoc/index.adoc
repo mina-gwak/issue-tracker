@@ -27,15 +27,15 @@ operation::add-file[snippets='http-request,request-parts,http-response,response-
 
 [[User-Filter-정보-발급]]
 === 🔒 User Filter 정보 발급
-operation::get-user-filter-info[snippets='http-request,http-response,response-fields']
+operation::get-user-filter-info[snippets='http-request,request-parameters,http-response,response-fields']
 
 [[User-Writer-Filter-정보-발급]]
 === 🔒 User Writer Filter 정보 발급
-operation::get-writer-filter-info[snippets='http-request,http-response,response-fields']
+operation::get-writer-filter-info[snippets='http-request,request-parameters,http-response,response-fields']
 
 [[User-Assignees-Filter-정보-발급]]
 === 🔒 User Assignees Filter 정보 발급
-operation::get-assignees-filter-info[snippets='http-request,http-response,response-fields']
+operation::get-assignees-filter-info[snippets='http-request,request-parameters,http-response,response-fields']
 
 
 [[User-logout]]
