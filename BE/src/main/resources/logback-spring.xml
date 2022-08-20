@@ -14,7 +14,7 @@
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <springProfile name="prod">
+    <springProfile name="default">
         <logger name="com.codesquad.issueTracker">
             <appender-ref ref="SENTRY"/>
         </logger>
