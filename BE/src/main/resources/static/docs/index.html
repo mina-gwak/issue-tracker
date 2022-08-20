@@ -525,6 +525,9 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 24
 
@@ -575,6 +578,9 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 190
 
@@ -693,6 +699,9 @@ contents
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 35
 
@@ -738,7 +747,7 @@ Content-Length: 35
 <h4 id="User-Filter-정보-발급_http_request"><a class="link" href="#User-Filter-정보-발급_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/users HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/users?page=0&amp;size=3 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer testToken
 Accept: */*
@@ -747,10 +756,38 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect3">
+<h4 id="User-Filter-정보-발급_request_parameters"><a class="link" href="#User-Filter-정보-발급_request_parameters">Request parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">원하는 페이지, 기본 0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">원하는 사이즈, 기본 10</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
 <h4 id="User-Filter-정보-발급_http_response"><a class="link" href="#User-Filter-정보-발급_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 217
 
@@ -805,7 +842,7 @@ Content-Length: 217
 <h4 id="User-Writer-Filter-정보-발급_http_request"><a class="link" href="#User-Writer-Filter-정보-발급_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/writers HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/writers?page=0&amp;size=3 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer testToken
 Accept: */*
@@ -814,10 +851,38 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect3">
+<h4 id="User-Writer-Filter-정보-발급_request_parameters"><a class="link" href="#User-Writer-Filter-정보-발급_request_parameters">Request parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">원하는 페이지, 기본 0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">원하는 사이즈, 기본 10</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
 <h4 id="User-Writer-Filter-정보-발급_http_response"><a class="link" href="#User-Writer-Filter-정보-발급_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 219
 
@@ -872,7 +937,7 @@ Content-Length: 219
 <h4 id="User-Assignees-Filter-정보-발급_http_request"><a class="link" href="#User-Assignees-Filter-정보-발급_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/assignees HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/assignees?page=0&amp;size=3 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer testToken
 Accept: */*
@@ -881,10 +946,38 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect3">
+<h4 id="User-Assignees-Filter-정보-발급_request_parameters"><a class="link" href="#User-Assignees-Filter-정보-발급_request_parameters">Request parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">원하는 페이지, 기본 0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">원하는 사이즈, 기본 10</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
 <h4 id="User-Assignees-Filter-정보-발급_http_response"><a class="link" href="#User-Assignees-Filter-정보-발급_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 221
 
@@ -951,7 +1044,10 @@ Host: localhost:8080</code></pre>
 <h4 id="User-logout_http_response"><a class="link" href="#User-logout_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 204 No Content</code></pre>
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 204 No Content
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
@@ -998,7 +1094,7 @@ Host: localhost:8080</code></pre>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>query</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">is:open(열린 이슈), is:close(닫힌 이슈), is:write_by_me(내가 작성한 이슈), is:assigned_me(나에게 할당된 이슈), is:add_comment_by_me(내가 댓글을 남긴 이슈), label:xx(라벨 필터 적용), assignee:yy(assignee 필터 적용), milestone:zz(마일스톤 필터 적용)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메인 필터(중복 불가) : [is:open(열린 이슈), is:close(닫힌 이슈), is:write_by_me(내가 작성한 이슈), is:assigned_me(나에게 할당된 이슈), is:add_comment_by_me(내가 댓글을 남긴 이슈)], 서브 필터(중복 가능) : [labels:xx(라벨 필터 적용), assignees:yy(assignee 필터 적용), milestones:zz(마일스톤 필터 적용)]</p></td>
 </tr>
 </tbody>
 </table>
@@ -1008,6 +1104,9 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 721
 
@@ -1033,7 +1132,7 @@ Content-Length: 721
     "issueId" : 1,
     "writer" : "user1",
     "writerImage" : "image1",
-    "modificationTime" : "2022-08-11T17:57:13.960199",
+    "modificationTime" : "2022-08-20T18:24:24.086725",
     "milestoneName" : "milestone1",
     "opened" : true
   } ],
@@ -1190,13 +1289,16 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 156
 
 {
   "title" : "BE Lucid가 작성한 issue",
   "content" : "내용은 이러하다",
-  "writtenTime" : "2022-08-11T17:57:13.919678",
+  "writtenTime" : "2022-08-20T18:24:24.057366",
   "assignedMe" : true
 }</code></pre>
 </div>
@@ -1284,7 +1386,10 @@ Host: localhost:8080</code></pre>
 <h4 id="update-issue-status_http_response"><a class="link" href="#update-issue-status_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
@@ -1366,7 +1471,10 @@ Host: localhost:8080
 <h4 id="save-issue_http_response"><a class="link" href="#save-issue_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
@@ -1411,6 +1519,9 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 946
 
@@ -1418,7 +1529,7 @@ Content-Length: 946
   "issueId" : 1,
   "title" : "title1",
   "content" : "content1",
-  "writtenTime" : "2022-08-11T17:57:13.515855",
+  "writtenTime" : "2022-08-20T18:24:23.720235",
   "writerOutline" : {
     "optionName" : "user1",
     "imageUrl" : "image1"
@@ -1431,12 +1542,12 @@ Content-Length: 946
     "imageUrl" : "image1"
   } ],
   "labels" : [ {
-    "labelName" : "BE",
-    "colorCode" : "#000000",
-    "textColor" : "white"
-  }, {
     "labelName" : "Lucid",
     "colorCode" : "#008672",
+    "textColor" : "white"
+  }, {
+    "labelName" : "BE",
+    "colorCode" : "#000000",
     "textColor" : "white"
   } ],
   "milestoneInformation" : {
@@ -1450,7 +1561,7 @@ Content-Length: 946
       "imageUrl" : "image1"
     },
     "content" : "contents",
-    "writtenTime" : "2022-08-11T17:57:13.515934",
+    "writtenTime" : "2022-08-20T18:24:23.720268",
     "editable" : true
   } ],
   "imageUrls" : [ "image2", "image1", "image3" ],
@@ -1623,7 +1734,10 @@ Host: localhost:8080</code></pre>
 <h4 id="delete-issue_http_response"><a class="link" href="#delete-issue_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
@@ -1697,7 +1811,10 @@ Host: localhost:8080
 <h4 id="change-issue-title_http_response"><a class="link" href="#change-issue-title_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
@@ -1771,7 +1888,10 @@ Host: localhost:8080
 <h4 id="change-issue-assignees_http_response"><a class="link" href="#change-issue-assignees_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
@@ -1845,7 +1965,10 @@ Host: localhost:8080
 <h4 id="change-issue-labels_http_response"><a class="link" href="#change-issue-labels_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
@@ -1874,6 +1997,9 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 156
 
@@ -1953,14 +2079,17 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 685
+Content-Length: 687
 
 {
   "milestoneSingleInfos" : [ {
     "id" : null,
     "name" : "m1",
-    "dueDate" : "2022-08-11T17:57:14.4405",
+    "dueDate" : "2022-08-20T18:24:24.485509",
     "description" : "m1 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -1968,7 +2097,7 @@ Content-Length: 685
   }, {
     "id" : null,
     "name" : "m2",
-    "dueDate" : "2022-08-11T17:57:14.440515",
+    "dueDate" : "2022-08-20T18:24:24.485525",
     "description" : "m2 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -1976,7 +2105,7 @@ Content-Length: 685
   }, {
     "id" : null,
     "name" : "m3",
-    "dueDate" : "2022-08-11T17:57:14.440519",
+    "dueDate" : "2022-08-20T18:24:24.485532",
     "description" : "m3 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2063,12 +2192,12 @@ Content-Length: 685
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer testToken
 Accept: */*
-Content-Length: 114
+Content-Length: 115
 Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-08-11T17:57:14.49295",
+  "dueDate" : "2022-08-20T18:24:24.781314",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2112,7 +2241,10 @@ Host: localhost:8080
 <h4 id="create-Milestone-list_http_response"><a class="link" href="#create-Milestone-list_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
@@ -2127,12 +2259,12 @@ Host: localhost:8080
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer testToken
 Accept: */*
-Content-Length: 114
+Content-Length: 115
 Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-08-11T17:57:14.54566",
+  "dueDate" : "2022-08-20T18:24:25.075458",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2198,7 +2330,10 @@ Host: localhost:8080
 <h4 id="edit-Milestone-list_http_response"><a class="link" href="#edit-Milestone-list_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
@@ -2264,7 +2399,10 @@ Host: localhost:8080</code></pre>
 <h4 id="change-Milestone-status_http_response"><a class="link" href="#change-Milestone-status_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
@@ -2293,6 +2431,9 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 223
 
@@ -2360,6 +2501,9 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 294
 
@@ -2497,7 +2641,10 @@ Host: localhost:8080
 <h4 id="add-Label-list_http_response"><a class="link" href="#add-Label-list_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
@@ -2589,7 +2736,10 @@ Host: localhost:8080
 <h4 id="edit-Label-list_http_response"><a class="link" href="#edit-Label-list_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
@@ -2634,7 +2784,10 @@ Host: localhost:8080</code></pre>
 <h4 id="delete-Label-list_http_response"><a class="link" href="#delete-Label-list_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
@@ -2714,6 +2867,9 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 214
 
@@ -2723,7 +2879,7 @@ Content-Length: 214
     "imageUrl" : "image1"
   },
   "content" : "issue에 작성된 comments 입니다..",
-  "writtenTime" : "2022-08-11T17:57:14.137931",
+  "writtenTime" : "2022-08-20T18:24:24.242161",
   "editable" : true
 }</code></pre>
 </div>
@@ -2843,7 +2999,10 @@ Host: localhost:8080
 <h4 id="edit-comment_http_response"><a class="link" href="#edit-comment_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
@@ -2888,7 +3047,10 @@ Host: localhost:8080</code></pre>
 <h4 id="delete-comment_http_response"><a class="link" href="#delete-comment_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK</code></pre>
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
 </div>
 </div>
 </div>
@@ -2899,7 +3061,7 @@ Host: localhost:8080</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-17 14:52:28 +0900
+Last updated 2022-08-20 17:59:37 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
