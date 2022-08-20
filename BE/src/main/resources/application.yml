@@ -15,7 +15,6 @@ spring:
     database: mysql
     show-sql: true
 
-
   redis:
     host: localhost
     port: 6379
@@ -51,3 +50,5 @@ cloud:
      stack:
        auto: false
 
+sentry:
+  dsn: ${SENTRY_DSN}

@@ -66,6 +66,10 @@ dependencies {
 	// rest assured
 	testImplementation 'io.rest-assured:rest-assured:4.4.0'
 
+	// sentry
+	implementation 'io.sentry:sentry-spring-boot-starter:6.4.0'
+	implementation 'io.sentry:sentry-logback:6.4.0'
+
 }
 
 tasks.named('test') {
