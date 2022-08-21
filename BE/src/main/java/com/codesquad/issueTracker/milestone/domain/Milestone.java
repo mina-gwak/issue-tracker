@@ -41,6 +41,14 @@ public class Milestone {
         this.isOpened = true;
     }
 
+    public Milestone(Long id, String name, LocalDateTime dueDate, String description) {
+        this.id = id;
+        this.name = name;
+        this.dueDate = dueDate;
+        this.description = description;
+        this.isOpened = true;
+    }
+
     public long getAllIssueCount() {
         return issues.size();
     }

@@ -1,8 +1,11 @@
 package com.codesquad.issueTracker.user.application.dto;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserOutlineResponse {
     private String optionName;
     private String imageUrl;

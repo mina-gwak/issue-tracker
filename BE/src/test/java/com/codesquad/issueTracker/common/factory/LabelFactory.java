@@ -14,6 +14,10 @@ public class LabelFactory {
         return new Label("label" + num, "description" + num, "color" + num, "txtColor" + num);
     }
 
+    public static Label mockSingleLabelWithId(long num) {
+        return new Label(num, "label" + num, "description" + num, "color" + num, "txtColor" + num);
+    }
+
     public static List<Label> mockMultipleLabels(int count) {
         List<Label> labels = new ArrayList<>();
         for (int i = 0; i < count; i++) {

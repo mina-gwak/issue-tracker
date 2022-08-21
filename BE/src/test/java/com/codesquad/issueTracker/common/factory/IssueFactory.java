@@ -30,4 +30,9 @@ public class IssueFactory {
             user, milestone);
     }
 
+    public static Issue mockSingleIssueWithId(long id, User user, Milestone milestone) {
+        return new Issue(id, "title" + id, "contents" + id, LocalDateTime.now(), LocalDateTime.now(),
+            user, milestone);
+    }
+
 }

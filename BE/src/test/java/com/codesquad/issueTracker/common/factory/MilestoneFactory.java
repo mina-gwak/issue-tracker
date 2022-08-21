@@ -16,6 +16,10 @@ public class MilestoneFactory {
         return new Milestone("mileStoneName" + num, LocalDateTime.now(), "description" + num);
     }
 
+    public static Milestone mockSingleMilestoneWithId(long num) {
+        return new Milestone(num, "mileStoneName" + num, LocalDateTime.now(), "description" + num);
+    }
+
     public static List<Milestone> mockMultipleMilestone(int count) {
         List<Milestone> milestones = new ArrayList<>();
         for (int i = 0; i < count; i++) {

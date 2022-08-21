@@ -1,11 +1,14 @@
 package com.codesquad.issueTracker.unit.issue.application;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -23,14 +26,26 @@ import com.codesquad.issueTracker.common.factory.IssueFactory;
 import com.codesquad.issueTracker.common.factory.LabelFactory;
 import com.codesquad.issueTracker.common.factory.MilestoneFactory;
 import com.codesquad.issueTracker.common.factory.UserFactory;
+import com.codesquad.issueTracker.exception.comment.CommentNotEditableException;
+import com.codesquad.issueTracker.exception.comment.CommentNotFoundException;
+import com.codesquad.issueTracker.exception.issue.IssueNotEditableException;
+import com.codesquad.issueTracker.exception.issue.IssueNotFoundException;
+import com.codesquad.issueTracker.exception.user.UserNotFoundException;
 import com.codesquad.issueTracker.issue.application.IssueService;
+import com.codesquad.issueTracker.issue.application.dto.CommentOutline;
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
+import com.codesquad.issueTracker.issue.application.dto.IssueDetailResponse;
 import com.codesquad.issueTracker.issue.application.dto.PopUpResponse;
 import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.issue.domain.repository.IssueRepository;
 import com.codesquad.issueTracker.issue.infrastructure.QueryParser;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeLabelsRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.CommentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
+import com.codesquad.issueTracker.label.domain.AttachedLabel;
 import com.codesquad.issueTracker.label.domain.Label;
 import com.codesquad.issueTracker.label.domain.LabelRepository;
 import com.codesquad.issueTracker.milestone.domain.Milestone;
@@ -117,6 +132,16 @@ public class IssueServiceTest {
         assertThat(response.isAssignedMe()).isFalse();
     }
 
+    // @DisplayName("popUp용 이슈 단 건을 조회한다.")
+    // @Test
+    // void find_pop_up_issue() {
+    //     // given
+    //
+    //     // when
+    //
+    //     // then
+    // }
+
     @DisplayName("이슈 리스트의 상태를 변경하면 관련 커멘트가 추가된다.")
     @Test
     void change_issue_list_status() {
@@ -137,7 +162,7 @@ public class IssueServiceTest {
 
         // then
         for (Issue issue : issues) {
-            Assertions.assertThat(issue.isOpened()).isFalse();
+            assertThat(issue.isOpened()).isFalse();
         }
 
         verify(commentRepository, times(3))
@@ -182,5 +207,421 @@ public class IssueServiceTest {
     }
 
     // TODO : findIssue 부터
+    @DisplayName("이슈 단 건을 상세 조회한다.")
+    @Test
+    void find_detailed_inquiry_of_the_issue() {
+        // given
+        User user = UserFactory.mockSingleUser(1);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssue(1, user, milestone);
 
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        // when
+        IssueDetailResponse result = issueService.findIssue(1L);
+
+        // then
+        assertThat(result.getTitle()).isEqualTo(issue.getTitle());
+        assertThat(result.getWriterOutline().getOptionName()).isEqualTo(user.getName());
+        assertThat(result.getMilestoneInformation().getMilestoneName()).isEqualTo(milestone.getName());
+    }
+
+    @DisplayName("이슈 단 건이 없을 경우 예외가 발생한다.")
+    @Test
+    void exception_occur_when_find_detailed_inquiry_of_the_issue_not_founded() {
+        // given
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.empty());
+
+        // when  & then
+        assertThrows(IssueNotFoundException.class,
+            () -> issueService.findIssue(1L));
+    }
+
+    @DisplayName("작성자는 이슈를 삭제할 수 있다.")
+    @Test
+    void writer_can_delete_an_issue() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssue(1, writer, milestone);
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(writer));
+
+        // when
+        issueService.deleteIssue(1L, writer.getId());
+
+        // then
+        verify(issueRepository, times(1))
+            .delete(issue);
+    }
+
+    @DisplayName("작성자가 아닌 다른 유저는 이슈를 삭제할 수 없다.")
+    @Test
+    void no_writer_can_not_delete_an_issue() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssue(1, writer, milestone);
+
+        User another = UserFactory.mockSingleUserWithId(2);
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(another));
+
+        // when & then
+        assertThrows(IssueNotEditableException.class,
+            () -> issueService.deleteIssue(1L, another.getId()));
+    }
+
+    @DisplayName("작성자는 이슈의 타이틀을 수정할 수 있다.")
+    @Test
+    void writer_can_edit_issue_title() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, milestone);
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(writer));
+
+        ChangeIssueTitleRequest changedTitle = new ChangeIssueTitleRequest("changed Title");
+
+        // when
+        issueService.changeIssueTitle(issue.getId(), changedTitle, writer.getId());
+
+        // then
+        assertThat(issue.getTitle()).isEqualTo("changed Title");
+    }
+
+    @DisplayName("작성자가 아닌 다른 유저는 이슈의 타이틀을 수정할 수 없다.")
+    @Test
+    void no_writer_can_not_edit_issue_title() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, milestone);
+
+        User another = UserFactory.mockSingleUserWithId(2L);
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(another));
+
+        ChangeIssueTitleRequest changedTitle = new ChangeIssueTitleRequest("changed Title");
+
+        // when & then
+        assertThrows(IssueNotEditableException.class,
+            () -> issueService.changeIssueTitle(issue.getId(), changedTitle, another.getId()));
+    }
+
+    @DisplayName("작성자만 assignee를 수정할 수 있다.")
+    @Test
+    void writer_can_edit_assignee_list() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, milestone);
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(writer));
+
+        ChangeAssigneesRequest request = new ChangeAssigneesRequest(List.of("user10", "user11"));
+        List<User> assigneeForChange = List.of(UserFactory.mockSingleUserWithId(10L), UserFactory.mockSingleUserWithId(11L));
+        given(userRepository.findByNameIn(request.getAssignees()))
+            .willReturn(assigneeForChange);
+
+        // when
+        issueService.changeAssigneeList(issue.getId(), request, writer.getId());
+
+        // then
+        for (User user : assigneeForChange) {
+            assertTrue(issue.isAssignedThisUser(user.getId()));
+        }
+    }
+
+    @DisplayName("다른 사용자는 assignee를 수정할 수 없다.")
+    @Test
+    void no_writer_can_not_edit_assignee_list() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, milestone);
+
+        User another = UserFactory.mockSingleUserWithId(2L);
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(another));
+
+        ChangeAssigneesRequest request = new ChangeAssigneesRequest(List.of("user10", "user11"));
+
+        // when & then
+        assertThrows(IssueNotEditableException.class,
+            () -> issueService.changeAssigneeList(issue.getId(), request, another.getId()));
+    }
+
+    @DisplayName("작성자만 label list를 수정할 수 있다.")
+    @Test
+    void writer_can_edit_label_list() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, milestone);
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(writer));
+
+        ChangeLabelsRequest request = new ChangeLabelsRequest(List.of("label1", "label2"));
+        List<Label> labels = List.of(LabelFactory.mockSingleLabelWithId(1L), LabelFactory.mockSingleLabelWithId(2L));
+
+        given(labelRepository.findByNameIn(request.getLabels()))
+            .willReturn(labels);
+
+        // when
+        issueService.changeLabelList(issue.getId(), request, writer.getId());
+
+        // then
+        List<Label> resultLabel = issue.getAttachedLabels()
+            .stream()
+            .map(AttachedLabel::getLabel)
+            .collect(Collectors.toList());
+
+        assertThat(resultLabel).hasSameElementsAs(labels);
+    }
+
+    @DisplayName("작성자가 아니라면 label list를 수정할 수 없다.")
+    @Test
+    void no_writer_can_not_edit_label_list() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, milestone);
+
+        User another = UserFactory.mockSingleUserWithId(2L);
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(another));
+
+        ChangeLabelsRequest request = new ChangeLabelsRequest(List.of("label1", "label2"));
+
+        // when & then
+        assertThrows(IssueNotEditableException.class,
+            () -> issueService.changeLabelList(issue.getId(), request, another.getId()));
+    }
+
+    @DisplayName("존재하는 이슈에 대해 누구나 댓글을 달 수 있다.")
+    @Test
+    void exist_issue_exist_user_add_comment() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, milestone);
+
+        User another = UserFactory.mockSingleUserWithId(2L);
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(another));
+
+        CommentsRequest commentsRequest = new CommentsRequest("it is comment");
+        Comment comment = new Comment(commentsRequest.getContents(), null, another, issue, true);
+        given(commentRepository.save(any(Comment.class)))
+            .willReturn(comment);
+
+        // when
+        CommentOutline resultCommentOutline = issueService.addComments(issue.getId(), commentsRequest, another.getId());
+
+        // then
+        assertThat(resultCommentOutline.getContent()).isEqualTo("it is comment");
+        assertThat(resultCommentOutline.getCommentUserOutline().getOptionName()).isEqualTo(another.getName());
+        assertThat(resultCommentOutline.getCommentUserOutline().getImageUrl()).isEqualTo(another.getImage());
+    }
+
+    @DisplayName("유효하지 않은 이슈에 댓글을 달 때는 예외가 발생한다.")
+    @Test
+    void exception_occur_when_invalid_issue_add_comment() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Long invalidIssueId = 1L;
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.empty());
+
+        CommentsRequest commentsRequest = new CommentsRequest("it is comment");
+
+        // when & then
+        assertThrows(IssueNotFoundException.class,
+            () -> issueService.addComments(invalidIssueId, commentsRequest, writer.getId()));
+    }
+
+    @DisplayName("유효하지 않은 유저가 댓글을 달 때는 예외가 발생한다.")
+    @Test
+    void exception_occur_when_invalid_user_add_comment() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, milestone);
+
+        Long invalidUserId = 2L;
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.empty());
+
+        CommentsRequest commentsRequest = new CommentsRequest("it is comment");
+
+        // when & then
+        assertThrows(UserNotFoundException.class,
+            () -> issueService.addComments(issue.getId(), commentsRequest, invalidUserId));
+    }
+
+    @DisplayName("comment 작성자는 자신이 작성한 유효한 comment를 수정할 수 있다.")
+    @Test
+    void comment_writer_can_edit() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, null);
+        Comment comment = new Comment(1L, "contents", null, writer, issue, true);
+
+        given(commentRepository.findById(anyLong()))
+            .willReturn(Optional.of(comment));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(writer));
+
+        CommentsRequest request = new CommentsRequest("change comment");
+
+        // when
+        issueService.editComments(comment.getId(), request, writer.getId());
+
+        // then
+        assertThat(comment.getContent()).isEqualTo("change comment");
+    }
+
+    @DisplayName("comment 작성자가 아니라면 comment를 수정할 수 없다.")
+    @Test
+    void no_comment_writer_can_not_edit() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, null);
+        User commentWriter = UserFactory.mockSingleUserWithId(2L);
+        Comment comment = new Comment(1L, "contents", null, commentWriter, issue, true);
+
+        given(commentRepository.findById(anyLong()))
+            .willReturn(Optional.of(comment));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(writer));
+
+        CommentsRequest request = new CommentsRequest("change comment");
+
+        // when & then
+        assertThrows(CommentNotEditableException.class,
+            () -> issueService.editComments(comment.getId(), request, writer.getId()));
+    }
+
+    @DisplayName("유효하지 않은 comment를 수정할 수 없다.")
+    @Test
+    void invalid_comment_can_not_edit() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+
+        given(commentRepository.findById(anyLong()))
+            .willReturn(Optional.empty());
+
+        CommentsRequest request = new CommentsRequest("change comment");
+
+        // when & then
+        assertThrows(CommentNotFoundException.class,
+            () -> issueService.editComments(1L, request, writer.getId()));
+    }
+
+    @DisplayName("comment 작성자는 자신이 작성한 유효한 comment를 제거할 수 있다.")
+    @Test
+    void comment_writer_can_delete() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, null);
+        Comment comment = new Comment(1L, "contents", null, writer, issue, true);
+
+        given(commentRepository.findById(anyLong()))
+            .willReturn(Optional.of(comment));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(writer));
+
+        assertThat(issue.getComments()).contains(comment);
+
+        // when
+        issueService.removeComments(comment.getId(), writer.getId());
+
+        // then
+        verify(commentRepository, times(1))
+            .delete(comment);
+
+        assertThat(issue.getComments()).isEmpty();
+    }
+
+    @DisplayName("comment 작성자가 아니라면 comment를 제거할 수 없다.")
+    @Test
+    void no_comment_writer_can_not_delete() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, null);
+        User commentWriter = UserFactory.mockSingleUserWithId(2L);
+        Comment comment = new Comment(1L, "contents", null, commentWriter, issue, true);
+
+        given(commentRepository.findById(anyLong()))
+            .willReturn(Optional.of(comment));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(writer));
+
+        // when & then
+        assertThrows(CommentNotEditableException.class,
+            () -> issueService.removeComments(comment.getId(), writer.getId()));
+    }
+
+    @DisplayName("유효하지 않은 comment를 제거할 수 없다.")
+    @Test
+    void not_invalid_comment_can_not_delete() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+
+        given(commentRepository.findById(anyLong()))
+            .willReturn(Optional.empty());
+
+        // when & then
+        assertThrows(CommentNotFoundException.class,
+            () -> issueService.removeComments(1L, writer.getId()));
+    }
 }

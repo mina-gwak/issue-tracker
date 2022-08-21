@@ -12,6 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.codesquad.issueTracker.comment.domain.Comment;
 import com.codesquad.issueTracker.comment.domain.CommentRepository;
 import com.codesquad.issueTracker.common.infrastructure.aspect.LogExecutionTime;
+import com.codesquad.issueTracker.exception.comment.CommentNotEditableException;
+import com.codesquad.issueTracker.exception.comment.CommentNotFoundException;
+import com.codesquad.issueTracker.exception.issue.IssueNotEditableException;
+import com.codesquad.issueTracker.exception.issue.IssueNotFoundException;
+import com.codesquad.issueTracker.exception.milestone.MilestoneNotFoundException;
+import com.codesquad.issueTracker.exception.user.UserNotFoundException;
 import com.codesquad.issueTracker.issue.application.dto.CommentOutline;
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
@@ -148,10 +154,10 @@ public class IssueService {
 
     private Comment checkEditableComments(Long commentId, Long userId) {
         Comment comment = commentRepository.findById(commentId)
-            .orElseThrow(() -> new IllegalStateException("유효하지 않은 comment 입니다."));
+            .orElseThrow(CommentNotFoundException::new);
         User user = findUser(userId);
         if (comment.isNotWrittenBy(user)) {
-            throw new IllegalStateException("자신이 작성한 커멘트만 수정할 수 있습니다.");
+            throw new CommentNotEditableException();
         }
         return comment;
     }
@@ -160,7 +166,7 @@ public class IssueService {
         Issue issue = findSingleIssue(issueId);
         User user = findUser(userId);
         if (issue.isNotWrittenBy(user)) {
-            throw new IllegalStateException("자신이 작성한 이슈만 수정할 수 있습니다.");
+            throw new IssueNotEditableException();
         }
         return issue;
     }
@@ -173,12 +179,12 @@ public class IssueService {
 
     private Issue findSingleIssue(Long id) {
         return issueRepository.findById(id)
-            .orElseThrow(() -> new IllegalStateException("없는 이슈입니다."));
+            .orElseThrow(IssueNotFoundException::new);
     }
 
     private User findUser(Long userId) {
         return userRepository.findById(userId)
-            .orElseThrow(() -> new IllegalStateException("없는 유저입니다."));
+            .orElseThrow(UserNotFoundException::new);
     }
 
     private String makeStatusMessage(String status) {
@@ -191,7 +197,7 @@ public class IssueService {
     private Issue makeBasicIssue(IssueContentsRequest issueContentsRequest, Long userId) {
         User user = findUser(userId);
         Milestone milestone = milestoneRepository.findByName(issueContentsRequest.getMilestone())
-            .orElseThrow(() -> new IllegalStateException("없는 마일스톤 입니다."));
+            .orElseThrow(MilestoneNotFoundException::new);
         return issueContentsRequest.toEntity(user, milestone);
     }
 
