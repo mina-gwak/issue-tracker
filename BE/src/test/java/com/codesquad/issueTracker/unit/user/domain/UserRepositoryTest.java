@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -74,7 +76,7 @@ public class UserRepositoryTest {
     @DisplayName("전체 유저의 Outline 정보를 조회한다.")
     @Test
     void find_all_users_outline_info() {
-        List<UserOutlineResponse> info = userRepository.findUserOutlineInfo(any(Pageable.class));
+        List<UserOutlineResponse> info = userRepository.findUserOutlineInfo(PageRequest.ofSize(3));
 
         assertThat(info.size()).isEqualTo(3);
         assertThat(info.get(1).getOptionName()).isEqualTo("user2");

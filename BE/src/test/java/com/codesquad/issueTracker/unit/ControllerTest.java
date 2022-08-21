@@ -3,7 +3,8 @@ package com.codesquad.issueTracker.unit;
 import static org.mockito.BDDMockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -62,7 +63,7 @@ public class ControllerTest {
 
     @Autowired
     protected ObjectMapper objectMapper;
-    @DisplayName("validate token을 제공한다.")
+
     @BeforeEach
     void setUp() {
         given(tokenProvider.parsePayload("testToken"))

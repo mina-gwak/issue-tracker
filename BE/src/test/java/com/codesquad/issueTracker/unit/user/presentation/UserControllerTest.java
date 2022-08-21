@@ -12,7 +12,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -30,17 +30,16 @@ class UserControllerTest extends ControllerTest {
         UserOutlineResponse rsp3 = new UserOutlineResponse("user3", "image3");
         List<UserOutlineResponse> responseList = List.of(rsp1, rsp2, rsp3);
 
-        PageRequest request = PageRequest.of(0, 3);
-        given(userService.findUsers(request))
+        given(userService.findUsers(any(Pageable.class)))
             .willReturn(responseList);
 
         // when
         ResultActions perform = mockMvc.perform(get("/api/users")
-            .queryParam("page", "0")
-            .queryParam("size", "3")
             .header("Authorization", "Bearer testToken")
             .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.ALL));
+            .accept(MediaType.ALL)
+            .queryParam("page", "0")
+            .queryParam("size", "10"));
 
         // then
         perform
@@ -70,9 +69,7 @@ class UserControllerTest extends ControllerTest {
         UserOutlineResponse rsp3 = new UserOutlineResponse("user3", "image3");
         List<UserOutlineResponse> responseList = List.of(rsp1, rsp2, rsp3);
 
-        PageRequest request = PageRequest.of(0, 3);
-
-        given(userService.findWriters(request))
+        given(userService.findWriters(any(Pageable.class)))
             .willReturn(responseList);
 
         // when
@@ -111,9 +108,7 @@ class UserControllerTest extends ControllerTest {
         UserOutlineResponse rsp3 = new UserOutlineResponse("user3", "image3");
         List<UserOutlineResponse> responseList = List.of(rsp1, rsp2, rsp3);
 
-        PageRequest request = PageRequest.of(0, 3);
-
-        given(userService.findAssignees(request))
+        given(userService.findAssignees(any(Pageable.class)))
             .willReturn(responseList);
 
         // when

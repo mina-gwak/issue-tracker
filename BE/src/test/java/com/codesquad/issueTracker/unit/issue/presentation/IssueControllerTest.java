@@ -9,14 +9,12 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.ResultActions;
@@ -28,7 +26,6 @@ import com.codesquad.issueTracker.issue.application.dto.CommentOutline;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
 import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
 import com.codesquad.issueTracker.issue.application.dto.IssueDetailResponse;
-import com.codesquad.issueTracker.issue.application.dto.LabelCoverResponse;
 import com.codesquad.issueTracker.issue.application.dto.PopUpResponse;
 import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;

@@ -14,10 +14,10 @@
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <springProfile name="default">
-        <logger name="com.codesquad.issueTracker">
-            <appender-ref ref="SENTRY"/>
-        </logger>
-    </springProfile>
+<!--    <springProfile name="default">-->
+<!--        <logger name="com.codesquad.issueTracker">-->
+<!--            <appender-ref ref="SENTRY"/>-->
+<!--        </logger>-->
+<!--    </springProfile>-->
 
 </configuration>

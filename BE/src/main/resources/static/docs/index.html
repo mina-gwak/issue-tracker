@@ -747,7 +747,7 @@ Content-Length: 35
 <h4 id="User-Filter-정보-발급_http_request"><a class="link" href="#User-Filter-정보-발급_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/users?page=0&amp;size=3 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/users?page=0&amp;size=10 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer testToken
 Accept: */*
@@ -1132,7 +1132,7 @@ Content-Length: 721
     "issueId" : 1,
     "writer" : "user1",
     "writerImage" : "image1",
-    "modificationTime" : "2022-08-20T22:58:09.425507",
+    "modificationTime" : "2022-08-21T14:28:49.109014",
     "milestoneName" : "milestone1",
     "opened" : true
   } ],
@@ -1293,12 +1293,12 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 155
+Content-Length: 156
 
 {
   "title" : "BE Lucid가 작성한 issue",
   "content" : "내용은 이러하다",
-  "writtenTime" : "2022-08-20T22:58:09.36593",
+  "writtenTime" : "2022-08-21T14:28:49.056066",
   "assignedMe" : true
 }</code></pre>
 </div>
@@ -1529,7 +1529,7 @@ Content-Length: 946
   "issueId" : 1,
   "title" : "title1",
   "content" : "content1",
-  "writtenTime" : "2022-08-20T22:58:09.001608",
+  "writtenTime" : "2022-08-21T14:28:48.728698",
   "writerOutline" : {
     "optionName" : "user1",
     "imageUrl" : "image1"
@@ -1561,7 +1561,7 @@ Content-Length: 946
       "imageUrl" : "image1"
     },
     "content" : "contents",
-    "writtenTime" : "2022-08-20T22:58:09.001647",
+    "writtenTime" : "2022-08-21T14:28:48.728737",
     "editable" : true
   } ],
   "imageUrls" : [ "image2", "image1", "image3" ],
@@ -2083,13 +2083,13 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 686
+Content-Length: 687
 
 {
   "milestoneSingleInfos" : [ {
     "id" : null,
     "name" : "m1",
-    "dueDate" : "2022-08-20T22:58:09.72217",
+    "dueDate" : "2022-08-21T14:28:49.431966",
     "description" : "m1 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2097,7 +2097,7 @@ Content-Length: 686
   }, {
     "id" : null,
     "name" : "m2",
-    "dueDate" : "2022-08-20T22:58:09.722182",
+    "dueDate" : "2022-08-21T14:28:49.431984",
     "description" : "m2 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2105,7 +2105,7 @@ Content-Length: 686
   }, {
     "id" : null,
     "name" : "m3",
-    "dueDate" : "2022-08-20T22:58:09.722186",
+    "dueDate" : "2022-08-21T14:28:49.431988",
     "description" : "m3 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2197,7 +2197,7 @@ Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-08-20T22:58:09.770673",
+  "dueDate" : "2022-08-21T14:28:49.481212",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2264,7 +2264,7 @@ Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-08-20T22:58:09.830592",
+  "dueDate" : "2022-08-21T14:28:49.528296",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2879,7 +2879,7 @@ Content-Length: 214
     "imageUrl" : "image1"
   },
   "content" : "issue에 작성된 comments 입니다..",
-  "writtenTime" : "2022-08-20T22:58:09.532628",
+  "writtenTime" : "2022-08-21T14:28:49.214974",
   "editable" : true
 }</code></pre>
 </div>
