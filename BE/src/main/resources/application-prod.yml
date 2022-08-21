@@ -15,11 +15,9 @@ spring:
     database: mysql
     show-sql: true
 
-  cache:
-    type: redis
   redis:
     host: 127.0.0.1
-    port: 6379
+    port: 6300
 
   sql:
     init:
@@ -52,4 +50,8 @@ cloud:
     stack:
       auto: false
 
-
+sentry:
+  dsn: ${SENTRY_DSN}
+  logging:
+    enabled: false
+    minimum-event-level: error

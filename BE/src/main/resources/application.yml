@@ -16,8 +16,8 @@ spring:
     show-sql: true
 
   redis:
-    host: localhost
-    port: 6379
+    host: 127.0.0.1
+    port: 6300
 
   sql:
     init:
@@ -40,15 +40,19 @@ oauth:
 
 cloud:
   aws:
-     credentials:
-       access-key: ${S3_ACCESS_KEY}
-       secret-key: ${S3_SECRET_KEY}
-     s3:
-       bucket: ${S3_BUCKET_NAME}
-     region:
-       static: ${S3_REGION}
-     stack:
-       auto: false
+    credentials:
+      access-key: ${S3_ACCESS_KEY}
+      secret-key: ${S3_SECRET_KEY}
+    s3:
+      bucket: ${S3_BUCKET_NAME}
+    region:
+      static: ${S3_REGION}
+    stack:
+      auto: false
 
-sentry:
-  dsn: ${SENTRY_DSN}
+logging:
+  level:
+    root: info
+    com.codesquad.issueTracker: debug
+
+
