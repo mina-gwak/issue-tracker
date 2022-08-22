@@ -3,6 +3,7 @@ package com.codesquad.issueTracker.milestone.presentation;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,6 +54,12 @@ public class MilestoneController {
     @PatchMapping("/{milestoneId}/change")
     public ResponseEntity<Void> changeStatus(@PathVariable Long milestoneId, @RequestParam String open) {
         milestoneService.changeStatus(milestoneId, open);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{milestoneId}")
+    public ResponseEntity<Void> deleteMilestone(@PathVariable Long milestoneId) {
+        milestoneService.deleteLabels(milestoneId);
         return ResponseEntity.ok().build();
     }
 

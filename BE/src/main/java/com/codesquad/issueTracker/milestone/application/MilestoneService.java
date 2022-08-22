@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.codesquad.issueTracker.exception.milestone.MilestoneNotFoundException;
+import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.milestone.application.dto.MilestoneSingleInfoResponse;
 import com.codesquad.issueTracker.milestone.application.dto.MilestonesResponse;
 import com.codesquad.issueTracker.milestone.domain.Milestone;
@@ -62,8 +64,19 @@ public class MilestoneService {
         milestone.changeOpenOrClose(isOpened);
     }
 
+    @Transactional
+    public void deleteLabels(Long milestoneId) {
+        Milestone milestone = findSingleMilestone(milestoneId);
+        List<Issue> issues = milestone.getIssues();
+        for (Issue issue : issues) {
+            issue.removeMilestone();
+        }
+        milestoneRepository.deleteById(milestoneId);
+    }
+
     private Milestone findSingleMilestone(Long milestoneId) {
         return milestoneRepository.findById(milestoneId)
-            .orElseThrow(() -> new IllegalArgumentException("없는 마일스톤 입니다."));
+            .orElseThrow(MilestoneNotFoundException::new);
     }
+
 }
