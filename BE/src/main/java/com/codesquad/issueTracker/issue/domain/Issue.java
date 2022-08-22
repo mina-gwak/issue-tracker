@@ -47,13 +47,13 @@ public class Issue {
     @JoinColumn(name = "userId")
     private User user;
 
-    @OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "issue", orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
-    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private Set<AttachedLabel> attachedLabels = new HashSet<>();
 
-    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private Set<AssignedIssue> assignedIssues = new HashSet<>();
 
     @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -150,7 +150,10 @@ public class Issue {
     }
 
     public String getMilestoneName() {
-        return milestone.getName();
+        if (milestone != null) {
+            return milestone.getName();
+        }
+        return "empty milestone";
     }
 
     public void deleteComment(Comment comment) {
@@ -170,5 +173,9 @@ public class Issue {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    public void removeMilestone() {
+        this.milestone = null;
     }
 }

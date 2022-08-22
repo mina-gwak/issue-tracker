@@ -32,6 +32,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> runtimeExceptionResolver(RuntimeException exception) {
+        exception.printStackTrace();
         StackTraceElement stackTraceElement = exception.getStackTrace()[TRACE_POINT];
         log.warn(LOG_FORMAT,
             exception.getClass().getSimpleName(),
@@ -39,6 +40,6 @@ public class GlobalExceptionHandler {
             exception.getMessage());
         return ResponseEntity
             .status(INTERNAL_SERVER_ERROR)
-            .body(new ErrorResponse(exception.getMessage(), INTERNAL_SERVER_ERROR.name()));
+            .body(new ErrorResponse("SERVER_ERROR", INTERNAL_SERVER_ERROR.name()));
     }
 }

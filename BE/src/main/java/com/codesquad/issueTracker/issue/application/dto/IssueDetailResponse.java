@@ -42,7 +42,9 @@ public class IssueDetailResponse {
             .map(attachedLabel -> new LabelOutline(attachedLabel.getLabelName(), attachedLabel.getLabelColor(),
                 attachedLabel.getTextColor()))
             .collect(Collectors.toList());
-        this.milestoneInformation = new MilestoneInformation(issue.getMilestone());
+        if(issue.getMilestone() != null) {
+            this.milestoneInformation = new MilestoneInformation(issue.getMilestone());
+        }
         this.commentOutlines = issue.getComments()
             .stream().map(CommentOutline::new)
             .collect(Collectors.toList());

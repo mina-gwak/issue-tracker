@@ -28,9 +28,7 @@ public class IssueCoverResponse {
     private boolean opened;
 
     public IssueCoverResponse(Issue issue) {
-        Set<AttachedLabel> attachedLabels = issue.getAttachedLabels();
-
-        this.labelCoverResponses = attachedLabels.stream()
+        this.labelCoverResponses = issue.getAttachedLabels().stream()
             .map(AttachedLabel::getLabel)
             .map(label -> new LabelCoverResponse(label.getName(), label.getLabelColor(), label.getTextColor()))
             .sorted(Comparator.comparing(LabelCoverResponse::getLabelName))
