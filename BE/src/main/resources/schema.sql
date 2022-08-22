@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `issue` (
   `written_time` DATETIME NULL,
   `modification_time` DATETIME NULL,
   `user_id` BIGINT NOT NULL,
-  `milestone_id` BIGINT NOT NULL,
+  `milestone_id` BIGINT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_issue_user_idx` (`user_id` ASC) VISIBLE,
   INDEX `fk_issue_milestone1_idx` (`milestone_id` ASC) VISIBLE,
@@ -58,12 +58,13 @@ CREATE TABLE IF NOT EXISTS `issue` (
     FOREIGN KEY (`user_id`)
     REFERENCES `user` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_issue_milestone1`
-    FOREIGN KEY (`milestone_id`)
-    REFERENCES `milestone` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE NO ACTION
+--  CONSTRAINT `fk_issue_milestone1` -- 제약조건 제거(8/23)
+--    FOREIGN KEY (`milestone_id`)
+--    REFERENCES `milestone` (`id`)
+--    ON DELETE NO ACTION
+--    ON UPDATE NO ACTION
+    )
 ENGINE = InnoDB;
 
 
@@ -151,12 +152,13 @@ CREATE TABLE IF NOT EXISTS `attached_label` (
     FOREIGN KEY (`issue_id`)
     REFERENCES `issue` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_attached_label_label1`
-    FOREIGN KEY (`label_id`)
-    REFERENCES `label` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE NO ACTION
+--  CONSTRAINT `fk_attached_label_label1` -- 삭제 (8.23)
+--    FOREIGN KEY (`label_id`)
+--    REFERENCES `label` (`id`)
+--    ON DELETE NO ACTION
+--    ON UPDATE NO ACTION
+    )
 ENGINE = InnoDB;
 
 

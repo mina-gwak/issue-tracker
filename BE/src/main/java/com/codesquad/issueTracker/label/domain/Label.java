@@ -30,10 +30,6 @@ public class Label {
     private String labelColor;
     private String textColor;
 
-    // TODO: Label 지워질 때 AttachedLabel을 지우기 위한 다른 방법 생각해보기(현재 Issue에서도 동일한 필드로 가지고 있음)
-    @OneToMany(mappedBy = "label", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<AttachedLabel> attachedLabels = new HashSet<>();
-
     public Label(Long id, String name, String description, String labelColor, String textColor) {
         this.id = id;
         this.name = name;
