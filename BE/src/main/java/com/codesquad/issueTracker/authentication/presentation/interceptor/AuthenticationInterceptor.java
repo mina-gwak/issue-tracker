@@ -11,6 +11,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.codesquad.issueTracker.authentication.application.OAuthService;
 import com.codesquad.issueTracker.authentication.infrastructure.JwtTokenProvider;
+import com.codesquad.issueTracker.exception.authentication.TokenNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,13 +34,13 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
         // Todo : 임시 자격(삭제 예정)
         if (userId.equals("1")) {
-            log.info("테스트 유저 접속");
+            log.debug("테스트 유저 접속");
             request.setAttribute("userId", Long.parseLong(userId));
             return true;
         }
 
         if (oAuthService.isLogout(userId)) {
-            log.info("{}에 접근을 위해 로그인이 필요합니다.", request.getRequestURI());
+            log.debug("{}에 접근을 위해 로그인이 필요합니다.", request.getRequestURI());
             return false;
         }
         request.setAttribute("userId", Long.parseLong(userId));
@@ -49,19 +50,19 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     private String resolveToken(HttpServletRequest request) {
         String authorizationInfo = request.getHeader("Authorization");
         if (authorizationInfo == null) {
-            log.info("[preHandle][JWT Token 에러 발생]");
-            log.info("request uri is : {}", request.getRequestURI());
-            throw new IllegalStateException("토큰이 없습니다. 로그인 먼저 해주세요.");
+            log.debug("[preHandle][JWT Token 에러 발생]");
+            log.debug("request uri is : {}", request.getRequestURI());
+            throw new TokenNotFoundException();
         }
         String[] parts = authorizationInfo.split(" ");
-        if (isNotValidToken(parts)) {
-            log.info("[preHandle][JWT Token 에러 발생]");
-            throw new IllegalStateException("정상적인 형태로 토큰을 전달해주세요.");
+        if (isNotValidForm(parts)) {
+            log.debug("[preHandle][JWT Token 에러 발생]");
+            throw new TokenNotFoundException();
         }
         return parts[1];
     }
 
-    private boolean isNotValidToken(String[] parts) {
+    private boolean isNotValidForm(String[] parts) {
         return parts.length != 2 || !parts[0].equals("Bearer");
     }
 }

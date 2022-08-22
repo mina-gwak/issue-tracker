@@ -43,7 +43,6 @@ public class OAuthService {
         String jwtRefreshToken = jwtTokenProvider.generateRefreshToken(savedUserId);
         log.debug("jwtAccessToken : {}, refreshToken : {}", jwtAccessToken, jwtRefreshToken);
 
-        // TODO : RollBack 적용 필요
         redisTokenRepository.insert(savedUserId, jwtRefreshToken);
         return new OAuthLoginResponse("Bearer", jwtAccessToken, jwtRefreshToken, userProfile.toDto());
     }

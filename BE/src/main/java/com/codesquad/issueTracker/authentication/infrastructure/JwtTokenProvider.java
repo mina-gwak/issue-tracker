@@ -5,6 +5,9 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.codesquad.issueTracker.exception.authentication.TokenExpireException;
+import com.codesquad.issueTracker.exception.authentication.TokenNotFoundException;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -58,11 +61,11 @@ public class JwtTokenProvider {
                 .getBody()
                 .getSubject();
         } catch (ExpiredJwtException e) {
-            log.info("만료된 토큰입니다. exception message : {}", e.getMessage());
-            throw new IllegalArgumentException("만료된 토큰 : " + e.getClaims().getSubject());
+            log.debug("token expired. message : {}", e.getMessage());
+            throw new TokenExpireException();
         } catch (JwtException | IllegalArgumentException e) {
-            log.info("토큰 parsing 중 예외가 발생하였습니다. exception message : {}", e.getMessage());
-            throw new IllegalArgumentException("토큰 parsing 중 예외가 발생하였습니다.");
+            log.debug("jwt token exception. message : {}", e.getMessage());
+            throw new TokenNotFoundException();
         }
     }
 }

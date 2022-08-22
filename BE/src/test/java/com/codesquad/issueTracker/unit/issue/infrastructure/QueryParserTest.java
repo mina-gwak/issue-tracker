@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import com.codesquad.issueTracker.exception.issue.InvalidFilterException;
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
 import com.codesquad.issueTracker.issue.domain.MainFilter;
 import com.codesquad.issueTracker.issue.infrastructure.QueryParser;
@@ -36,7 +37,7 @@ public class QueryParserTest {
     @ValueSource(strings = {"is:test label:BE", "is:open lava:BE", "is:open label:BE stone:FE"})
     void filter_parsing_fail(String filterQuery) {
         // when & then
-        Assertions.assertThrows(IllegalStateException.class, () ->
+        Assertions.assertThrows(InvalidFilterException.class, () ->
             queryParser.makeFilterCondition(filterQuery));
     }
 

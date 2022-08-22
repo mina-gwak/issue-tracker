@@ -35,7 +35,7 @@ public class OAuthController {
         OAuthLoginResponse loginToken = oAuthService.login(code);
         return ResponseEntity.ok(loginToken);
     }
-    // TODO : test token(삭제 필요)
+
     @GetMapping("/testToken")
     public ResponseEntity<OAuthLoginResponse> getTestToken() {
         String accessToken = jwtTokenProvider.generateAccessToken(String.valueOf(1));

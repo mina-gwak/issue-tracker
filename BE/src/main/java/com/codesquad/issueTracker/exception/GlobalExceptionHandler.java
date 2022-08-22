@@ -1,5 +1,7 @@
 package com.codesquad.issueTracker.exception;
 
+import static org.springframework.http.HttpStatus.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -28,4 +30,15 @@ public class GlobalExceptionHandler {
             .body(new ErrorResponse(exception.getMessage(), exception.getHttpStatus().name()));
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> runtimeExceptionResolver(RuntimeException exception) {
+        StackTraceElement stackTraceElement = exception.getStackTrace()[TRACE_POINT];
+        log.warn(LOG_FORMAT,
+            exception.getClass().getSimpleName(),
+            stackTraceElement.getClassName() + " : " + stackTraceElement.getMethodName(),
+            exception.getMessage());
+        return ResponseEntity
+            .status(INTERNAL_SERVER_ERROR)
+            .body(new ErrorResponse(exception.getMessage(), INTERNAL_SERVER_ERROR.name()));
+    }
 }

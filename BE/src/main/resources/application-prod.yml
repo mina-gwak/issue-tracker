@@ -10,10 +10,10 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
-        format_sql: true
         default_batch_fetch_size: 100
     database: mysql
-    show-sql: true
+    show-sql: false
+
 
   redis:
     host: 127.0.0.1
@@ -55,3 +55,12 @@ sentry:
   logging:
     enabled: false
     minimum-event-level: error
+
+logging:
+  level:
+    root: info
+    com.codesquad.issueTracker:  info
+
+decorator:
+  datasource:
+    enabled: false

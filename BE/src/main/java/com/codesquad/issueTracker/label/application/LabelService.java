@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.codesquad.issueTracker.exception.label.LabelNotFoundException;
 import com.codesquad.issueTracker.label.application.dto.LabelListResponse;
 import com.codesquad.issueTracker.label.application.dto.LabelOutlineResponse;
 import com.codesquad.issueTracker.label.domain.Label;
@@ -51,6 +52,6 @@ public class LabelService {
 
     private Label findSingleLabel(Long labelId) {
         return labelRepository.findById(labelId)
-            .orElseThrow(() -> new IllegalStateException("없는 label입니다."));
+            .orElseThrow(LabelNotFoundException::new);
     }
 }

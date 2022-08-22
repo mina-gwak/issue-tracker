@@ -13,7 +13,11 @@ import org.springframework.web.client.RestTemplate;
 import com.codesquad.issueTracker.authentication.infrastructure.dto.OAuthTokenRequest;
 import com.codesquad.issueTracker.authentication.infrastructure.dto.OAuthTokenResponse;
 import com.codesquad.issueTracker.authentication.infrastructure.dto.UserProfile;
+import com.codesquad.issueTracker.exception.common.InternalServerException;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class GitHubOAuthClientServer implements OAuthClientServer {
 
@@ -56,7 +60,8 @@ public class GitHubOAuthClientServer implements OAuthClientServer {
             .getBody();
 
         if (Objects.isNull(response)) {
-            throw new IllegalStateException("GitHub Server로부터 토큰을 받지 못했습니다.");
+            log.error("github oAuth server로부터 정상적인 access Token을 받지 못했습니다.");
+            throw new InternalServerException();
         }
         return response;
     }
@@ -73,7 +78,8 @@ public class GitHubOAuthClientServer implements OAuthClientServer {
             .getBody();
 
         if (Objects.isNull(response)) {
-            throw new IllegalStateException("GitHub로부터 User 데이터를 받지 못했습니다.");
+            log.error("github oAuth server로부터 user 정보를 받지 못했습니다.");
+            throw new InternalServerException();
         }
         return response;
     }

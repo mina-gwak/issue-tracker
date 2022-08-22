@@ -3,6 +3,7 @@ package com.codesquad.issueTracker.issue.infrastructure;
 import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.util.EnumUtils;
 
+import com.codesquad.issueTracker.exception.issue.InvalidFilterException;
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
 import com.codesquad.issueTracker.issue.application.dto.SubFilterDetail;
 import com.codesquad.issueTracker.issue.domain.MainFilter;
@@ -43,8 +44,8 @@ public class QueryParser {
             mainFilter = EnumUtils.findEnumInsensitiveCase(MainFilter.class, tmp[1]);
             filterConditionRequest.changeMainFilter(mainFilter);
         } catch (IllegalArgumentException e) {
-            log.info("유효하지 않는 mainFilter 타입입니다.");
-            throw new IllegalStateException("유효하지 않는 mainFilter 타입입니다.");
+            log.debug("유효하지 않는 mainFilter 타입입니다.");
+            throw new InvalidFilterException();
         }
     }
 
@@ -54,8 +55,8 @@ public class QueryParser {
             subFilter = EnumUtils.findEnumInsensitiveCase(SubFilter.class, queryHeader);
             filterConditionRequest.addSubFilter(new SubFilterDetail(subFilter, queryFooter));
         } catch (IllegalArgumentException e) {
-            log.info("유효하지 않는 subFilter type입니다.");
-            throw new IllegalStateException("유효하지 않는 subFilter type입니다.");
+            log.debug("유효하지 않는 subFilter type입니다.");
+            throw new InvalidFilterException();
         }
     }
 }
