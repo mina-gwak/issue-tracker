@@ -484,6 +484,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#create-Milestone-list">🔒 마일스톤 생성</a></li>
 <li><a href="#edit-Milestone-list">🔒 마일스톤 내용 수정</a></li>
 <li><a href="#change-Milestone-status">🔒 마일스톤 상태 변경</a></li>
+<li><a href="#delete-milestone">🔒 마일스톤 제거</a></li>
 </ul>
 </li>
 <li><a href="#Label-API">Label API</a>
@@ -1132,7 +1133,7 @@ Content-Length: 721
     "issueId" : 1,
     "writer" : "user1",
     "writerImage" : "image1",
-    "modificationTime" : "2022-08-21T16:59:04.689681",
+    "modificationTime" : "2022-08-23T01:42:25.189151",
     "milestoneName" : "milestone1",
     "opened" : true
   } ],
@@ -1298,7 +1299,7 @@ Content-Length: 156
 {
   "title" : "BE Lucid가 작성한 issue",
   "content" : "내용은 이러하다",
-  "writtenTime" : "2022-08-21T16:59:04.659602",
+  "writtenTime" : "2022-08-23T01:42:24.898112",
   "assignedMe" : true
 }</code></pre>
 </div>
@@ -1529,7 +1530,7 @@ Content-Length: 946
   "issueId" : 1,
   "title" : "title1",
   "content" : "content1",
-  "writtenTime" : "2022-08-21T16:59:04.306854",
+  "writtenTime" : "2022-08-23T01:42:23.495071",
   "writerOutline" : {
     "optionName" : "user1",
     "imageUrl" : "image1"
@@ -1542,12 +1543,12 @@ Content-Length: 946
     "imageUrl" : "image1"
   } ],
   "labels" : [ {
-    "labelName" : "BE",
-    "colorCode" : "#000000",
-    "textColor" : "white"
-  }, {
     "labelName" : "Lucid",
     "colorCode" : "#008672",
+    "textColor" : "white"
+  }, {
+    "labelName" : "BE",
+    "colorCode" : "#000000",
     "textColor" : "white"
   } ],
   "milestoneInformation" : {
@@ -1561,7 +1562,7 @@ Content-Length: 946
       "imageUrl" : "image1"
     },
     "content" : "contents",
-    "writtenTime" : "2022-08-21T16:59:04.306888",
+    "writtenTime" : "2022-08-23T01:42:23.495247",
     "editable" : true
   } ],
   "imageUrls" : [ "image2", "image1", "image3" ],
@@ -2083,13 +2084,13 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 685
+Content-Length: 687
 
 {
   "milestoneSingleInfos" : [ {
     "id" : null,
     "name" : "m1",
-    "dueDate" : "2022-08-21T16:59:05.083387",
+    "dueDate" : "2022-08-23T01:42:27.123854",
     "description" : "m1 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2097,7 +2098,7 @@ Content-Length: 685
   }, {
     "id" : null,
     "name" : "m2",
-    "dueDate" : "2022-08-21T16:59:05.0834",
+    "dueDate" : "2022-08-23T01:42:27.124389",
     "description" : "m2 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2105,7 +2106,7 @@ Content-Length: 685
   }, {
     "id" : null,
     "name" : "m3",
-    "dueDate" : "2022-08-21T16:59:05.083404",
+    "dueDate" : "2022-08-23T01:42:27.124406",
     "description" : "m3 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2197,7 +2198,7 @@ Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-08-21T16:59:05.131734",
+  "dueDate" : "2022-08-23T01:42:27.190461",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2264,7 +2265,7 @@ Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-08-21T16:59:05.179299",
+  "dueDate" : "2022-08-23T01:42:27.325923",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2397,6 +2398,54 @@ Host: localhost:8080</code></pre>
 </div>
 <div class="sect3">
 <h4 id="change-Milestone-status_http_response"><a class="link" href="#change-Milestone-status_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="delete-milestone"><a class="link" href="#delete-milestone">🔒 마일스톤 제거</a></h3>
+<div class="sect3">
+<h4 id="delete-milestone_http_request"><a class="link" href="#delete-milestone_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /api/milestones/1 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: Bearer testToken
+Accept: */*
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="delete-milestone_path_parameters"><a class="link" href="#delete-milestone_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/milestones/{milestoneId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>milestoneId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">마일스톤 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="delete-milestone_http_response"><a class="link" href="#delete-milestone_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -2879,7 +2928,7 @@ Content-Length: 214
     "imageUrl" : "image1"
   },
   "content" : "issue에 작성된 comments 입니다..",
-  "writtenTime" : "2022-08-21T16:59:04.828028",
+  "writtenTime" : "2022-08-23T01:42:26.106171",
   "editable" : true
 }</code></pre>
 </div>
@@ -3061,7 +3110,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-08-20 17:59:37 +0900
+Last updated 2022-08-23 01:41:15 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

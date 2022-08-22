@@ -211,4 +211,32 @@ class MilestoneControllerTest extends ControllerTest {
                     parameterWithName("open").description("마일스톤 open/close를 true/false로 전달한다.")
                 )));
     }
+
+    @DisplayName("마일스톤을 제거한다.")
+    @Test
+    void delete_milestone() throws Exception {
+        // given
+        Long milestoneId = 1L;
+
+        // when
+        ResultActions perform = mockMvc.perform(
+            RestDocumentationRequestBuilders.delete("/api/milestones/{milestoneId}", milestoneId)
+                .header("Authorization", "Bearer testToken")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk());
+
+        verify(milestoneService, times(1))
+            .deleteLabels(eq(1L));
+
+        // docs
+        perform.andDo(
+            document("delete-milestone", getDocumentRequest(), getDocumentResponse(),
+                pathParameters(
+                    parameterWithName("milestoneId").description("마일스톤 아이디")
+                )));
+    }
 }

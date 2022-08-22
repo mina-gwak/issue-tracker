@@ -104,6 +104,11 @@ operation::edit-milestone[snippets='http-request,path-parameters,request-fields,
 === 🔒 마일스톤 상태 변경
 operation::change-milestone-status[snippets='http-request,path-parameters,request-parameters,http-response']
 
+[[delete-milestone]]
+=== 🔒 마일스톤 제거
+operation::delete-milestone[snippets='http-request,path-parameters,http-response']
+
+
 [[Label-API]]
 == Label API
 
