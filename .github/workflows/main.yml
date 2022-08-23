@@ -8,7 +8,7 @@ permissions:
   contents: read 
 
 env:
-  S3_BUCKET_NAME: lucid-deploy-bucket
+  S3_BUCKET_NAME: bucket-issue-tracker-by-lucid
   PROJECT_NAME: issue-tracker-deploy
 
 jobs:
@@ -46,7 +46,7 @@ jobs:
         working-directory: ${{env.working-directory}}
         
       - name: 🔧 Build with Gradle
-        run: ./gradlew bootjar
+        run: ./gradlew build
         shell: bash
         working-directory: ${{env.working-directory}}
         
@@ -71,9 +71,9 @@ jobs:
       # Code Deploy를 통해 ec2로 zip file 옮기기
       - name: ➡️ Code Deploy
         run: aws deploy create-deployment
-          --application-name issueTracker-deploy
+          --application-name issue-tracker-deploy
           --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name issueTracker-code-deploy
+          --deployment-group-name issue-tracker-deploy-group
           --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
         working-directory: ${{env.WORKING_DIRECTORY}}
 
