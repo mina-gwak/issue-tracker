@@ -37,9 +37,9 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
     public IssueRepositoryCustomImpl(EntityManager entityManager) {
         this.queryFactory = new JPAQueryFactory(entityManager);
     }
+
     @Override
     public List<Issue> search(FilterCondition condition, Long userId, Pageable pageable) {
-
         QUser assignedUser = new QUser("assignedUser");
         MultiValueMap<String, SubFilterDetail> subFilters = condition.getSubFilters();
 
@@ -51,7 +51,6 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
             .leftJoin(issue.comments, comment)
             .leftJoin(issue.attachedLabels, attachedLabel)
             .leftJoin(attachedLabel.label, label)
-
             .where(
                 addMainCondition(condition.getMainFilter(), userId, assignedUser),
                 matching(milestone.name, subFilters.get("MILESTONES")),
@@ -61,6 +60,27 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
             .limit(pageable.getPageSize())
             .distinct()
             .fetch();
+    }
+
+    @Override
+    public Long findCountByMainStatus(FilterCondition condition, MainFilter mainFilter) {
+        QUser assignedUser = new QUser("assignedUser");
+        MultiValueMap<String, SubFilterDetail> subFilters = condition.getSubFilters();
+        return queryFactory.select(issue.countDistinct())
+            .from(issue)
+            .join(issue.user, user)
+            .leftJoin(issue.milestone, milestone)
+            .leftJoin(issue.assignedIssues, assignedIssue)
+            .leftJoin(assignedIssue.user, assignedUser)
+            .leftJoin(issue.comments, comment)
+            .leftJoin(issue.attachedLabels, attachedLabel)
+            .leftJoin(attachedLabel.label, label)
+            .where(
+                addMainCondition(mainFilter),
+                matching(milestone.name, subFilters.get("MILESTONES")),
+                matching(label.name, subFilters.get("LABELS")),
+                matching(assignedUser.name, subFilters.get("ASSIGNEES")))
+            .fetchOne();
     }
 
     private BooleanBuilder matching(StringPath name, List<SubFilterDetail> filters) {
@@ -92,5 +112,12 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
             return assignedUser.id.eq(userId);
         }
         return null;
+    }
+
+    private Predicate addMainCondition(MainFilter mainFilter) {
+        if (mainFilter.equals(MainFilter.OPEN)) {
+            return issue.isOpened.eq(true);
+        }
+        return issue.isOpened.eq(false);
     }
 }

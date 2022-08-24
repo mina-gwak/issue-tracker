@@ -65,7 +65,11 @@ public class IssueService {
             .map(IssueCoverResponse::new)
             .collect(Collectors.toList());
 
-        return makeIssueCoversResponse(result);
+        Long openCount = issueRepository.findCountByMainStatus(condition, MainFilter.OPEN);
+        Long closeCount = issueRepository.findCountByMainStatus(condition, MainFilter.CLOSE);
+
+        return new IssueCoversResponse(result, openCount, closeCount, labelRepository.count(),
+            milestoneRepository.count());
     }
 
     @Cacheable(value = "PopUpResponse", key = "#issueId", cacheManager = "cacheManager", unless = "#issueId == ''")
@@ -143,13 +147,6 @@ public class IssueService {
         Comment comment = checkEditableComments(commentId, userId);
         comment.removeRelationWithIssue();
         commentRepository.delete(comment);
-    }
-
-    private IssueCoversResponse makeIssueCoversResponse(List<IssueCoverResponse> result) {
-        long allIssueCount = issueRepository.count();
-        long openCount = issueRepository.findOpenCount();
-        return new IssueCoversResponse(result, openCount, allIssueCount - openCount, labelRepository.count(),
-            milestoneRepository.count());
     }
 
     private Comment checkEditableComments(Long commentId, Long userId) {
