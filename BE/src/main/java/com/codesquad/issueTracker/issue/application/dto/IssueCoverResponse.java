@@ -3,11 +3,12 @@ package com.codesquad.issueTracker.issue.application.dto;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import com.codesquad.issueTracker.issue.domain.Issue;
-import com.codesquad.issueTracker.label.domain.AttachedLabel;
 import com.codesquad.issueTracker.user.application.dto.UserOutlineResponse;
 
 import lombok.Getter;
@@ -29,13 +30,23 @@ public class IssueCoverResponse {
 
     public IssueCoverResponse(Issue issue) {
         this.labelCoverResponses = issue.getAttachedLabels().stream()
-            .map(AttachedLabel::getLabel)
-            .map(label -> new LabelCoverResponse(label.getName(), label.getLabelColor(), label.getTextColor()))
+            .map(attachedLabel -> {
+                try {
+                    return new LabelCoverResponse(
+                        attachedLabel.getLabelName(),
+                        attachedLabel.getLabelColor(),
+                        attachedLabel.getTextColor());
+                } catch (EntityNotFoundException e) {
+                    return null;
+                }
+            })
+            .filter(Objects::nonNull)
             .sorted(Comparator.comparing(LabelCoverResponse::getLabelName))
             .collect(Collectors.toList());
 
         this.assignees = issue.getAssignedIssues()
-            .stream().map(assignedIssue -> new UserOutlineResponse(assignedIssue.getUserName(), assignedIssue.getUserImage()))
+            .stream()
+            .map(assignedIssue -> new UserOutlineResponse(assignedIssue.getUserName(), assignedIssue.getUserImage()))
             .sorted(Comparator.comparing(UserOutlineResponse::getOptionName))
             .collect(Collectors.toList());
 

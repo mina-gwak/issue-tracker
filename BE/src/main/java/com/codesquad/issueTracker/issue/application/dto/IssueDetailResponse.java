@@ -2,7 +2,10 @@ package com.codesquad.issueTracker.issue.application.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+import javax.persistence.EntityNotFoundException;
 
 import com.codesquad.issueTracker.issue.domain.Image;
 import com.codesquad.issueTracker.issue.domain.Issue;
@@ -34,15 +37,9 @@ public class IssueDetailResponse {
         this.isOpen = issue.isOpened();
         this.writtenTime = issue.getWrittenTime();
         this.writerOutline = new UserOutlineResponse(issue.getWriter(), issue.getWriterImage());
-        this.assignees = issue.getAssignedIssues()
-            .stream().map(assignedIssue -> new UserOutlineResponse(assignedIssue.getUserName(), assignedIssue.getUserImage()))
-            .collect(Collectors.toList());
-        this.labels = issue.getAttachedLabels()
-            .stream()
-            .map(attachedLabel -> new LabelOutline(attachedLabel.getLabelName(), attachedLabel.getLabelColor(),
-                attachedLabel.getTextColor()))
-            .collect(Collectors.toList());
-        if(issue.getMilestone() != null) {
+        this.assignees = resolveAssignees(issue);
+        this.labels = resolveLabels(issue);
+        if (issue.getMilestone() != null) {
             this.milestoneInformation = new MilestoneInformation(issue.getMilestone());
         }
         this.commentOutlines = issue.getComments()
@@ -50,6 +47,28 @@ public class IssueDetailResponse {
             .collect(Collectors.toList());
         this.imageUrls = issue.getImages()
             .stream().map(Image::getImageUrl)
+            .collect(Collectors.toList());
+    }
+
+    private List<UserOutlineResponse> resolveAssignees(Issue issue) {
+        return issue.getAssignedIssues()
+            .stream()
+            .map(assignedIssue -> new UserOutlineResponse(assignedIssue.getUserName(), assignedIssue.getUserImage()))
+            .collect(Collectors.toList());
+    }
+
+    private List<LabelOutline> resolveLabels(Issue issue) {
+        return issue.getAttachedLabels()
+            .stream()
+            .map(attachedLabel -> {
+                try {
+                    return new LabelOutline(attachedLabel.getLabelName(), attachedLabel.getLabelColor(),
+                        attachedLabel.getTextColor());
+                } catch (EntityNotFoundException e) {
+                    return null;
+                }
+            })
+            .filter(Objects::nonNull)
             .collect(Collectors.toList());
     }
 }

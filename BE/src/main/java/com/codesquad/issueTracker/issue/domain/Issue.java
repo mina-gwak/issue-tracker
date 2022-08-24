@@ -153,7 +153,7 @@ public class Issue {
         if (milestone != null) {
             return milestone.getName();
         }
-        return "empty milestone";
+        return null;
     }
 
     public void deleteComment(Comment comment) {
