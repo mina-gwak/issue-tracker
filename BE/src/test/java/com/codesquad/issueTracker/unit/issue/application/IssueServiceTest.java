@@ -4,13 +4,10 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,6 +35,7 @@ import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
 import com.codesquad.issueTracker.issue.application.dto.IssueDetailResponse;
 import com.codesquad.issueTracker.issue.application.dto.PopUpResponse;
 import com.codesquad.issueTracker.issue.domain.Issue;
+import com.codesquad.issueTracker.issue.domain.MainFilter;
 import com.codesquad.issueTracker.issue.domain.repository.IssueRepository;
 import com.codesquad.issueTracker.issue.infrastructure.QueryParser;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;
@@ -90,11 +88,11 @@ public class IssueServiceTest {
             .willReturn(IssueFactory.mockIssueList(UserFactory.mockMultipleUser(10),
                 MilestoneFactory.mockMultipleMilestone(10)));
 
-        given(issueRepository.count())
-            .willReturn(20L);
-
-        given(issueRepository.findOpenCount())
+        given(issueRepository.findCountByMainStatus(filterCondition, MainFilter.OPEN))
             .willReturn(10L);
+
+        given(issueRepository.findCountByMainStatus(filterCondition, MainFilter.CLOSE))
+            .willReturn(0L);
 
         given(labelRepository.count())
             .willReturn(5L);
@@ -108,6 +106,7 @@ public class IssueServiceTest {
         // then
         assertThat(issueCoversResponse.getIssueCoverResponses().size()).isEqualTo(10);
         assertThat(issueCoversResponse.getOpenIssueCount()).isEqualTo(10L);
+        assertThat(issueCoversResponse.getCloseIssueCount()).isEqualTo(0L);
         assertThat(issueCoversResponse.getLabelCount()).isEqualTo(5L);
         assertThat(issueCoversResponse.getMilestoneCount()).isEqualTo(7L);
     }
@@ -131,16 +130,6 @@ public class IssueServiceTest {
         assertThat(response.getContent()).isEqualTo("contents1");
         assertThat(response.isAssignedMe()).isFalse();
     }
-
-    // @DisplayName("popUp용 이슈 단 건을 조회한다.")
-    // @Test
-    // void find_pop_up_issue() {
-    //     // given
-    //
-    //     // when
-    //
-    //     // then
-    // }
 
     @DisplayName("이슈 리스트의 상태를 변경하면 관련 커멘트가 추가된다.")
     @Test

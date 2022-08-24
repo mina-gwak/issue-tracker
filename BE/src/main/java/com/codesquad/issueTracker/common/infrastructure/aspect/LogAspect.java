@@ -23,8 +23,8 @@ public class LogAspect {
         Object proceed = joinPoint.proceed();
         stopWatch.stop();
         MethodSignature signature = (MethodSignature)joinPoint.getSignature();
-        log.info("method position : {}", signature.getMethod());
-        log.info(stopWatch.prettyPrint());
+        log.debug("method position : {}", signature.getMethod());
+        log.debug(stopWatch.prettyPrint());
         return proceed;
     }
 }

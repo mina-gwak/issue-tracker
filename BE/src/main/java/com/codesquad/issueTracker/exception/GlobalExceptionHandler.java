@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> runtimeExceptionResolver(RuntimeException exception) {
         exception.printStackTrace();
         StackTraceElement stackTraceElement = exception.getStackTrace()[TRACE_POINT];
-        log.warn(LOG_FORMAT,
+        log.error(LOG_FORMAT,
             exception.getClass().getSimpleName(),
             stackTraceElement.getClassName() + " : " + stackTraceElement.getMethodName(),
             exception.getMessage());
