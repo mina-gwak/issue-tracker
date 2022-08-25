@@ -5,4 +5,5 @@ export interface MilestoneTabType {
   dueDate: string;
   openIssueCount: number;
   closeIssueCount: number;
+  ratio: number;
 }
