@@ -1,36 +1,34 @@
-import { RefObject } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 
-import { useRecoilState, useResetRecoilState } from 'recoil';
-
-import { modalState, ModalStateType } from '@store/dropdown';
-
-interface UseModalPropsType<T> {
+interface useModalPropsTypes<T> {
   modalRef: RefObject<T>;
-  type: ModalStateType;
 }
 
-interface UseModalReturnType {
-  toggleModal: () => void;
-  handleModalClick: (event: MouseEvent) => void;
-}
+type useModalReturnTypes = [boolean, () => void];
 
-export const useModal = <T extends HTMLElement>({
+const useModal = <T extends HTMLElement>({
   modalRef,
-  type,
-}: UseModalPropsType<T>): UseModalReturnType => {
-  const [modalItem, setModalItem] = useRecoilState(modalState);
-  const resetModalValue = useResetRecoilState(modalState);
+}: useModalPropsTypes<T>): useModalReturnTypes => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const toggleModal = () => {
-    setModalItem({
-      ...modalItem,
-      [type]: !modalItem[type],
-    });
-  };
+  const toggleModal = () => setIsModalOpen((prevIsModalOpen) => !prevIsModalOpen);
 
   const handleModalClick = (event: MouseEvent) => {
-    if (!modalRef.current?.contains(event.target as Node)) resetModalValue();
+    for (const element of event.composedPath()) {
+      if (element === modalRef.current) return;
+    }
+    setIsModalOpen(false);
   };
 
-  return { toggleModal, handleModalClick };
+  useEffect(() => {
+    window.addEventListener('click', handleModalClick, true);
+
+    return () => {
+      window.removeEventListener('click', handleModalClick, true);
+    };
+  }, [modalRef]);
+
+  return [isModalOpen, toggleModal];
 };
+
+export default useModal;

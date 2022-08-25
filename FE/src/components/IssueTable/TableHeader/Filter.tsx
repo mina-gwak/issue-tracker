@@ -1,15 +1,14 @@
 import { useRef } from 'react';
 
-import { useRecoilValue } from 'recoil';
-
 import * as S from '@components/IssueTable/TableHeader/TableHeader.style';
 import Modal from '@components/Modal';
 import { POSITION } from '@components/Modal/constants';
 import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
+import useFilterOptions from '@hooks/useFilterOptions';
 import useFilterValue from '@hooks/useFilterValue';
-import { useModal } from '@hooks/useModal';
-import { modalState, ModalStateType } from '@store/dropdown';
+import useModal from '@hooks/useModal';
+import { ModalStateType } from '@store/dropdown';
 
 interface FilterPropsType {
   type: ModalStateType;
@@ -19,8 +18,8 @@ interface FilterPropsType {
 const Filter = ({ type, title }: FilterPropsType) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const {filterValue, fetchFilterValue} = useFilterValue({ type, title });
-  const modalValue = useRecoilValue(modalState);
-  const { toggleModal, handleModalClick } = useModal({ modalRef, type });
+  const [isModalOpen, toggleModal] = useModal({ modalRef });
+  const { isChecked, checkBoxClickHandler } = useFilterOptions({ type: 'is' });
 
   return (
     <>
@@ -28,14 +27,14 @@ const Filter = ({ type, title }: FilterPropsType) => {
         {title}
         <Icon iconName={ICON_NAME.SELECT} />
       </S.FilterButton>
-      {modalValue[type] && (
+      {isModalOpen && (
         <Modal
           modalRef={modalRef}
           data={filterValue}
-          title={title}
+          title={`${title} 필터`}
           position={POSITION.RIGHT}
-          type={type}
-          handleModalClick={handleModalClick}
+          isChecked={isChecked}
+          checkBoxClickHandler={checkBoxClickHandler}
         />
       )}
     </>
