@@ -1,8 +1,8 @@
 export const filterList = [
   {
     id: 1,
-    type: 'writers',
-    title: '작성자',
+    type: 'assignees',
+    title: '담당자',
   },
   {
     id: 2,
@@ -16,7 +16,7 @@ export const filterList = [
   },
   {
     id: 4,
-    type: 'assignees',
-    title: '담당자',
+    type: 'writers',
+    title: '작성자',
   },
 ] as const;
