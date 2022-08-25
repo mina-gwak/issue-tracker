@@ -30,9 +30,11 @@ const useFilterValue = ({ type, title }: UseFilterValueType) => {
       },
     });
 
+    const optionName = title === '작성자' || title === '담당자' ? `${title}가 없는 이슈` : `${title}이 없는 이슈`;
+
     setFilterValue([
       {
-        optionName: `${title}이 없는 이슈`,
+        optionName,
         value: 'none',
       },
       ...response.data[`${type}OutlineResponses`],
