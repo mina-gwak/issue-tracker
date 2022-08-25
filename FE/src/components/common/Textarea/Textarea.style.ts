@@ -39,6 +39,8 @@ export const Textarea = styled.textarea`
   border: none;
   border-radius: 16px;
   padding: 18px 24px;
+  word-break: break-all;
+  white-space: pre-wrap;
   transition: all 200ms;
 
   &:focus {
