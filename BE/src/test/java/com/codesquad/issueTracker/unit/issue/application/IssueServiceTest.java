@@ -195,7 +195,6 @@ public class IssueServiceTest {
             .save(any(Issue.class));
     }
 
-    // TODO : findIssue 부터
     @DisplayName("이슈 단 건을 상세 조회한다.")
     @Test
     void find_detailed_inquiry_of_the_issue() {
@@ -440,7 +439,7 @@ public class IssueServiceTest {
             .willReturn(Optional.of(another));
 
         CommentsRequest commentsRequest = new CommentsRequest("it is comment");
-        Comment comment = new Comment(commentsRequest.getContents(), null, another, issue, true);
+        Comment comment = new Comment(1L, commentsRequest.getContents(), null, another, issue, true);
         given(commentRepository.save(any(Comment.class)))
             .willReturn(comment);
 

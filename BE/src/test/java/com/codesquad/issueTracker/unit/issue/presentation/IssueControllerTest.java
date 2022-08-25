@@ -238,7 +238,7 @@ class IssueControllerTest extends ControllerTest {
         Label label2 = new Label("BE", "BE's label", "#000000", "white");
         issue.attachedLabel(List.of(label1, label2));
 
-        Comment contents = new Comment("contents", LocalDateTime.now(), assignee1, issue, true);
+        Comment comment = new Comment(1L,"contents", LocalDateTime.now(), assignee1, issue, true);
 
         issue.addFiles(List.of("image1", "image2", "image3"));
 
@@ -286,6 +286,7 @@ class IssueControllerTest extends ControllerTest {
                         .description("코멘트 단 유저 이름"),
                     fieldWithPath("commentOutlines[].commentUserOutline.imageUrl").type(STRING)
                         .description("코멘트 단 유저 이미지"),
+                    fieldWithPath("commentOutlines[].commentId").type(NUMBER).description("코멘트 id"),
                     fieldWithPath("commentOutlines[].content").type(STRING).description("코멘트 내용"),
                     fieldWithPath("commentOutlines[].writtenTime").type(STRING).description("코멘트 단 시간"),
                     fieldWithPath("commentOutlines[].editable").type(BOOLEAN).description("수정 가능 여부"),
@@ -441,7 +442,7 @@ class IssueControllerTest extends ControllerTest {
         User writer = new User("user1", "nickname1", "image1");
         Issue issue = new Issue(1L, "title1", "content1", LocalDateTime.now(), LocalDateTime.now(), writer, null);
 
-        Comment comment = new Comment("issue에 작성된 comments 입니다..", LocalDateTime.now(),
+        Comment comment = new Comment(1L, "issue에 작성된 comments 입니다..", LocalDateTime.now(),
             new User("user1", "name1", "image1"), issue, true);
 
         given(issueService.addComments(eq(issueId), any(CommentsRequest.class), eq(10L)))
@@ -478,6 +479,7 @@ class IssueControllerTest extends ControllerTest {
                 responseFields(
                     fieldWithPath("commentUserOutline.optionName").type(STRING).description("comment 작성자 이름"),
                     fieldWithPath("commentUserOutline.imageUrl").type(STRING).description("comment 작성자 사진"),
+                    fieldWithPath("commentId").type(NUMBER).description("comment id"),
                     fieldWithPath("content").type(STRING).description("comment 내용"),
                     fieldWithPath("writtenTime").type(STRING).description("comment 작성된 시간"),
                     fieldWithPath("editable").type(BOOLEAN).description("comment 수정 가능 여부")

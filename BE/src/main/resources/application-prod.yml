@@ -54,7 +54,7 @@ sentry:
   dsn: ${SENTRY_DSN}
   logging:
     enabled: false
-    minimum-event-level: error
+    minimum-event-level: warn
 
 logging:
   level:

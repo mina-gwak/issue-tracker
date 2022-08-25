@@ -1133,7 +1133,7 @@ Content-Length: 721
     "issueId" : 1,
     "writer" : "user1",
     "writerImage" : "image1",
-    "modificationTime" : "2022-08-23T01:42:25.189151",
+    "modificationTime" : "2022-08-25T11:43:24.480875",
     "milestoneName" : "milestone1",
     "opened" : true
   } ],
@@ -1299,7 +1299,7 @@ Content-Length: 156
 {
   "title" : "BE Lucid가 작성한 issue",
   "content" : "내용은 이러하다",
-  "writtenTime" : "2022-08-23T01:42:24.898112",
+  "writtenTime" : "2022-08-25T11:43:24.434546",
   "assignedMe" : true
 }</code></pre>
 </div>
@@ -1524,13 +1524,13 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 946
+Content-Length: 967
 
 {
   "issueId" : 1,
   "title" : "title1",
   "content" : "content1",
-  "writtenTime" : "2022-08-23T01:42:23.495071",
+  "writtenTime" : "2022-08-25T11:43:24.089449",
   "writerOutline" : {
     "optionName" : "user1",
     "imageUrl" : "image1"
@@ -1543,12 +1543,12 @@ Content-Length: 946
     "imageUrl" : "image1"
   } ],
   "labels" : [ {
-    "labelName" : "Lucid",
-    "colorCode" : "#008672",
-    "textColor" : "white"
-  }, {
     "labelName" : "BE",
     "colorCode" : "#000000",
+    "textColor" : "white"
+  }, {
+    "labelName" : "Lucid",
+    "colorCode" : "#008672",
     "textColor" : "white"
   } ],
   "milestoneInformation" : {
@@ -1561,8 +1561,9 @@ Content-Length: 946
       "optionName" : "user1",
       "imageUrl" : "image1"
     },
+    "commentId" : 1,
     "content" : "contents",
-    "writtenTime" : "2022-08-23T01:42:23.495247",
+    "writtenTime" : "2022-08-25T11:43:24.089482",
     "editable" : true
   } ],
   "imageUrls" : [ "image2", "image1", "image3" ],
@@ -1671,6 +1672,11 @@ Content-Length: 946
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>commentOutlines[].commentUserOutline.imageUrl</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">코멘트 단 유저 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>commentOutlines[].commentId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">코멘트 id</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>commentOutlines[].content</code></p></td>
@@ -2084,13 +2090,13 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 687
+Content-Length: 685
 
 {
   "milestoneSingleInfos" : [ {
     "id" : null,
     "name" : "m1",
-    "dueDate" : "2022-08-23T01:42:27.123854",
+    "dueDate" : "2022-08-25T11:43:24.919754",
     "description" : "m1 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2098,7 +2104,7 @@ Content-Length: 687
   }, {
     "id" : null,
     "name" : "m2",
-    "dueDate" : "2022-08-23T01:42:27.124389",
+    "dueDate" : "2022-08-25T11:43:24.9198",
     "description" : "m2 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2106,7 +2112,7 @@ Content-Length: 687
   }, {
     "id" : null,
     "name" : "m3",
-    "dueDate" : "2022-08-23T01:42:27.124406",
+    "dueDate" : "2022-08-25T11:43:24.919803",
     "description" : "m3 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2198,7 +2204,7 @@ Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-08-23T01:42:27.190461",
+  "dueDate" : "2022-08-25T11:43:24.970757",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2265,7 +2271,7 @@ Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-08-23T01:42:27.325923",
+  "dueDate" : "2022-08-25T11:43:25.037026",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2920,15 +2926,16 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 214
+Content-Length: 233
 
 {
   "commentUserOutline" : {
     "optionName" : "user1",
     "imageUrl" : "image1"
   },
+  "commentId" : 1,
   "content" : "issue에 작성된 comments 입니다..",
-  "writtenTime" : "2022-08-23T01:42:26.106171",
+  "writtenTime" : "2022-08-25T11:43:24.646147",
   "editable" : true
 }</code></pre>
 </div>
@@ -2959,6 +2966,11 @@ Content-Length: 214
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>commentUserOutline.imageUrl</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment 작성자 사진</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>commentId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment id</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
@@ -3110,7 +3122,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-08-23 01:41:15 +0900
+Last updated 2022-08-23 19:32:21 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
