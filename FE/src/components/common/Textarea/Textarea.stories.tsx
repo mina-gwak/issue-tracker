@@ -1,16 +1,15 @@
+import { useState } from 'react';
+
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import Textarea, { TextareaPropsType } from '@components/common/Textarea';
+import Textarea from '@components/common/Textarea';
 
 export default {
   title: 'Common/Textarea',
   component: Textarea,
-  args: {
-    comment: '',
-    setComment: () => {},
-  },
 } as ComponentMeta<typeof Textarea>;
 
-export const Default: ComponentStory<typeof Textarea> = (args: TextareaPropsType) => (
-  <Textarea {...args} />
-);
+export const Default: ComponentStory<typeof Textarea> = () => {
+  const [content, setContent] = useState('');
+  return <Textarea content={content} setContent={setContent} />;
+};
