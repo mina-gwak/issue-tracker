@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.aside`
   width: 308px;
+  height: fit-content;
   background-color: ${({ theme }) => theme.colors.white};
   border: 1px solid ${({ theme }) => theme.colors.grey4};
   border-radius: 16px;
