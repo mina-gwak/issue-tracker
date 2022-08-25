@@ -17,7 +17,7 @@ const typingStyles = css<{ isValueExist: boolean }>`
 
 export const Wrapper = styled.div`
   position: relative;
-  width: 880px;
+  width: 840px;
   height: 343px;
 `;
 
@@ -29,11 +29,11 @@ export const TextareaBox = styled.div<{ isValueExist: boolean }>`
   border-radius: 16px;
 
   /* 타이핑 여부 */
-  ${typingStyles};
+  ${typingStyles}
 `;
 
 export const Textarea = styled.textarea`
-  width: 880px;
+  width: 840px;
   height: 343px;
   background-color: inherit;
   border: none;

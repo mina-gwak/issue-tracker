@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { useRecoilValue } from 'recoil';
 
 import SideBar from '@components/SideBar';
@@ -12,6 +14,8 @@ import * as S from '@pages/AddIssue/AddIssue.style';
 import { userState } from '@store/user';
 
 const AddIssue = () => {
+  const [comment, setComment] = useState('');
+
   const { name, image } = useRecoilValue(userState);
 
   return (
@@ -23,8 +27,8 @@ const AddIssue = () => {
           <S.FormWrapper>
             <Image url={image} alt={name} size={IMAGE_SIZE.MEDIUM} />
             <S.FormElements>
-              <TextInput size={INPUT_SIZE.MEDIUM} name='title' placeholder='제목'  />
-              <Textarea />
+              <TextInput size={INPUT_SIZE.MEDIUM} name='title' placeholder='제목' />
+              <Textarea comment={comment} setComment={setComment} />
             </S.FormElements>
           </S.FormWrapper>
           <SideBar />

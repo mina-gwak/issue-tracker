@@ -7,14 +7,18 @@ import { getImageUrl } from '@utils/api/uploadImage';
 import { debounce } from '@utils/debounce';
 import { getImageName } from '@utils/imageName';
 
-const Textarea = () => {
-  const [value, setValue] = useState('');
+export interface TextareaPropsType {
+  comment: string;
+  setComment: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Textarea = ({ comment, setComment }: TextareaPropsType) => {
   const [letterCount, setLetterCount] = useState(0);
 
-  const isValueExist = value.length > 0;
+  const isValueExist = comment.length > 0;
 
   const textareaChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(event.target.value);
+    setComment(event.target.value);
     debounce(() => setLetterCount(event.target.value.length), 2000)(event);
   };
 
@@ -26,7 +30,10 @@ const Textarea = () => {
       const imageUrl = await getImageUrl(event.target.files[0]);
       const imageName = getImageName(event.target.files[0]);
 
-      setValue(prevValue => prevValue + `${value.at(-1) === '\n' ? '' : '\n'}![${imageName}](${imageUrl})\n`);
+      setComment(
+        (prevValue) =>
+          prevValue + `${comment.at(-1) === '\n' ? '' : '\n'}![${imageName}](${imageUrl})\n`,
+      );
 
       event.target.value = '';
     }
@@ -35,7 +42,7 @@ const Textarea = () => {
   return (
     <S.Wrapper>
       <S.TextareaBox isValueExist={isValueExist}>
-        <S.Textarea value={value} onChange={textareaChangeHandler} />
+        <S.Textarea value={comment} onChange={textareaChangeHandler} />
         <S.TextareaLabel>코멘트를 입력하세요</S.TextareaLabel>
         {letterCount > 0 && <S.LetterCount>띄어쓰기 포함 {letterCount}자</S.LetterCount>}
       </S.TextareaBox>

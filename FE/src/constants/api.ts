@@ -14,4 +14,7 @@ export const API = {
   MILESTONE_DELETE: (id: number) => `/api/milestones/${id}`,
   MILESTONE_OPEN_CLOSE: (id: number) => `/api/milestones/${id}/change`,
   FILE_UPLOAD: '/api/common/upload',
+  SHARE_DETAIL: (issueId: number) => `/api/issues/${issueId}`,
+  SHARE_DETAIL_TITLE: (issueId: number) => `/api/issues/${issueId}/title`,
+  COMMENT_CREATE: (issueId: number) => `/api/issues/${issueId}/comments `,
 } as const;

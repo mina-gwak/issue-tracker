@@ -25,6 +25,7 @@ export const Wrapper = styled.div`
 
 export const Container = styled.div`
   margin-right: auto;
+  cursor: pointer;
 `;
 
 export const IssueBox = styled.div`

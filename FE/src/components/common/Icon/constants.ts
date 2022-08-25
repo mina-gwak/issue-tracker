@@ -19,6 +19,10 @@ export const ICON_NAME = {
   OPEN_MILESTONE: 'OpenMilestone',
   CLOSE_MILESTONE: 'CloseMilestone',
   CALENDAR: 'Calendar',
+  OPEN_ISSUE: 'OpenIssue',
+  CLOSE_ISSUE: 'CloseIssue',
+  EMOJI: 'Emoji',
+  ISSUE_DELETE: 'IssueDelete',
 } as const;
 
 export const ICON_SIZE = {
