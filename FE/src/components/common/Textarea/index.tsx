@@ -5,15 +5,19 @@ import { ICON_NAME } from '@components/common/Icon/constants';
 import * as S from '@components/common/Textarea/Textarea.style';
 import { debounce } from '@utils/debounce';
 
-const Textarea = () => {
-  const [value, setValue] = useState('');
+export interface TextareaPropsType {
+  comment: string;
+  setComment: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Textarea = ({ comment, setComment }: TextareaPropsType) => {
   const [letterCount, setLetterCount] = useState(0);
 
-  const isValueExist = value.length > 0;
+  const isValueExist = comment.length > 0;
 
   const textareaChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(event.target.value);
-    (debounce(() => setLetterCount(event.target.value.length), 2000))(event);
+    setComment(event.target.value);
+    debounce(() => setLetterCount(event.target.value.length), 2000)(event);
   };
 
   return (
