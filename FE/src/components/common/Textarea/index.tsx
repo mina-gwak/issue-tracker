@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, Dispatch, SetStateAction } from 'react';
 
 import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
@@ -8,17 +8,17 @@ import { debounce } from '@utils/debounce';
 import { getImageName } from '@utils/imageName';
 
 export interface TextareaPropsType {
-  comment: string;
-  setComment: React.Dispatch<React.SetStateAction<string>>;
+  content: string;
+  setContent: Dispatch<SetStateAction<string>>;
 }
 
-const Textarea = ({ comment, setComment }: TextareaPropsType) => {
+const Textarea = ({ content, setContent }: TextareaPropsType) => {
   const [letterCount, setLetterCount] = useState(0);
 
-  const isValueExist = comment.length > 0;
+  const isValueExist = content.length > 0;
 
   const textareaChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(event.target.value);
+    setContent(event.target.value);
     debounce(() => setLetterCount(event.target.value.length), 2000)(event);
   };
 
@@ -30,9 +30,9 @@ const Textarea = ({ comment, setComment }: TextareaPropsType) => {
       const imageUrl = await getImageUrl(event.target.files[0]);
       const imageName = getImageName(event.target.files[0]);
 
-      setComment(
+      setContent(
         (prevValue) =>
-          prevValue + `${comment.at(-1) === '\n' ? '' : '\n'}![${imageName}](${imageUrl})\n`,
+          prevValue + `${content.at(-1) === '\n' ? '' : '\n'}![${imageName}](${imageUrl})\n`,
       );
 
       event.target.value = '';
@@ -42,7 +42,7 @@ const Textarea = ({ comment, setComment }: TextareaPropsType) => {
   return (
     <S.Wrapper>
       <S.TextareaBox isValueExist={isValueExist}>
-        <S.Textarea value={comment} onChange={textareaChangeHandler} />
+        <S.Textarea value={content} onChange={textareaChangeHandler} />
         <S.TextareaLabel>코멘트를 입력하세요</S.TextareaLabel>
         {letterCount > 0 && <S.LetterCount>띄어쓰기 포함 {letterCount}자</S.LetterCount>}
       </S.TextareaBox>

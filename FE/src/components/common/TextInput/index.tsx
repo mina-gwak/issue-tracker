@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 import * as S from '@components/common/TextInput/TextInput.style';
 import {
@@ -15,6 +15,8 @@ export interface TextInputPropsType {
   disabled?: boolean;
   status?: InputStatusValues;
   message?: string;
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
 }
 
 const TextInput = ({
@@ -24,8 +26,9 @@ const TextInput = ({
   disabled = false,
   status = INPUT_STATUS.NORMAL,
   message,
+  value,
+  setValue,
 }: TextInputPropsType) => {
-  const [value, setValue] = useState('');
   const isValueExist = value.length > 0;
 
   return (
