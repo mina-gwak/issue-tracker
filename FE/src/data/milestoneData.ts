@@ -7,4 +7,5 @@ export const defaultMilestoneData: MilestoneTabType = {
   dueDate: '완료일 (양식 : YYYY-MM-DD)',
   openIssueCount: 3,
   closeIssueCount: 3,
+  ratio: 0,
 };
