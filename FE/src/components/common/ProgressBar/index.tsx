@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   root: {
     flexGrow: 1,
     paddingTop: 14,
-    paddingBottom: 14,
+    paddingBottom: 8,
   },
 });
 

@@ -33,7 +33,7 @@ const outlineStyles = css<OutlineStylesType>`
     css`
       background-color: ${({ theme }) => theme.colors.blue};
 
-      &:hover {
+      &:hover:not([disabled]) {
         background-color: ${({ theme }) => theme.colors.darkBlue};
       }
 
@@ -79,6 +79,7 @@ export const Button = styled.button<OutlineStylesType & SizeStylesType>`
 
   &:disabled {
     opacity: 0.5;
+    cursor: default;
   }
 
   ${outlineStyles}
