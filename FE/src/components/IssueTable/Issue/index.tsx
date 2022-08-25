@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import * as S from '@components/IssueTable/Issue/Issue.style';
 import IssueDescription from '@components/IssueTable/Issue/IssueDescription';
 import IssueTitle from '@components/IssueTable/Issue/IssueTitle';
@@ -19,13 +21,23 @@ const Issue = ({
 }: IssueType) => {
   const { getIsChecked, toggleCheckItem } = useCheckBox();
 
+  const navigate = useNavigate();
   const isChecked = getIsChecked(issueId);
 
   return (
     <S.Wrapper>
       <CheckBox isChecked={isChecked} toggleIsChecked={() => toggleCheckItem(issueId)} />
-      <S.Container>
-        <IssueTitle issueId={issueId} isOpened={opened} title={title} labels={labelCoverResponses} />
+      <S.Container
+        onClick={() => {
+          navigate(`/issue-detail/${issueId}`);
+        }}
+      >
+        <IssueTitle
+          issueId={issueId}
+          isOpened={opened}
+          title={title}
+          labels={labelCoverResponses}
+        />
         <IssueDescription
           issueId={issueId}
           milestoneName={milestoneName}
