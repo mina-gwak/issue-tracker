@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -216,6 +218,49 @@ public class IssueServiceTest {
         assertThat(result.getMilestoneInformation().getMilestoneName()).isEqualTo(milestone.getName());
     }
 
+    @DisplayName("이슈 단 건 조회 시 내부 커멘트는 작성 시간 오름차순으로 조회된다.")
+    @Test
+    void comment_is_order_by_written_time() {
+        // given
+        User user = UserFactory.mockSingleUser(1);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssue(1, user, milestone);
+
+        Comment comment1 = new Comment(1L, "content1", LocalDateTime.of(2022, 6, 3, 22, 34), user, issue,
+            CommentStatus.INITIAL);
+        Comment comment2 = new Comment(2L, "content1", LocalDateTime.of(2022, 6, 3, 12, 34), user, issue,
+            CommentStatus.INITIAL);
+        Comment comment3 = new Comment(3L, "content1", LocalDateTime.of(2021, 6, 3, 12, 34), user, issue,
+            CommentStatus.INITIAL);
+        Comment comment4 = new Comment(4L, "content1", LocalDateTime.of(2019, 6, 3, 12, 34), user, issue,
+            CommentStatus.INITIAL);
+        Comment comment5 = new Comment(5L, "content1", LocalDateTime.of(2022, 6, 3, 13, 34), user, issue,
+            CommentStatus.INITIAL);
+
+        List<Comment> comments = List.of(comment1, comment2, comment3, comment4, comment5);
+        List<Long> orderedCommentIds = comments.stream()
+            .sorted(Comparator.comparing(Comment::getWrittenTime))
+            .map(Comment::getId)
+            .collect(Collectors.toList());
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        // when
+        IssueDetailResponse result = issueService.findIssue(1L);
+
+        // then
+        assertThat(result.getTitle()).isEqualTo(issue.getTitle());
+        assertThat(result.getWriterOutline().getOptionName()).isEqualTo(user.getName());
+        assertThat(result.getMilestoneInformation().getMilestoneName()).isEqualTo(milestone.getName());
+        List<Long> resultCommentIds = result.getCommentOutlines().stream()
+            .map(CommentOutline::getCommentId)
+            .collect(Collectors.toList());
+
+        assertThat(resultCommentIds).isEqualTo(orderedCommentIds);
+
+    }
+
     @DisplayName("이슈 단 건이 없을 경우 예외가 발생한다.")
     @Test
     void exception_occur_when_find_detailed_inquiry_of_the_issue_not_founded() {
@@ -239,9 +284,6 @@ public class IssueServiceTest {
         given(issueRepository.findById(anyLong()))
             .willReturn(Optional.of(issue));
 
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(writer));
-
         // when
         issueService.deleteIssue(1L, writer.getId());
 
@@ -263,9 +305,6 @@ public class IssueServiceTest {
         given(issueRepository.findById(anyLong()))
             .willReturn(Optional.of(issue));
 
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(another));
-
         // when & then
         assertThrows(IssueNotEditableException.class,
             () -> issueService.deleteIssue(1L, another.getId()));
@@ -281,9 +320,6 @@ public class IssueServiceTest {
 
         given(issueRepository.findById(anyLong()))
             .willReturn(Optional.of(issue));
-
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(writer));
 
         ChangeIssueTitleRequest changedTitle = new ChangeIssueTitleRequest("changed Title");
 
@@ -307,9 +343,6 @@ public class IssueServiceTest {
         given(issueRepository.findById(anyLong()))
             .willReturn(Optional.of(issue));
 
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(another));
-
         ChangeIssueTitleRequest changedTitle = new ChangeIssueTitleRequest("changed Title");
 
         // when & then
@@ -327,9 +360,6 @@ public class IssueServiceTest {
 
         given(issueRepository.findById(anyLong()))
             .willReturn(Optional.of(issue));
-
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(writer));
 
         ChangeAssigneesRequest request = new ChangeAssigneesRequest(List.of("user10", "user11"));
         List<User> assigneeForChange = List.of(UserFactory.mockSingleUserWithId(10L), UserFactory.mockSingleUserWithId(11L));
@@ -358,9 +388,6 @@ public class IssueServiceTest {
         given(issueRepository.findById(anyLong()))
             .willReturn(Optional.of(issue));
 
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(another));
-
         ChangeAssigneesRequest request = new ChangeAssigneesRequest(List.of("user10", "user11"));
 
         // when & then
@@ -378,9 +405,6 @@ public class IssueServiceTest {
 
         given(issueRepository.findById(anyLong()))
             .willReturn(Optional.of(issue));
-
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(writer));
 
         ChangeLabelsRequest request = new ChangeLabelsRequest(List.of("label1", "label2"));
         List<Label> labels = List.of(LabelFactory.mockSingleLabelWithId(1L), LabelFactory.mockSingleLabelWithId(2L));
@@ -412,9 +436,6 @@ public class IssueServiceTest {
 
         given(issueRepository.findById(anyLong()))
             .willReturn(Optional.of(issue));
-
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(another));
 
         ChangeLabelsRequest request = new ChangeLabelsRequest(List.of("label1", "label2"));
 
@@ -504,9 +525,6 @@ public class IssueServiceTest {
         given(commentRepository.findById(anyLong()))
             .willReturn(Optional.of(comment));
 
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(writer));
-
         CommentsRequest request = new CommentsRequest("change comment");
 
         // when
@@ -527,9 +545,6 @@ public class IssueServiceTest {
 
         given(commentRepository.findById(anyLong()))
             .willReturn(Optional.of(comment));
-
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(writer));
 
         CommentsRequest request = new CommentsRequest("change comment");
 
@@ -565,9 +580,6 @@ public class IssueServiceTest {
         given(commentRepository.findById(anyLong()))
             .willReturn(Optional.of(comment));
 
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(writer));
-
         assertThat(issue.getComments()).contains(comment);
 
         // when
@@ -591,9 +603,6 @@ public class IssueServiceTest {
 
         given(commentRepository.findById(anyLong()))
             .willReturn(Optional.of(comment));
-
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(writer));
 
         // when & then
         assertThrows(CommentNotEditableException.class,

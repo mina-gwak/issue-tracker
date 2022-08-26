@@ -177,12 +177,6 @@ public class IssueRepositoryTest {
 
         // then
         assertThat(afterIssues.size()).isEqualTo(9);
-        assertThat(afterIssues.get(0))
-            .extracting("user")
-            .extracting("name").isEqualTo("name1");
-        assertThat(afterIssues.get(0))
-            .extracting("milestone")
-            .extracting("name").isEqualTo("mileStoneName1");
     }
 
     @DisplayName("CLOSE 메인 필터를 통해 닫힌 이슈만 필터링 할 수 있다.")
@@ -204,12 +198,6 @@ public class IssueRepositoryTest {
 
         // then
         assertThat(afterIssues.size()).isEqualTo(1);
-        assertThat(afterIssues.get(0))
-            .extracting("user")
-            .extracting("name").isEqualTo("name0");
-        assertThat(afterIssues.get(0))
-            .extracting("milestone")
-            .extracting("name").isEqualTo("mileStoneName0");
     }
 
     @DisplayName("WRITE_BY_ME 메인 필터를 통해 사용자가 작성한 이슈만 필터링 할 수 있다.")

@@ -1,6 +1,7 @@
 package com.codesquad.issueTracker.issue.application.dto;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -44,6 +45,7 @@ public class IssueDetailResponse {
         }
         this.commentOutlines = issue.getComments()
             .stream().map(CommentOutline::new)
+            .sorted(Comparator.comparing(CommentOutline::getWrittenTime))
             .collect(Collectors.toList());
         this.imageUrls = issue.getImages()
             .stream().map(Image::getImageUrl)

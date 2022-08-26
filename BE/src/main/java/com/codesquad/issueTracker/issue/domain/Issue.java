@@ -90,12 +90,14 @@ public class Issue {
     }
 
     public void assignUser(List<User> users) {
+        this.modificationTime = LocalDateTime.now();
         for (User user : users) {
             assignedIssues.add(new AssignedIssue(user, this));
         }
     }
 
     public void attachedLabel(List<Label> labels) {
+        this.modificationTime = LocalDateTime.now();
         for (Label label : labels) {
             attachedLabels.add(new AttachedLabel(label, this));
         }
@@ -116,27 +118,32 @@ public class Issue {
     }
 
     public void addComment(Comment comment) {
+        this.modificationTime = LocalDateTime.now();
         comments.add(comment);
     }
 
-    public boolean isNotWrittenBy(User user) {
-        return !this.user.equals(user);
+    public boolean isNotWrittenBy(Long userId) {
+        return !Objects.equals(this.user.getId(), userId);
     }
 
     public void changeStatus(Boolean valueOf) {
+        this.modificationTime = LocalDateTime.now();
         this.isOpened = valueOf;
     }
 
     public void updateTitle(String title) {
+        this.modificationTime = LocalDateTime.now();
         this.title = title;
     }
 
     public void updateAssignee(List<User> assignees) {
+        this.modificationTime = LocalDateTime.now();
         assignedIssues.clear();
         assignUser(assignees);
     }
 
     public void updateLabels(List<Label> labels) {
+        this.modificationTime = LocalDateTime.now();
         attachedLabels.clear();
         attachedLabel(labels);
     }
@@ -157,10 +164,12 @@ public class Issue {
     }
 
     public void deleteComment(Comment comment) {
+        this.modificationTime = LocalDateTime.now();
         comments.remove(comment);
     }
 
     public void removeMilestone() {
+        this.modificationTime = LocalDateTime.now();
         this.milestone = null;
     }
 

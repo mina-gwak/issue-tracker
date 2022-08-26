@@ -151,10 +151,8 @@ public class IssueService {
     }
 
     private Comment checkEditableComments(Long commentId, Long userId) {
-        Comment comment = commentRepository.findById(commentId)
-            .orElseThrow(CommentNotFoundException::new);
-        User user = findUser(userId);
-        if (comment.isNotWrittenBy(user)) {
+        Comment comment = findSingleComment(commentId);
+        if (comment.isNotWrittenBy(userId)) {
             throw new CommentNotEditableException();
         }
         return comment;
@@ -162,8 +160,7 @@ public class IssueService {
 
     private Issue checkEditableIssue(Long issueId, Long userId) {
         Issue issue = findSingleIssue(issueId);
-        User user = findUser(userId);
-        if (issue.isNotWrittenBy(user)) {
+        if (issue.isNotWrittenBy(userId)) {
             throw new IssueNotEditableException();
         }
         return issue;
@@ -190,6 +187,11 @@ public class IssueService {
     private User findUser(Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(UserNotFoundException::new);
+    }
+
+    private Comment findSingleComment(Long commentId) {
+        return commentRepository.findById(commentId)
+            .orElseThrow(CommentNotFoundException::new);
     }
 
     private Issue makeBasicIssue(IssueContentsRequest issueContentsRequest, Long userId) {
