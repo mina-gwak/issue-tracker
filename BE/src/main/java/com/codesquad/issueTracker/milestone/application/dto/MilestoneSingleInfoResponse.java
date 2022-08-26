@@ -15,7 +15,7 @@ public class MilestoneSingleInfoResponse {
 
     private Long openIssueCount;
     private Long closeIssueCount;
-    private Double ratio;
+    private String ratio;
 
     public MilestoneSingleInfoResponse(Milestone milestone) {
         this.id = milestone.getId();
@@ -24,6 +24,7 @@ public class MilestoneSingleInfoResponse {
         this.description = milestone.getDescription();
         this.openIssueCount = milestone.getOpenedIssueCount();
         this.closeIssueCount = milestone.getClosedIssueCount();
-        this.ratio = (double)milestone.getClosedIssueCount() / (double)milestone.getAllIssueCount() * 100.0;
+        this.ratio = String.format(
+            "%.2f", (double)milestone.getClosedIssueCount() / (double)milestone.getAllIssueCount() * 100.0);
     }
 }
