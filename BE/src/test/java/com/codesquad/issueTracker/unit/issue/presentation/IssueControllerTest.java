@@ -191,7 +191,7 @@ class IssueControllerTest extends ControllerTest {
     void save_issue() throws Exception {
         // given
         IssueContentsRequest request = new IssueContentsRequest("title1", "content1",
-            List.of("file1", "file2"), List.of("assignee1", "assignee2"), List.of("label1"), "milestone1");
+            List.of("assignee1", "assignee2"), List.of("label1"), "milestone1");
 
         String content = objectMapper.writeValueAsString(request);
 
@@ -216,7 +216,6 @@ class IssueControllerTest extends ControllerTest {
                     fieldWithPath("title").description("issue 제목"),
                     fieldWithPath("content").description("issue 본문"),
                     fieldWithPath("milestone").description("마일스톤 이름"),
-                    fieldWithPath("fileUrl").description("첨부 파일 url 리스트"),
                     fieldWithPath("assignees").description("assignee 리스트"),
                     fieldWithPath("labels").description("label 리스트")
                 )));
@@ -239,9 +238,7 @@ class IssueControllerTest extends ControllerTest {
         Label label2 = new Label("BE", "BE's label", "#000000", "white");
         issue.attachedLabel(List.of(label1, label2));
 
-        Comment comment = new Comment(1L,"contents", LocalDateTime.now(), assignee1, issue, CommentStatus.INITIAL);
-
-        issue.addFiles(List.of("image1", "image2", "image3"));
+        Comment comment = new Comment(1L, "contents", LocalDateTime.now(), assignee1, issue, CommentStatus.INITIAL);
 
         given(issueService.findIssue(issueId))
             .willReturn(new IssueDetailResponse(issue));
@@ -290,8 +287,8 @@ class IssueControllerTest extends ControllerTest {
                     fieldWithPath("commentOutlines[].commentId").type(NUMBER).description("코멘트 id"),
                     fieldWithPath("commentOutlines[].content").type(STRING).description("코멘트 내용"),
                     fieldWithPath("commentOutlines[].writtenTime").type(STRING).description("코멘트 단 시간"),
-                    fieldWithPath("commentOutlines[].status").type(STRING).description("comment 상태 [INITIAL, CLOSED, REOPEN]"),
-                    fieldWithPath("imageUrls").type(ARRAY).description("첨부  url 배열")
+                    fieldWithPath("commentOutlines[].status").type(STRING)
+                        .description("comment 상태 [INITIAL, CLOSED, REOPEN]")
                 )));
     }
 

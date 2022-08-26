@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
-import com.codesquad.issueTracker.issue.domain.Image;
 import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.user.application.dto.UserOutlineResponse;
 
@@ -29,7 +28,6 @@ public class IssueDetailResponse {
 
     private MilestoneInformation milestoneInformation;
     private List<CommentOutline> commentOutlines;
-    private List<String> imageUrls;
 
     public IssueDetailResponse(Issue issue) {
         this.issueId = issue.getId();
@@ -46,9 +44,6 @@ public class IssueDetailResponse {
         this.commentOutlines = issue.getComments()
             .stream().map(CommentOutline::new)
             .sorted(Comparator.comparing(CommentOutline::getWrittenTime))
-            .collect(Collectors.toList());
-        this.imageUrls = issue.getImages()
-            .stream().map(Image::getImageUrl)
             .collect(Collectors.toList());
     }
 

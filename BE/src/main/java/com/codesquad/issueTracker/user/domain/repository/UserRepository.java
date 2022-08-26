@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         + "FROM User u ORDER BY u.name ")
     List<UserOutlineResponse> findUserOutlineInfo(Pageable pageable);
 
-    List<User> findByNameIn(List<String> assignees);
+    Optional<List<User>> findByNameIn(List<String> assignees);
 
     @Query("SELECT NEW com.codesquad.issueTracker.user.application.dto.UserOutlineResponse(u.name, u.image) "
         + "FROM User u WHERE u.id in :userId")

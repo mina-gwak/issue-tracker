@@ -17,7 +17,7 @@ import com.codesquad.issueTracker.exception.comment.CommentNotEditableException;
 import com.codesquad.issueTracker.exception.comment.CommentNotFoundException;
 import com.codesquad.issueTracker.exception.issue.IssueNotEditableException;
 import com.codesquad.issueTracker.exception.issue.IssueNotFoundException;
-import com.codesquad.issueTracker.exception.milestone.MilestoneNotFoundException;
+import com.codesquad.issueTracker.exception.label.LabelNotFoundException;
 import com.codesquad.issueTracker.exception.user.UserNotFoundException;
 import com.codesquad.issueTracker.issue.application.dto.CommentOutline;
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
@@ -117,14 +117,16 @@ public class IssueService {
     @Transactional
     public void changeAssigneeList(Long issueId, ChangeAssigneesRequest request, Long userId) {
         Issue issue = checkEditableIssue(issueId, userId);
-        List<User> assignees = userRepository.findByNameIn(request.getAssignees());
+        List<User> assignees = userRepository.findByNameIn(request.getAssignees())
+            .orElseThrow(UserNotFoundException::new);
         issue.updateAssignee(assignees);
     }
 
     @Transactional
     public void changeLabelList(Long issueId, ChangeLabelsRequest request, Long userId) {
         Issue issue = checkEditableIssue(issueId, userId);
-        List<Label> labels = labelRepository.findByNameIn(request.getLabels());
+        List<Label> labels = labelRepository.findByNameIn(request.getLabels())
+            .orElseThrow(LabelNotFoundException::new);
         issue.updateLabels(labels);
     }
 
@@ -197,17 +199,17 @@ public class IssueService {
     private Issue makeBasicIssue(IssueContentsRequest issueContentsRequest, Long userId) {
         User user = findUser(userId);
         Milestone milestone = milestoneRepository.findByName(issueContentsRequest.getMilestone())
-            .orElseThrow(MilestoneNotFoundException::new);
+            .orElse(null);
         return issueContentsRequest.toEntity(user, milestone);
     }
 
     private void assignAdditional(IssueContentsRequest issueContentsRequest, Issue issue) {
-        List<User> users = userRepository.findByNameIn(issueContentsRequest.getAssignees());
+        List<User> users = userRepository.findByNameIn(issueContentsRequest.getAssignees())
+            .orElseThrow(UserNotFoundException::new);
         issue.assignUser(users);
 
-        List<Label> labels = labelRepository.findByNameIn(issueContentsRequest.getLabels());
+        List<Label> labels = labelRepository.findByNameIn(issueContentsRequest.getLabels())
+            .orElseThrow(LabelNotFoundException::new);
         issue.attachedLabel(labels);
-
-        issue.addFiles(issueContentsRequest.getFileUrl());
     }
 }

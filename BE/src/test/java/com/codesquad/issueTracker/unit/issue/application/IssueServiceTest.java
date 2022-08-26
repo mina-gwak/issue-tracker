@@ -166,7 +166,6 @@ public class IssueServiceTest {
     void make_issue() {
         // given
         long userId = 1L;
-        List<String> files = List.of("f1", "f2");
         List<String> assigneesNames = List.of("name0", "name1");
         List<String> labelNames = List.of("label1");
 
@@ -175,7 +174,7 @@ public class IssueServiceTest {
         List<User> assignees = UserFactory.mockMultipleUser(2);
         List<Label> labels = List.of(LabelFactory.mockSingleLabel(1));
 
-        IssueContentsRequest request = new IssueContentsRequest("refactoring", "tdd", files,
+        IssueContentsRequest request = new IssueContentsRequest("refactoring", "tdd",
             assigneesNames, labelNames, "mile");
 
         given(userRepository.findById(userId))
@@ -185,10 +184,10 @@ public class IssueServiceTest {
             .willReturn(Optional.of(milestone));
 
         given(userRepository.findByNameIn(assigneesNames))
-            .willReturn(assignees);
+            .willReturn(Optional.of(assignees));
 
         given(labelRepository.findByNameIn(labelNames))
-            .willReturn(labels);
+            .willReturn(Optional.of(labels));
 
         // when
         issueService.makeIssue(request, userId);
@@ -364,7 +363,7 @@ public class IssueServiceTest {
         ChangeAssigneesRequest request = new ChangeAssigneesRequest(List.of("user10", "user11"));
         List<User> assigneeForChange = List.of(UserFactory.mockSingleUserWithId(10L), UserFactory.mockSingleUserWithId(11L));
         given(userRepository.findByNameIn(request.getAssignees()))
-            .willReturn(assigneeForChange);
+            .willReturn(Optional.of(assigneeForChange));
 
         // when
         issueService.changeAssigneeList(issue.getId(), request, writer.getId());
@@ -410,7 +409,7 @@ public class IssueServiceTest {
         List<Label> labels = List.of(LabelFactory.mockSingleLabelWithId(1L), LabelFactory.mockSingleLabelWithId(2L));
 
         given(labelRepository.findByNameIn(request.getLabels()))
-            .willReturn(labels);
+            .willReturn(Optional.of(labels));
 
         // when
         issueService.changeLabelList(issue.getId(), request, writer.getId());

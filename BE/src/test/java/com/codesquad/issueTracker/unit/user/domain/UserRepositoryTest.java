@@ -1,7 +1,6 @@
 package com.codesquad.issueTracker.unit.user.domain;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.codesquad.issueTracker.user.application.dto.UserOutlineResponse;
@@ -87,7 +84,7 @@ public class UserRepositoryTest {
     @Test
     void find_user_in_assignee_list() {
         List<String> assignees = List.of("user1", "user3");
-        List<User> users = userRepository.findByNameIn(assignees);
+        List<User> users = userRepository.findByNameIn(assignees).get();
 
         assertThat(users.size()).isEqualTo(2);
         assertThat(users.get(1).getName()).isEqualTo("user3");

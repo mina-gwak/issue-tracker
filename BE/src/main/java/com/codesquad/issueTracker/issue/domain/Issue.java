@@ -56,9 +56,6 @@ public class Issue {
     @OneToMany(mappedBy = "issue", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private Set<AssignedIssue> assignedIssues = new HashSet<>();
 
-    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Image> images = new HashSet<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "milestoneId")
     private Milestone milestone;
@@ -90,22 +87,14 @@ public class Issue {
     }
 
     public void assignUser(List<User> users) {
-        this.modificationTime = LocalDateTime.now();
         for (User user : users) {
             assignedIssues.add(new AssignedIssue(user, this));
         }
     }
 
     public void attachedLabel(List<Label> labels) {
-        this.modificationTime = LocalDateTime.now();
         for (Label label : labels) {
             attachedLabels.add(new AttachedLabel(label, this));
-        }
-    }
-
-    public void addFiles(List<String> fileUrl) {
-        for (String url : fileUrl) {
-            images.add(new Image(url, this));
         }
     }
 
