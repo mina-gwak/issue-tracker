@@ -1,6 +1,7 @@
 package com.codesquad.issueTracker.comment.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -70,8 +71,8 @@ public class Comment {
         return user.getImage();
     }
 
-    public boolean isNotWrittenBy(User user) {
-        return !this.user.equals(user);
+    public boolean isNotWrittenBy(Long userId) {
+        return !Objects.equals(this.user.getId(), userId);
     }
 
     public void editContent(String content) {
