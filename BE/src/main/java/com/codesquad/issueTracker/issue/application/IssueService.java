@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.codesquad.issueTracker.comment.domain.Comment;
 import com.codesquad.issueTracker.comment.domain.CommentRepository;
+import com.codesquad.issueTracker.comment.domain.CommentStatus;
 import com.codesquad.issueTracker.common.infrastructure.aspect.LogExecutionTime;
 import com.codesquad.issueTracker.exception.comment.CommentNotEditableException;
 import com.codesquad.issueTracker.exception.comment.CommentNotFoundException;
@@ -131,7 +132,7 @@ public class IssueService {
     public CommentOutline addComments(Long issueId, CommentsRequest request, Long userId) {
         Issue issue = findSingleIssue(issueId);
         User user = findUser(userId);
-        Comment comment = new Comment(request.getContents(), LocalDateTime.now(), user, issue, true);
+        Comment comment = new Comment(request.getContents(), LocalDateTime.now(), user, issue, CommentStatus.INITIAL);
         Comment savedComment = commentRepository.save(comment);
         return new CommentOutline(savedComment);
     }
@@ -169,9 +170,16 @@ public class IssueService {
     }
 
     private void changeStatusAndAddComment(String status, User user, Issue issue) {
-        issue.changeStatus(Boolean.valueOf(status));
-        String message = makeStatusMessage(status);
-        commentRepository.save(new Comment(message, LocalDateTime.now(), user, issue, false));
+        boolean statusValue = Boolean.parseBoolean(status);
+        if (issue.isOpened() && !statusValue) {
+            issue.changeStatus(false);
+            commentRepository.save(new Comment("issue가 닫혔습니다.", LocalDateTime.now(), user, issue, CommentStatus.CLOSED));
+            return;
+        }
+        if (!issue.isOpened() && statusValue) {
+            issue.changeStatus(true);
+            commentRepository.save(new Comment("issue가 다시 열렸습니다.", LocalDateTime.now(), user, issue, CommentStatus.REOPEN));
+        }
     }
 
     private Issue findSingleIssue(Long id) {
@@ -182,13 +190,6 @@ public class IssueService {
     private User findUser(Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(UserNotFoundException::new);
-    }
-
-    private String makeStatusMessage(String status) {
-        if (Boolean.parseBoolean(status)) {
-            return "issue가 열렸습니다.";
-        }
-        return "issue가 닫혔습니다.";
     }
 
     private Issue makeBasicIssue(IssueContentsRequest issueContentsRequest, Long userId) {

@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `written_time` DATETIME NULL,
   `user_id` BIGINT NOT NULL,
   `issue_id` BIGINT NOT NULL,
-  `editable` TINYINT NULL,
+  `comment_status` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_comment_user1_idx` (`user_id` ASC) VISIBLE,
   INDEX `fk_comment_issue1_idx` (`issue_id` ASC) VISIBLE,

@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.codesquad.issueTracker.comment.domain.Comment;
 import com.codesquad.issueTracker.comment.domain.CommentRepository;
+import com.codesquad.issueTracker.comment.domain.CommentStatus;
 import com.codesquad.issueTracker.common.factory.IssueFactory;
 import com.codesquad.issueTracker.common.factory.LabelFactory;
 import com.codesquad.issueTracker.common.factory.MilestoneFactory;
@@ -135,7 +136,7 @@ public class IssueServiceTest {
     @Test
     void change_issue_list_status() {
         // given
-        List<Long> issueIds = List.of(0L, 1L, 2L);
+        List<Long> issueIds = List.of(1L, 2L, 3L);
         long userId = 1L;
         int issueCount = 3;
         User user = UserFactory.mockSingleUser(1);
@@ -439,7 +440,7 @@ public class IssueServiceTest {
             .willReturn(Optional.of(another));
 
         CommentsRequest commentsRequest = new CommentsRequest("it is comment");
-        Comment comment = new Comment(1L, commentsRequest.getContents(), null, another, issue, true);
+        Comment comment = new Comment(1L, commentsRequest.getContents(), null, another, issue, CommentStatus.INITIAL);
         given(commentRepository.save(any(Comment.class)))
             .willReturn(comment);
 
@@ -498,7 +499,7 @@ public class IssueServiceTest {
         // given
         User writer = UserFactory.mockSingleUserWithId(1L);
         Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, null);
-        Comment comment = new Comment(1L, "contents", null, writer, issue, true);
+        Comment comment = new Comment(1L, "contents", null, writer, issue, CommentStatus.INITIAL);
 
         given(commentRepository.findById(anyLong()))
             .willReturn(Optional.of(comment));
@@ -522,7 +523,7 @@ public class IssueServiceTest {
         User writer = UserFactory.mockSingleUserWithId(1L);
         Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, null);
         User commentWriter = UserFactory.mockSingleUserWithId(2L);
-        Comment comment = new Comment(1L, "contents", null, commentWriter, issue, true);
+        Comment comment = new Comment(1L, "contents", null, commentWriter, issue, CommentStatus.INITIAL);
 
         given(commentRepository.findById(anyLong()))
             .willReturn(Optional.of(comment));
@@ -559,7 +560,7 @@ public class IssueServiceTest {
         // given
         User writer = UserFactory.mockSingleUserWithId(1L);
         Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, null);
-        Comment comment = new Comment(1L, "contents", null, writer, issue, true);
+        Comment comment = new Comment(1L, "contents", null, writer, issue, CommentStatus.INITIAL);
 
         given(commentRepository.findById(anyLong()))
             .willReturn(Optional.of(comment));
@@ -586,7 +587,7 @@ public class IssueServiceTest {
         User writer = UserFactory.mockSingleUserWithId(1L);
         Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, null);
         User commentWriter = UserFactory.mockSingleUserWithId(2L);
-        Comment comment = new Comment(1L, "contents", null, commentWriter, issue, true);
+        Comment comment = new Comment(1L, "contents", null, commentWriter, issue, CommentStatus.INITIAL);
 
         given(commentRepository.findById(anyLong()))
             .willReturn(Optional.of(comment));
@@ -612,4 +613,105 @@ public class IssueServiceTest {
         assertThrows(CommentNotFoundException.class,
             () -> issueService.removeComments(1L, writer.getId()));
     }
+
+    @DisplayName("issue가 열려있는 상태에 대한 경우에만 close 요청 시 추가 comment가 작성된다.")
+    @Test
+    void status_init_or_reopen_only_request_close() {
+        // given
+        User user = UserFactory.mockSingleUserWithId(1);
+        Issue issue1 = IssueFactory.mockSingleIssue(1, user, null);
+        Issue issue2 = IssueFactory.mockSingleIssue(2, user, null);
+        Issue issue3 = IssueFactory.mockSingleIssue(3, user, null);
+
+        given(issueRepository.findAllById(anyList()))
+            .willReturn(List.of(issue1, issue2, issue3));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(user));
+
+        // when
+        issueService.changeIssuesStatus(List.of(1L), "false", user.getId());
+
+        // then
+        verify(commentRepository, times(3))
+            .save(any());
+    }
+
+    @DisplayName("issue가 이미 닫혀있는 상태에서 close 요청 시 추가 comment는 작성되지 않는다.")
+    @Test
+    void status_close_no_effect_request_close() {
+        // given
+        User user = UserFactory.mockSingleUserWithId(1);
+        Issue issue1 = IssueFactory.mockSingleIssue(1, user, null);
+        Issue issue2 = IssueFactory.mockSingleIssue(2, user, null);
+        Issue issue3 = IssueFactory.mockSingleIssue(3, user, null);
+
+        issue1.changeStatus(false);
+        issue2.changeStatus(false);
+        issue3.changeStatus(false);
+
+        given(issueRepository.findAllById(anyList()))
+            .willReturn(List.of(issue1, issue2, issue3));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(user));
+
+        // when
+        issueService.changeIssuesStatus(List.of(1L), "false", user.getId());
+
+        // then
+        verify(commentRepository, times(0))
+            .save(any());
+    }
+
+    @DisplayName("issue가 닫혀있는 상태에 대한 경우에만 open 요청 시 추가 comment가 작성된다.")
+    @Test
+    void status_open_only_when_issue_closed_and_request_open() {
+        // given
+        User user = UserFactory.mockSingleUserWithId(1);
+        Issue issue1 = IssueFactory.mockSingleIssue(1, user, null);
+        Issue issue2 = IssueFactory.mockSingleIssue(2, user, null);
+        Issue issue3 = IssueFactory.mockSingleIssue(3, user, null);
+
+        issue1.changeStatus(false);
+        issue2.changeStatus(false);
+        issue3.changeStatus(false);
+
+        given(issueRepository.findAllById(anyList()))
+            .willReturn(List.of(issue1, issue2, issue3));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(user));
+
+        // when
+        issueService.changeIssuesStatus(List.of(1L), "true", user.getId());
+
+        // then
+        verify(commentRepository, times(3))
+            .save(any());
+    }
+
+    @DisplayName("issue가 닫혀있는 상태가 아니라면 open 요청 시 추가 comment가 작성되지 않는다.")
+    @Test
+    void status_open_no_effect_request_open() {
+        // given
+        User user = UserFactory.mockSingleUserWithId(1);
+        Issue issue1 = IssueFactory.mockSingleIssue(1, user, null);
+        Issue issue2 = IssueFactory.mockSingleIssue(2, user, null);
+        Issue issue3 = IssueFactory.mockSingleIssue(3, user, null);
+
+        given(issueRepository.findAllById(anyList()))
+            .willReturn(List.of(issue1, issue2, issue3));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(user));
+
+        // when
+        issueService.changeIssuesStatus(List.of(1L), "true", user.getId());
+
+        // then
+        verify(commentRepository, times(0))
+            .save(any());
+    }
+
 }

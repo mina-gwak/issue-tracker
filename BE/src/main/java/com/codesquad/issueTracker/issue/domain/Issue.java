@@ -160,6 +160,14 @@ public class Issue {
         comments.remove(comment);
     }
 
+    public void removeMilestone() {
+        this.milestone = null;
+    }
+
+    public boolean isOpened() {
+        return this.isOpened;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -173,9 +181,5 @@ public class Issue {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
-    }
-
-    public void removeMilestone() {
-        this.milestone = null;
     }
 }

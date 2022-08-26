@@ -3,6 +3,8 @@ package com.codesquad.issueTracker.comment.domain;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,27 +38,28 @@ public class Comment {
     @JoinColumn(name = "issueId")
     private Issue issue;
 
-    private boolean editable;
+    @Enumerated(value = EnumType.STRING)
+    private CommentStatus commentStatus;
 
     public Comment(String content, LocalDateTime writtenTime, User user,
-        Issue issue, boolean editable) {
+        Issue issue, CommentStatus status) {
         this.content = content;
         this.writtenTime = writtenTime;
         this.user = user;
         this.issue = issue;
         this.issue.addComment(this);
-        this.editable = editable;
+        this.commentStatus = status;
     }
 
     public Comment(Long id, String content, LocalDateTime writtenTime, User user,
-        Issue issue, boolean editable) {
+        Issue issue, CommentStatus status) {
         this.id = id;
         this.content = content;
         this.writtenTime = writtenTime;
         this.user = user;
         this.issue = issue;
         this.issue.addComment(this);
-        this.editable = editable;
+        this.commentStatus = status;
     }
 
     public String getWriterName() {

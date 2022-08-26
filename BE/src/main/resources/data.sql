@@ -37,14 +37,14 @@ insert into attached_label (issue_id, label_id) values
 (2, 2),
 (2, 3);
 
-insert into comment (content, written_time, user_id, issue_id, editable) values
-('comment content1', null, 1, 2, true),
-('comment content2', null, 2, 3, true),
-('comment content3', null, 1, 2, true),
-('comment content4', null, 1, 3, true),
-('comment content5', null, 3, 1, true),
-('comment content6', null, 3, 3, true),
-('comment content7', null, 2, 5, true);
+insert into comment (content, written_time, user_id, issue_id, comment_status) values
+('comment content1', null, 1, 2, 'INITIAL'),
+('comment content2', null, 2, 3, 'INITIAL'),
+('comment content3', null, 1, 2, 'INITIAL'),
+('comment content4', null, 1, 3, 'INITIAL'),
+('comment content5', null, 3, 1, 'INITIAL'),
+('comment content6', null, 3, 3, 'INITIAL'),
+('comment content7', null, 2, 5, 'INITIAL');
 
 insert into assigned_issue (user_id, issue_id) values
 (1, 3),

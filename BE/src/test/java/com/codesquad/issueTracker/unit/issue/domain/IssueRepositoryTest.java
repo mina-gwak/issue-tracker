@@ -21,6 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import com.codesquad.issueTracker.comment.domain.Comment;
 import com.codesquad.issueTracker.comment.domain.CommentRepository;
+import com.codesquad.issueTracker.comment.domain.CommentStatus;
 import com.codesquad.issueTracker.common.factory.IssueFactory;
 import com.codesquad.issueTracker.common.factory.MilestoneFactory;
 import com.codesquad.issueTracker.common.factory.UserFactory;
@@ -282,8 +283,8 @@ public class IssueRepositoryTest {
         Issue issue2 = issueRepository.findById(2L)
             .orElseThrow();
 
-        Comment comment1 = new Comment("content1", null, commenter, issue1, true);
-        Comment comment2 = new Comment("content2", null, commenter, issue2, true);
+        Comment comment1 = new Comment("content1", null, commenter, issue1, CommentStatus.INITIAL);
+        Comment comment2 = new Comment("content2", null, commenter, issue2, CommentStatus.INITIAL);
 
         commentRepository.saveAll(List.of(comment1, comment2));
 
