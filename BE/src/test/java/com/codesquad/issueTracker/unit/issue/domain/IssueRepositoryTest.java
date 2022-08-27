@@ -21,6 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import com.codesquad.issueTracker.comment.domain.Comment;
 import com.codesquad.issueTracker.comment.domain.CommentRepository;
+import com.codesquad.issueTracker.comment.domain.CommentStatus;
 import com.codesquad.issueTracker.common.factory.IssueFactory;
 import com.codesquad.issueTracker.common.factory.MilestoneFactory;
 import com.codesquad.issueTracker.common.factory.UserFactory;
@@ -176,12 +177,6 @@ public class IssueRepositoryTest {
 
         // then
         assertThat(afterIssues.size()).isEqualTo(9);
-        assertThat(afterIssues.get(0))
-            .extracting("user")
-            .extracting("name").isEqualTo("name1");
-        assertThat(afterIssues.get(0))
-            .extracting("milestone")
-            .extracting("name").isEqualTo("mileStoneName1");
     }
 
     @DisplayName("CLOSE 메인 필터를 통해 닫힌 이슈만 필터링 할 수 있다.")
@@ -203,12 +198,6 @@ public class IssueRepositoryTest {
 
         // then
         assertThat(afterIssues.size()).isEqualTo(1);
-        assertThat(afterIssues.get(0))
-            .extracting("user")
-            .extracting("name").isEqualTo("name0");
-        assertThat(afterIssues.get(0))
-            .extracting("milestone")
-            .extracting("name").isEqualTo("mileStoneName0");
     }
 
     @DisplayName("WRITE_BY_ME 메인 필터를 통해 사용자가 작성한 이슈만 필터링 할 수 있다.")
@@ -282,8 +271,8 @@ public class IssueRepositoryTest {
         Issue issue2 = issueRepository.findById(2L)
             .orElseThrow();
 
-        Comment comment1 = new Comment("content1", null, commenter, issue1, true);
-        Comment comment2 = new Comment("content2", null, commenter, issue2, true);
+        Comment comment1 = new Comment("content1", null, commenter, issue1, CommentStatus.INITIAL);
+        Comment comment2 = new Comment("content2", null, commenter, issue2, CommentStatus.INITIAL);
 
         commentRepository.saveAll(List.of(comment1, comment2));
 

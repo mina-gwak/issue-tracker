@@ -56,6 +56,7 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
                 matching(milestone.name, subFilters.get("MILESTONES")),
                 matching(label.name, subFilters.get("LABELS")),
                 matching(assignedUser.name, subFilters.get("ASSIGNEES")))
+            .orderBy(issue.modificationTime.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .distinct()

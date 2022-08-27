@@ -18,14 +18,11 @@ public interface IssueRepository extends JpaRepository<Issue, Long>, IssueReposi
         attributePaths = {"user", "comments",
             "attachedLabels", "attachedLabels.label", "attachedLabels.issue",
             "assignedIssues", "assignedIssues.issue", "assignedIssues.user",
-            "images", "milestone", "milestone.issues",
+            "milestone", "milestone.issues",
             "comments", "comments.user"},
         type = EntityGraph.EntityGraphType.LOAD)
     Optional<Issue> findById(Long aLong);
 
     @Query("SELECT DISTINCT i.user.id FROM Issue i ORDER BY i.user.id")
     List<Long> findWriters(Pageable pageable);
-
-    @Query("SELECT count(i.id) FROM Issue i WHERE i.isOpened = true")
-    Long findOpenCount();
 }

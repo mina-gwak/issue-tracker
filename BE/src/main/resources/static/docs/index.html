@@ -1133,7 +1133,7 @@ Content-Length: 721
     "issueId" : 1,
     "writer" : "user1",
     "writerImage" : "image1",
-    "modificationTime" : "2022-08-25T11:43:24.480875",
+    "modificationTime" : "2022-08-27T01:32:21.295427",
     "milestoneName" : "milestone1",
     "opened" : true
   } ],
@@ -1299,7 +1299,7 @@ Content-Length: 156
 {
   "title" : "BE Lucid가 작성한 issue",
   "content" : "내용은 이러하다",
-  "writtenTime" : "2022-08-25T11:43:24.434546",
+  "writtenTime" : "2022-08-27T01:32:21.241557",
   "assignedMe" : true
 }</code></pre>
 </div>
@@ -1405,13 +1405,12 @@ Vary: Access-Control-Request-Headers</code></pre>
 Content-Type: application/json;charset=UTF-8
 Authorization: Bearer testToken
 Accept: */*
-Content-Length: 189
+Content-Length: 153
 Host: localhost:8080
 
 {
   "title" : "title1",
   "content" : "content1",
-  "fileUrl" : [ "file1", "file2" ],
   "assignees" : [ "assignee1", "assignee2" ],
   "labels" : [ "label1" ],
   "milestone" : "milestone1"
@@ -1449,11 +1448,6 @@ Host: localhost:8080
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>milestone</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">마일스톤 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>fileUrl</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">첨부 파일 url 리스트</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>assignees</code></p></td>
@@ -1524,13 +1518,13 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 967
+Content-Length: 920
 
 {
   "issueId" : 1,
   "title" : "title1",
   "content" : "content1",
-  "writtenTime" : "2022-08-25T11:43:24.089449",
+  "writtenTime" : "2022-08-27T01:32:20.873311",
   "writerOutline" : {
     "optionName" : "user1",
     "imageUrl" : "image1"
@@ -1543,12 +1537,12 @@ Content-Length: 967
     "imageUrl" : "image1"
   } ],
   "labels" : [ {
-    "labelName" : "BE",
-    "colorCode" : "#000000",
-    "textColor" : "white"
-  }, {
     "labelName" : "Lucid",
     "colorCode" : "#008672",
+    "textColor" : "white"
+  }, {
+    "labelName" : "BE",
+    "colorCode" : "#000000",
     "textColor" : "white"
   } ],
   "milestoneInformation" : {
@@ -1563,10 +1557,9 @@ Content-Length: 967
     },
     "commentId" : 1,
     "content" : "contents",
-    "writtenTime" : "2022-08-25T11:43:24.089482",
-    "editable" : true
+    "writtenTime" : "2022-08-27T01:32:20.873356",
+    "status" : "INITIAL"
   } ],
-  "imageUrls" : [ "image2", "image1", "image3" ],
   "open" : true
 }</code></pre>
 </div>
@@ -1689,14 +1682,9 @@ Content-Length: 967
 <td class="tableblock halign-left valign-top"><p class="tableblock">코멘트 단 시간</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>commentOutlines[].editable</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">수정 가능 여부</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>imageUrls</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">첨부  url 배열</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>commentOutlines[].status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment 상태 [INITIAL, CLOSED, REOPEN]</p></td>
 </tr>
 </tbody>
 </table>
@@ -2090,13 +2078,13 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 685
+Content-Length: 687
 
 {
   "milestoneSingleInfos" : [ {
     "id" : null,
     "name" : "m1",
-    "dueDate" : "2022-08-25T11:43:24.919754",
+    "dueDate" : "2022-08-27T01:32:21.722887",
     "description" : "m1 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2104,7 +2092,7 @@ Content-Length: 685
   }, {
     "id" : null,
     "name" : "m2",
-    "dueDate" : "2022-08-25T11:43:24.9198",
+    "dueDate" : "2022-08-27T01:32:21.722945",
     "description" : "m2 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2112,7 +2100,7 @@ Content-Length: 685
   }, {
     "id" : null,
     "name" : "m3",
-    "dueDate" : "2022-08-25T11:43:24.919803",
+    "dueDate" : "2022-08-27T01:32:21.722949",
     "description" : "m3 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2173,7 +2161,7 @@ Content-Length: 685
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>milestoneSingleInfos[].ratio</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">닫힌 이슈 / 총 이슈 비율</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">닫힌 이슈 / 총 이슈 비율, 범위 : 0.00 ~ 100.00</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>openMilestoneCount</code></p></td>
@@ -2204,7 +2192,7 @@ Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-08-25T11:43:24.970757",
+  "dueDate" : "2022-08-27T01:32:21.764461",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2271,7 +2259,7 @@ Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-08-25T11:43:25.037026",
+  "dueDate" : "2022-08-27T01:32:21.814803",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2926,7 +2914,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 233
+Content-Length: 236
 
 {
   "commentUserOutline" : {
@@ -2935,8 +2923,8 @@ Content-Length: 233
   },
   "commentId" : 1,
   "content" : "issue에 작성된 comments 입니다..",
-  "writtenTime" : "2022-08-25T11:43:24.646147",
-  "editable" : true
+  "writtenTime" : "2022-08-27T01:32:21.436958",
+  "status" : "INITIAL"
 }</code></pre>
 </div>
 </div>
@@ -2983,9 +2971,9 @@ Content-Length: 233
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment 작성된 시간</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>editable</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">comment 수정 가능 여부</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">comment 상태 - [INITIAL, CLOSED, REOPEN]</p></td>
 </tr>
 </tbody>
 </table>

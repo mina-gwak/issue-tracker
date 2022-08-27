@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.codesquad.issueTracker.comment.domain.Comment;
 import com.codesquad.issueTracker.comment.domain.CommentRepository;
+import com.codesquad.issueTracker.comment.domain.CommentStatus;
 import com.codesquad.issueTracker.common.factory.IssueFactory;
 import com.codesquad.issueTracker.common.factory.LabelFactory;
 import com.codesquad.issueTracker.common.factory.MilestoneFactory;
@@ -135,7 +138,7 @@ public class IssueServiceTest {
     @Test
     void change_issue_list_status() {
         // given
-        List<Long> issueIds = List.of(0L, 1L, 2L);
+        List<Long> issueIds = List.of(1L, 2L, 3L);
         long userId = 1L;
         int issueCount = 3;
         User user = UserFactory.mockSingleUser(1);
@@ -163,7 +166,6 @@ public class IssueServiceTest {
     void make_issue() {
         // given
         long userId = 1L;
-        List<String> files = List.of("f1", "f2");
         List<String> assigneesNames = List.of("name0", "name1");
         List<String> labelNames = List.of("label1");
 
@@ -172,7 +174,7 @@ public class IssueServiceTest {
         List<User> assignees = UserFactory.mockMultipleUser(2);
         List<Label> labels = List.of(LabelFactory.mockSingleLabel(1));
 
-        IssueContentsRequest request = new IssueContentsRequest("refactoring", "tdd", files,
+        IssueContentsRequest request = new IssueContentsRequest("refactoring", "tdd",
             assigneesNames, labelNames, "mile");
 
         given(userRepository.findById(userId))
@@ -182,10 +184,10 @@ public class IssueServiceTest {
             .willReturn(Optional.of(milestone));
 
         given(userRepository.findByNameIn(assigneesNames))
-            .willReturn(assignees);
+            .willReturn(Optional.of(assignees));
 
         given(labelRepository.findByNameIn(labelNames))
-            .willReturn(labels);
+            .willReturn(Optional.of(labels));
 
         // when
         issueService.makeIssue(request, userId);
@@ -215,6 +217,49 @@ public class IssueServiceTest {
         assertThat(result.getMilestoneInformation().getMilestoneName()).isEqualTo(milestone.getName());
     }
 
+    @DisplayName("이슈 단 건 조회 시 내부 커멘트는 작성 시간 오름차순으로 조회된다.")
+    @Test
+    void comment_is_order_by_written_time() {
+        // given
+        User user = UserFactory.mockSingleUser(1);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssue(1, user, milestone);
+
+        Comment comment1 = new Comment(1L, "content1", LocalDateTime.of(2022, 6, 3, 22, 34), user, issue,
+            CommentStatus.INITIAL);
+        Comment comment2 = new Comment(2L, "content1", LocalDateTime.of(2022, 6, 3, 12, 34), user, issue,
+            CommentStatus.INITIAL);
+        Comment comment3 = new Comment(3L, "content1", LocalDateTime.of(2021, 6, 3, 12, 34), user, issue,
+            CommentStatus.INITIAL);
+        Comment comment4 = new Comment(4L, "content1", LocalDateTime.of(2019, 6, 3, 12, 34), user, issue,
+            CommentStatus.INITIAL);
+        Comment comment5 = new Comment(5L, "content1", LocalDateTime.of(2022, 6, 3, 13, 34), user, issue,
+            CommentStatus.INITIAL);
+
+        List<Comment> comments = List.of(comment1, comment2, comment3, comment4, comment5);
+        List<Long> orderedCommentIds = comments.stream()
+            .sorted(Comparator.comparing(Comment::getWrittenTime))
+            .map(Comment::getId)
+            .collect(Collectors.toList());
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        // when
+        IssueDetailResponse result = issueService.findIssue(1L);
+
+        // then
+        assertThat(result.getTitle()).isEqualTo(issue.getTitle());
+        assertThat(result.getWriterOutline().getOptionName()).isEqualTo(user.getName());
+        assertThat(result.getMilestoneInformation().getMilestoneName()).isEqualTo(milestone.getName());
+        List<Long> resultCommentIds = result.getCommentOutlines().stream()
+            .map(CommentOutline::getCommentId)
+            .collect(Collectors.toList());
+
+        assertThat(resultCommentIds).isEqualTo(orderedCommentIds);
+
+    }
+
     @DisplayName("이슈 단 건이 없을 경우 예외가 발생한다.")
     @Test
     void exception_occur_when_find_detailed_inquiry_of_the_issue_not_founded() {
@@ -238,9 +283,6 @@ public class IssueServiceTest {
         given(issueRepository.findById(anyLong()))
             .willReturn(Optional.of(issue));
 
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(writer));
-
         // when
         issueService.deleteIssue(1L, writer.getId());
 
@@ -262,9 +304,6 @@ public class IssueServiceTest {
         given(issueRepository.findById(anyLong()))
             .willReturn(Optional.of(issue));
 
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(another));
-
         // when & then
         assertThrows(IssueNotEditableException.class,
             () -> issueService.deleteIssue(1L, another.getId()));
@@ -280,9 +319,6 @@ public class IssueServiceTest {
 
         given(issueRepository.findById(anyLong()))
             .willReturn(Optional.of(issue));
-
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(writer));
 
         ChangeIssueTitleRequest changedTitle = new ChangeIssueTitleRequest("changed Title");
 
@@ -306,9 +342,6 @@ public class IssueServiceTest {
         given(issueRepository.findById(anyLong()))
             .willReturn(Optional.of(issue));
 
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(another));
-
         ChangeIssueTitleRequest changedTitle = new ChangeIssueTitleRequest("changed Title");
 
         // when & then
@@ -327,13 +360,10 @@ public class IssueServiceTest {
         given(issueRepository.findById(anyLong()))
             .willReturn(Optional.of(issue));
 
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(writer));
-
         ChangeAssigneesRequest request = new ChangeAssigneesRequest(List.of("user10", "user11"));
         List<User> assigneeForChange = List.of(UserFactory.mockSingleUserWithId(10L), UserFactory.mockSingleUserWithId(11L));
         given(userRepository.findByNameIn(request.getAssignees()))
-            .willReturn(assigneeForChange);
+            .willReturn(Optional.of(assigneeForChange));
 
         // when
         issueService.changeAssigneeList(issue.getId(), request, writer.getId());
@@ -357,9 +387,6 @@ public class IssueServiceTest {
         given(issueRepository.findById(anyLong()))
             .willReturn(Optional.of(issue));
 
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(another));
-
         ChangeAssigneesRequest request = new ChangeAssigneesRequest(List.of("user10", "user11"));
 
         // when & then
@@ -378,14 +405,11 @@ public class IssueServiceTest {
         given(issueRepository.findById(anyLong()))
             .willReturn(Optional.of(issue));
 
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(writer));
-
         ChangeLabelsRequest request = new ChangeLabelsRequest(List.of("label1", "label2"));
         List<Label> labels = List.of(LabelFactory.mockSingleLabelWithId(1L), LabelFactory.mockSingleLabelWithId(2L));
 
         given(labelRepository.findByNameIn(request.getLabels()))
-            .willReturn(labels);
+            .willReturn(Optional.of(labels));
 
         // when
         issueService.changeLabelList(issue.getId(), request, writer.getId());
@@ -412,9 +436,6 @@ public class IssueServiceTest {
         given(issueRepository.findById(anyLong()))
             .willReturn(Optional.of(issue));
 
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(another));
-
         ChangeLabelsRequest request = new ChangeLabelsRequest(List.of("label1", "label2"));
 
         // when & then
@@ -439,7 +460,7 @@ public class IssueServiceTest {
             .willReturn(Optional.of(another));
 
         CommentsRequest commentsRequest = new CommentsRequest("it is comment");
-        Comment comment = new Comment(1L, commentsRequest.getContents(), null, another, issue, true);
+        Comment comment = new Comment(1L, commentsRequest.getContents(), null, another, issue, CommentStatus.INITIAL);
         given(commentRepository.save(any(Comment.class)))
             .willReturn(comment);
 
@@ -498,13 +519,10 @@ public class IssueServiceTest {
         // given
         User writer = UserFactory.mockSingleUserWithId(1L);
         Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, null);
-        Comment comment = new Comment(1L, "contents", null, writer, issue, true);
+        Comment comment = new Comment(1L, "contents", null, writer, issue, CommentStatus.INITIAL);
 
         given(commentRepository.findById(anyLong()))
             .willReturn(Optional.of(comment));
-
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(writer));
 
         CommentsRequest request = new CommentsRequest("change comment");
 
@@ -522,13 +540,10 @@ public class IssueServiceTest {
         User writer = UserFactory.mockSingleUserWithId(1L);
         Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, null);
         User commentWriter = UserFactory.mockSingleUserWithId(2L);
-        Comment comment = new Comment(1L, "contents", null, commentWriter, issue, true);
+        Comment comment = new Comment(1L, "contents", null, commentWriter, issue, CommentStatus.INITIAL);
 
         given(commentRepository.findById(anyLong()))
             .willReturn(Optional.of(comment));
-
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(writer));
 
         CommentsRequest request = new CommentsRequest("change comment");
 
@@ -559,13 +574,10 @@ public class IssueServiceTest {
         // given
         User writer = UserFactory.mockSingleUserWithId(1L);
         Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, null);
-        Comment comment = new Comment(1L, "contents", null, writer, issue, true);
+        Comment comment = new Comment(1L, "contents", null, writer, issue, CommentStatus.INITIAL);
 
         given(commentRepository.findById(anyLong()))
             .willReturn(Optional.of(comment));
-
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(writer));
 
         assertThat(issue.getComments()).contains(comment);
 
@@ -586,13 +598,10 @@ public class IssueServiceTest {
         User writer = UserFactory.mockSingleUserWithId(1L);
         Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, null);
         User commentWriter = UserFactory.mockSingleUserWithId(2L);
-        Comment comment = new Comment(1L, "contents", null, commentWriter, issue, true);
+        Comment comment = new Comment(1L, "contents", null, commentWriter, issue, CommentStatus.INITIAL);
 
         given(commentRepository.findById(anyLong()))
             .willReturn(Optional.of(comment));
-
-        given(userRepository.findById(anyLong()))
-            .willReturn(Optional.of(writer));
 
         // when & then
         assertThrows(CommentNotEditableException.class,
@@ -612,4 +621,105 @@ public class IssueServiceTest {
         assertThrows(CommentNotFoundException.class,
             () -> issueService.removeComments(1L, writer.getId()));
     }
+
+    @DisplayName("issue가 열려있는 상태에 대한 경우에만 close 요청 시 추가 comment가 작성된다.")
+    @Test
+    void status_init_or_reopen_only_request_close() {
+        // given
+        User user = UserFactory.mockSingleUserWithId(1);
+        Issue issue1 = IssueFactory.mockSingleIssue(1, user, null);
+        Issue issue2 = IssueFactory.mockSingleIssue(2, user, null);
+        Issue issue3 = IssueFactory.mockSingleIssue(3, user, null);
+
+        given(issueRepository.findAllById(anyList()))
+            .willReturn(List.of(issue1, issue2, issue3));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(user));
+
+        // when
+        issueService.changeIssuesStatus(List.of(1L), "false", user.getId());
+
+        // then
+        verify(commentRepository, times(3))
+            .save(any());
+    }
+
+    @DisplayName("issue가 이미 닫혀있는 상태에서 close 요청 시 추가 comment는 작성되지 않는다.")
+    @Test
+    void status_close_no_effect_request_close() {
+        // given
+        User user = UserFactory.mockSingleUserWithId(1);
+        Issue issue1 = IssueFactory.mockSingleIssue(1, user, null);
+        Issue issue2 = IssueFactory.mockSingleIssue(2, user, null);
+        Issue issue3 = IssueFactory.mockSingleIssue(3, user, null);
+
+        issue1.changeStatus(false);
+        issue2.changeStatus(false);
+        issue3.changeStatus(false);
+
+        given(issueRepository.findAllById(anyList()))
+            .willReturn(List.of(issue1, issue2, issue3));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(user));
+
+        // when
+        issueService.changeIssuesStatus(List.of(1L), "false", user.getId());
+
+        // then
+        verify(commentRepository, times(0))
+            .save(any());
+    }
+
+    @DisplayName("issue가 닫혀있는 상태에 대한 경우에만 open 요청 시 추가 comment가 작성된다.")
+    @Test
+    void status_open_only_when_issue_closed_and_request_open() {
+        // given
+        User user = UserFactory.mockSingleUserWithId(1);
+        Issue issue1 = IssueFactory.mockSingleIssue(1, user, null);
+        Issue issue2 = IssueFactory.mockSingleIssue(2, user, null);
+        Issue issue3 = IssueFactory.mockSingleIssue(3, user, null);
+
+        issue1.changeStatus(false);
+        issue2.changeStatus(false);
+        issue3.changeStatus(false);
+
+        given(issueRepository.findAllById(anyList()))
+            .willReturn(List.of(issue1, issue2, issue3));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(user));
+
+        // when
+        issueService.changeIssuesStatus(List.of(1L), "true", user.getId());
+
+        // then
+        verify(commentRepository, times(3))
+            .save(any());
+    }
+
+    @DisplayName("issue가 닫혀있는 상태가 아니라면 open 요청 시 추가 comment가 작성되지 않는다.")
+    @Test
+    void status_open_no_effect_request_open() {
+        // given
+        User user = UserFactory.mockSingleUserWithId(1);
+        Issue issue1 = IssueFactory.mockSingleIssue(1, user, null);
+        Issue issue2 = IssueFactory.mockSingleIssue(2, user, null);
+        Issue issue3 = IssueFactory.mockSingleIssue(3, user, null);
+
+        given(issueRepository.findAllById(anyList()))
+            .willReturn(List.of(issue1, issue2, issue3));
+
+        given(userRepository.findById(anyLong()))
+            .willReturn(Optional.of(user));
+
+        // when
+        issueService.changeIssuesStatus(List.of(1L), "true", user.getId());
+
+        // then
+        verify(commentRepository, times(0))
+            .save(any());
+    }
+
 }

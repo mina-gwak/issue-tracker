@@ -56,9 +56,6 @@ public class Issue {
     @OneToMany(mappedBy = "issue", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private Set<AssignedIssue> assignedIssues = new HashSet<>();
 
-    @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Image> images = new HashSet<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "milestoneId")
     private Milestone milestone;
@@ -101,12 +98,6 @@ public class Issue {
         }
     }
 
-    public void addFiles(List<String> fileUrl) {
-        for (String url : fileUrl) {
-            images.add(new Image(url, this));
-        }
-    }
-
     public String getWriter() {
         return user.getName();
     }
@@ -116,27 +107,32 @@ public class Issue {
     }
 
     public void addComment(Comment comment) {
+        this.modificationTime = LocalDateTime.now();
         comments.add(comment);
     }
 
-    public boolean isNotWrittenBy(User user) {
-        return !this.user.equals(user);
+    public boolean isNotWrittenBy(Long userId) {
+        return !Objects.equals(this.user.getId(), userId);
     }
 
     public void changeStatus(Boolean valueOf) {
+        this.modificationTime = LocalDateTime.now();
         this.isOpened = valueOf;
     }
 
     public void updateTitle(String title) {
+        this.modificationTime = LocalDateTime.now();
         this.title = title;
     }
 
     public void updateAssignee(List<User> assignees) {
+        this.modificationTime = LocalDateTime.now();
         assignedIssues.clear();
         assignUser(assignees);
     }
 
     public void updateLabels(List<Label> labels) {
+        this.modificationTime = LocalDateTime.now();
         attachedLabels.clear();
         attachedLabel(labels);
     }
@@ -157,7 +153,17 @@ public class Issue {
     }
 
     public void deleteComment(Comment comment) {
+        this.modificationTime = LocalDateTime.now();
         comments.remove(comment);
+    }
+
+    public void removeMilestone() {
+        this.modificationTime = LocalDateTime.now();
+        this.milestone = null;
+    }
+
+    public boolean isOpened() {
+        return this.isOpened;
     }
 
     @Override
@@ -173,9 +179,5 @@ public class Issue {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
-    }
-
-    public void removeMilestone() {
-        this.milestone = null;
     }
 }

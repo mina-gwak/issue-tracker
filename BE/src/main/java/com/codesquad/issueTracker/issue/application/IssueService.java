@@ -11,12 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.codesquad.issueTracker.comment.domain.Comment;
 import com.codesquad.issueTracker.comment.domain.CommentRepository;
+import com.codesquad.issueTracker.comment.domain.CommentStatus;
 import com.codesquad.issueTracker.common.infrastructure.aspect.LogExecutionTime;
 import com.codesquad.issueTracker.exception.comment.CommentNotEditableException;
 import com.codesquad.issueTracker.exception.comment.CommentNotFoundException;
 import com.codesquad.issueTracker.exception.issue.IssueNotEditableException;
 import com.codesquad.issueTracker.exception.issue.IssueNotFoundException;
-import com.codesquad.issueTracker.exception.milestone.MilestoneNotFoundException;
+import com.codesquad.issueTracker.exception.label.LabelNotFoundException;
 import com.codesquad.issueTracker.exception.user.UserNotFoundException;
 import com.codesquad.issueTracker.issue.application.dto.CommentOutline;
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
@@ -116,14 +117,16 @@ public class IssueService {
     @Transactional
     public void changeAssigneeList(Long issueId, ChangeAssigneesRequest request, Long userId) {
         Issue issue = checkEditableIssue(issueId, userId);
-        List<User> assignees = userRepository.findByNameIn(request.getAssignees());
+        List<User> assignees = userRepository.findByNameIn(request.getAssignees())
+            .orElseThrow(UserNotFoundException::new);
         issue.updateAssignee(assignees);
     }
 
     @Transactional
     public void changeLabelList(Long issueId, ChangeLabelsRequest request, Long userId) {
         Issue issue = checkEditableIssue(issueId, userId);
-        List<Label> labels = labelRepository.findByNameIn(request.getLabels());
+        List<Label> labels = labelRepository.findByNameIn(request.getLabels())
+            .orElseThrow(LabelNotFoundException::new);
         issue.updateLabels(labels);
     }
 
@@ -131,7 +134,7 @@ public class IssueService {
     public CommentOutline addComments(Long issueId, CommentsRequest request, Long userId) {
         Issue issue = findSingleIssue(issueId);
         User user = findUser(userId);
-        Comment comment = new Comment(request.getContents(), LocalDateTime.now(), user, issue, true);
+        Comment comment = new Comment(request.getContents(), LocalDateTime.now(), user, issue, CommentStatus.INITIAL);
         Comment savedComment = commentRepository.save(comment);
         return new CommentOutline(savedComment);
     }
@@ -150,10 +153,8 @@ public class IssueService {
     }
 
     private Comment checkEditableComments(Long commentId, Long userId) {
-        Comment comment = commentRepository.findById(commentId)
-            .orElseThrow(CommentNotFoundException::new);
-        User user = findUser(userId);
-        if (comment.isNotWrittenBy(user)) {
+        Comment comment = findSingleComment(commentId);
+        if (comment.isNotWrittenBy(userId)) {
             throw new CommentNotEditableException();
         }
         return comment;
@@ -161,17 +162,23 @@ public class IssueService {
 
     private Issue checkEditableIssue(Long issueId, Long userId) {
         Issue issue = findSingleIssue(issueId);
-        User user = findUser(userId);
-        if (issue.isNotWrittenBy(user)) {
+        if (issue.isNotWrittenBy(userId)) {
             throw new IssueNotEditableException();
         }
         return issue;
     }
 
     private void changeStatusAndAddComment(String status, User user, Issue issue) {
-        issue.changeStatus(Boolean.valueOf(status));
-        String message = makeStatusMessage(status);
-        commentRepository.save(new Comment(message, LocalDateTime.now(), user, issue, false));
+        boolean statusValue = Boolean.parseBoolean(status);
+        if (issue.isOpened() && !statusValue) {
+            issue.changeStatus(false);
+            commentRepository.save(new Comment("issue가 닫혔습니다.", LocalDateTime.now(), user, issue, CommentStatus.CLOSED));
+            return;
+        }
+        if (!issue.isOpened() && statusValue) {
+            issue.changeStatus(true);
+            commentRepository.save(new Comment("issue가 다시 열렸습니다.", LocalDateTime.now(), user, issue, CommentStatus.REOPEN));
+        }
     }
 
     private Issue findSingleIssue(Long id) {
@@ -184,27 +191,25 @@ public class IssueService {
             .orElseThrow(UserNotFoundException::new);
     }
 
-    private String makeStatusMessage(String status) {
-        if (Boolean.parseBoolean(status)) {
-            return "issue가 열렸습니다.";
-        }
-        return "issue가 닫혔습니다.";
+    private Comment findSingleComment(Long commentId) {
+        return commentRepository.findById(commentId)
+            .orElseThrow(CommentNotFoundException::new);
     }
 
     private Issue makeBasicIssue(IssueContentsRequest issueContentsRequest, Long userId) {
         User user = findUser(userId);
         Milestone milestone = milestoneRepository.findByName(issueContentsRequest.getMilestone())
-            .orElseThrow(MilestoneNotFoundException::new);
+            .orElse(null);
         return issueContentsRequest.toEntity(user, milestone);
     }
 
     private void assignAdditional(IssueContentsRequest issueContentsRequest, Issue issue) {
-        List<User> users = userRepository.findByNameIn(issueContentsRequest.getAssignees());
+        List<User> users = userRepository.findByNameIn(issueContentsRequest.getAssignees())
+            .orElseThrow(UserNotFoundException::new);
         issue.assignUser(users);
 
-        List<Label> labels = labelRepository.findByNameIn(issueContentsRequest.getLabels());
+        List<Label> labels = labelRepository.findByNameIn(issueContentsRequest.getLabels())
+            .orElseThrow(LabelNotFoundException::new);
         issue.attachedLabel(labels);
-
-        issue.addFiles(issueContentsRequest.getFileUrl());
     }
 }

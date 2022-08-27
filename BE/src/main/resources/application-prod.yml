@@ -53,8 +53,8 @@ cloud:
 sentry:
   dsn: ${SENTRY_DSN}
   logging:
-    enabled: false
     minimum-event-level: warn
+    minimum-breadcrumb-level: warn
 
 logging:
   level:

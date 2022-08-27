@@ -11,16 +11,13 @@ import com.codesquad.issueTracker.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class IssueContentsRequest {
     private String title;
     private String content;
-    private List<String> fileUrl = new ArrayList<>();
     private List<String> assignees = new ArrayList<>();
     private List<String> labels = new ArrayList<>();
     private String milestone;

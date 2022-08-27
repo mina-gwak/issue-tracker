@@ -102,7 +102,7 @@ class MilestoneControllerTest extends ControllerTest {
                     fieldWithPath("milestoneSingleInfos[].description").type(STRING).description("마일스톤 상세"),
                     fieldWithPath("milestoneSingleInfos[].openIssueCount").type(NUMBER).description("열린 이슈 개수"),
                     fieldWithPath("milestoneSingleInfos[].closeIssueCount").type(NUMBER).description("닫힌 이슈 개수"),
-                    fieldWithPath("milestoneSingleInfos[].ratio").type(STRING).description("닫힌 이슈 / 총 이슈 비율"),
+                    fieldWithPath("milestoneSingleInfos[].ratio").type(STRING).description("닫힌 이슈 / 총 이슈 비율, 범위 : 0.00 ~ 100.00"),
                     fieldWithPath("openMilestoneCount").type(NUMBER).description("열린 마일스톤 수"),
                     fieldWithPath("closeMilestoneCount").type(NUMBER).description("닫힌 마일스톤 수")
                 )));
