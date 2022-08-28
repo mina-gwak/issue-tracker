@@ -33,6 +33,18 @@ export const addIssue = async (newIssue: AddIssueDataType): Promise<AddIssueData
   return data;
 };
 
+export const deleteIssue = async (issueId: number): Promise<AddIssueDataType> => {
+  const accessToken = localStorage.getItem('accessToken')!;
+
+  const { data } = await axios.delete(`${API.ISSUE_DELETE(issueId)}`, {
+    headers: {
+      Authorization: `Bearer ${JSON.parse(accessToken)}`,
+    },
+  });
+
+  return data;
+};
+
 export const useIssuesQuery = <T>(filterBarValue: string, select?: IssueQueryPropsType<T>) =>
   useQuery(['issues', filterBarValue], () => fetchIssues<IssueDataType>(filterBarValue), {
     select,
