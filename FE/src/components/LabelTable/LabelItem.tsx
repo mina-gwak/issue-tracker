@@ -40,16 +40,16 @@ const LabelItem = ({ data }: LabelItemType) => {
     <S.EditFormContainer>
       <LabelBadge name={name} colorCode={colorCode} textColor={textColor} />
       <S.Description>{description}</S.Description>
-      <S.IconContainer>
-        <S.EditIcon onClick={handleClickEdit}>
+      <S.ButtonContainer>
+        <S.EditButton type='button' onClick={handleClickEdit}>
           <Icon iconName={ICON_NAME.EDIT_ICON} />
           <span>편집</span>
-        </S.EditIcon>
-        <S.DeleteIcon onClick={handleClickDelete}>
+        </S.EditButton>
+        <S.DeleteButton type='button' onClick={handleClickDelete}>
           <Icon iconName={ICON_NAME.DELETE_ICON} />
           <span>삭제</span>
-        </S.DeleteIcon>
-      </S.IconContainer>
+        </S.DeleteButton>
+      </S.ButtonContainer>
     </S.EditFormContainer>
   );
 };
