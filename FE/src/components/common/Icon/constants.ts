@@ -22,7 +22,7 @@ export const ICON_NAME = {
   OPEN_ISSUE: 'OpenIssue',
   CLOSE_ISSUE: 'CloseIssue',
   EMOJI: 'Emoji',
-  ISSUE_DELETE: 'IssueDelete',
+  X_SQUARE: 'XSquare',
 } as const;
 
 export const ICON_SIZE = {
