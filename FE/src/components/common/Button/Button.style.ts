@@ -17,10 +17,18 @@ const outlineStyles = css<OutlineStylesType>`
       color: ${({ theme }) => theme.colors.blue};
       background-color: ${({ theme }) => theme.colors.white};
       border: 2px solid ${({ theme }) => theme.colors.blue};
+      
+      svg * {
+        stroke: ${({ theme }) => theme.colors.blue};
+      }
 
       &:hover {
         color: ${({ theme }) => theme.colors.darkBlue};
         border: 2px solid ${({ theme }) => theme.colors.darkBlue};
+        
+        svg * {
+          stroke: ${({ theme }) => theme.colors.darkBlue};
+        }
       }
 
       &:focus {
@@ -32,6 +40,10 @@ const outlineStyles = css<OutlineStylesType>`
     !outline &&
     css`
       background-color: ${({ theme }) => theme.colors.blue};
+      
+      svg * {
+        stroke: ${({ theme }) => theme.colors.white}
+      }
 
       &:hover:not([disabled]) {
         background-color: ${({ theme }) => theme.colors.darkBlue};
@@ -73,6 +85,10 @@ const sizeStyles = css<SizeStylesType>`
 `;
 
 export const Button = styled.button<OutlineStylesType & SizeStylesType>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
   color: ${({ theme }) => theme.colors.white};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   transition: all 200ms;
