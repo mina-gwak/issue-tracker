@@ -10,6 +10,7 @@ interface IssueDescriptionPropsType {
   issueId: number;
   milestoneName: string;
   writer: string;
+  writerImage: string;
   modificationTime: string;
 }
 
@@ -17,6 +18,7 @@ const IssueDescription = ({
   issueId,
   milestoneName,
   writer,
+  writerImage,
   modificationTime,
 }: IssueDescriptionPropsType) => {
   const [isPopOverOpen, setIsPopOverOpen] = useState(false);
@@ -34,7 +36,7 @@ const IssueDescription = ({
           onMouseLeave={() => setIsPopOverOpen(false)}
         >
           {writer}
-          {isPopOverOpen && <AuthorPopOver />}
+          {isPopOverOpen && <AuthorPopOver writer={writer} writerImage={writerImage} />}
         </S.AuthorPopOverWrapper>
         <S.Text>님에 의해 작성되었습니다</S.Text>
       </S.TimeStamp>
