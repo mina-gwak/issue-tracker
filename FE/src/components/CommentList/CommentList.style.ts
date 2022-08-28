@@ -2,14 +2,13 @@ import styled from 'styled-components';
 
 //index.tsx
 export const CommentListWrapper = styled.div`
-  margin-right: 4rem;
   min-width: 550px;
 `;
 
 export const CreateButton = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: 10px;
+  margin-top: 16px;
 `;
 
 export const TextAreaContainer = styled.div`
@@ -24,6 +23,7 @@ export const CommentWrapper = styled.div`
 
 export const CommentWriterImage = styled.div`
   margin-right: 1rem;
+
   img {
     margin-top: 0.7rem;
     width: 44px;
@@ -34,7 +34,7 @@ export const CommentWriterImage = styled.div`
 export const CommentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 880px;
   border: 1px solid #d9dbe9;
   border-radius: 16px;
   overflow: hidden;
@@ -44,16 +44,18 @@ export const CommentHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex: 1;
-  padding: 0.5rem 1.5rem;
+  height: 64px;
   background-color: ${({ theme }) => theme.colors.grey6};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.grey4};
+  padding: 18px 24px;
 `;
 
 export const CommentContent = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0.5rem 1.5rem;
-  flex: 1;
+  line-height: 28px;
+  background-color: ${({ theme }) => theme.colors.white};
+  padding: 16px 24px;
 `;
 
 export const CommentHeaderSection = styled.div`
@@ -65,6 +67,7 @@ export const CommentHeaderSection = styled.div`
     & > svg {
       cursor: pointer;
     }
+
     & > div {
       margin-right: 1rem;
     }
