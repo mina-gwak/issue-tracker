@@ -1,4 +1,6 @@
-import { useRecoilValue } from 'recoil';
+import { useEffect } from 'react';
+
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 
 import * as S from '@components/IssueMenu/Tabs/Tabs.style';
 import Icon from '@components/common/Icon';
@@ -11,7 +13,13 @@ import { IssueDataType } from '@type/issueType';
 const Tabs = () => {
   const filterBarValue = useRecoilValue(filterBarQueryString);
   const labelMilestoneActiveValue = useRecoilValue(labelMilestoneActiveState);
+  const resetTab = useResetRecoilState(labelMilestoneActiveState);
+
   const { data } = useIssuesQuery<IssueDataType>(filterBarValue);
+
+  useEffect(() => {
+    return () => resetTab();
+  }, []);
 
   return (
     <S.TabContainer>
