@@ -4,7 +4,7 @@ import { ICON_NAME, ICON_SIZE } from '@components/common/Icon/constants';
 
 const DetailIssueStatus = ({ isOpen }: { isOpen: boolean }) => {
   return (
-    <S.IconContainer>
+    <S.IconContainer isOpen={isOpen}>
       {isOpen ? (
         <Icon iconName={ICON_NAME.OPEN_ISSUE} iconSize={ICON_SIZE.LARGE} />
       ) : (

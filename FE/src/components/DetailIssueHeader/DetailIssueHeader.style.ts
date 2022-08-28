@@ -3,18 +3,20 @@ import styled from 'styled-components';
 //index.tsx
 export const DetailIssueHeaderWrapper = styled.div`
   width: 100%;
-  padding-bottom: 3rem;
   border-bottom: ${({ theme }) => `1px solid ${theme.colors.grey5}`};
+  padding-bottom: 32px;
+  margin-bottom: 32px;
 `;
 
 export const HeaderDescription = styled.div`
   display: flex;
   align-items: center;
+  gap: 8px;
 `;
 
 export const IssueInfo = styled.span`
-  font-size: 1.2rem;
-  margin-left: 8px;
+  color: ${({ theme }) => theme.colors.grey1};
+  font-size: ${({ theme }) => theme.fontSizes.medium};
 `;
 
 //HeaderEditMode.tsx
@@ -25,7 +27,7 @@ export const HeaderEditWrapper = styled.div`
 
 export const TitleInput = styled.input`
   min-width: 700px;
-  font-size: ${({ theme }) => theme.fontSizes.display}px;
+  font-size: ${({ theme }) => theme.fontSizes.display};
   height: 46px;
   border: none;
   border-radius: 11px;
@@ -46,23 +48,22 @@ export const EditButtonContainer = styled.div`
 export const HeaderViewWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
 `;
 
 export const HeaderTitleContainer = styled.div`
-  font-size: 2rem;
+  font-size: ${({ theme }) => theme.fontSizes.display};
   display: flex;
-  margin-bottom: 1rem;
 `;
 
 export const Title = styled.h2`
-  margin-bottom: 1rem;
-  font-size: ${({ theme }) => theme.fontSizes.display}px;
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  font-size: ${({ theme }) => theme.fontSizes.display};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
 `;
 
 export const IssueNumber = styled.span`
   color: ${({ theme }) => theme.colors.grey2};
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
   margin-left: 1rem;
 `;
 
@@ -72,7 +73,10 @@ export const ViewButtonContainer = styled.div`
 `;
 
 //DetailIssueStatus.tsx
-export const IconContainer = styled.div`
+export const IconContainer = styled.div<{ isOpen: boolean }>`
+  border: 1px solid ${({ isOpen, theme }) => isOpen ? theme.colors.blue : theme.colors.purple};
+  border-radius: 30px;
+  
   svg {
     width: 100px;
     height: 40px;
