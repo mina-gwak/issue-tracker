@@ -19,7 +19,7 @@ const Filter = ({ type, title }: FilterPropsType) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const {filterValue, fetchFilterValue} = useFilterValue({ type, title });
   const [isModalOpen, toggleModal] = useModal({ modalRef });
-  const { isChecked, checkBoxClickHandler } = useFilterOptions({ type: 'is' });
+  const { isChecked, checkBoxClickHandler } = useFilterOptions({ type });
 
   return (
     <>
