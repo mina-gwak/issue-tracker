@@ -28,6 +28,7 @@ const sizeStyles = css<StyledIconProps>`
 `;
 
 export const Icon = styled(SVG)<StyledIconProps>`
+  display: block;
   flex-shrink: 0;
   ${sizeStyles}
 `;
