@@ -30,9 +30,11 @@ const AddIssueForm = () => {
   const navigate = useNavigate();
   const { mutate } = useMutation(addIssue, {
     onSuccess: () => {
-      queryClient.invalidateQueries('issues');
+      queryClient.invalidateQueries('issues', {
+        refetchInactive: true,
+      });
       navigate('/issue-list');
-    }
+    },
   });
 
   const isSubmitDisabled = !title || !content;
