@@ -8,6 +8,7 @@ import MilestoneTableHeader from '@components/MilestoneTable/MilestoneTableHeade
 import Error from '@pages/Error';
 import Loading from '@pages/Loading';
 import { getMilestoneData } from '@store/milestone';
+
 const MilestoneTable = () => {
   const milestoneData = useRecoilValueLoadable(getMilestoneData);
 
@@ -20,9 +21,7 @@ const MilestoneTable = () => {
             milestoneCloseCount={milestoneData.contents.closeMilestoneCount}
           />
           {milestoneData.contents.milestoneSingleInfos.map((data: any) => (
-            <React.Fragment key={data.id}>
-              <MilestoneItem data={data} />
-            </React.Fragment>
+            <MilestoneItem key={data.id} data={data} />
           ))}
         </S.Wrapper>
       );
