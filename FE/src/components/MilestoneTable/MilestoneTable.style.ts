@@ -64,7 +64,7 @@ export const RightContainer = styled.div`
 export const EditIcons = styled.div`
   cursor: pointer;
   display: flex;
-  font-size: ${({ theme }) => theme.fontSizes.xSmall}px;
+  font-size: ${({ theme }) => theme.fontSizes.xSmall};
   justify-content: flex-end;
 `;
 
@@ -85,5 +85,5 @@ export const DeleteIcon = styled.div`
 export const StateContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  font-size: ${({ theme }) => theme.fontSizes.xSmall}px;
+  font-size: ${({ theme }) => theme.fontSizes.xSmall};
 `;

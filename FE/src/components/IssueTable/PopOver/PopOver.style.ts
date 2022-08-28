@@ -143,7 +143,3 @@ export const UserInformation = styled.div`
 `;
 
 export const UserId = styled.h3``;
-
-export const UserName = styled.span`
-  color: ${({ theme }) => theme.colors.grey2};
-`;

@@ -40,3 +40,11 @@ export interface IssuePopOverDataType {
   writtenTime: string;
   assignedMe: boolean;
 }
+
+export interface AddIssueDataType {
+  title: string;
+  content: string;
+  assignees?: string[];
+  labels?: string[];
+  milestone?: string;
+}

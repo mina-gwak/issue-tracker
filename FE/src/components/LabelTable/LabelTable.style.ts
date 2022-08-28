@@ -55,20 +55,25 @@ export const Description = styled.div`
   color: ${({ theme }) => theme.colors.grey2};
 `;
 
-export const IconContainer = styled.div`
+export const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+  gap: 24px;
   font-size: ${({ theme }) => theme.fontSizes.xSmall};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
 `;
 
-export const EditIcon = styled.div`
+export const EditButton = styled.button`
   display: flex;
   align-items: center;
-  margin-right: 30px;
+  gap: 4px;
   cursor: pointer;
 `;
 
-export const DeleteIcon = styled.div`
+export const DeleteButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 4px;
   color: ${({ theme }) => theme.colors.red};
   cursor: pointer;
 `;
@@ -84,7 +89,7 @@ export const LabelBadgeWrapper = styled.div`
 `;
 
 export const LabelBadgeContainer = styled.div<StyledProps>`
-  ${flexCenter}
+  ${flexCenter};
   display: inline-block;
 
   padding: 6px 16px;

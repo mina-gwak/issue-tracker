@@ -7,15 +7,15 @@ import Modal from '@components/Modal';
 import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
 import { issues } from '@data/dropdownData';
-import { useModal } from '@hooks/useModal';
-import { modalState } from '@store/dropdown';
+import useFilterOptions from '@hooks/useFilterOptions';
+import useModal from '@hooks/useModal';
 import { filterBarInputValueState } from '@store/filterBar';
 
 const FilterBar = () => {
   const modalRef = useRef<HTMLDivElement>(null);
-  const modalValue = useRecoilValue(modalState);
   const filterBarValue = useRecoilValue(filterBarInputValueState);
-  const { toggleModal, handleModalClick } = useModal({ modalRef, type: 'issues' });
+  const [isModalOpen, toggleModal] = useModal({ modalRef });
+  const { isChecked, checkBoxClickHandler } = useFilterOptions({ type: 'is' });
 
   return (
     <S.Wrapper>
@@ -24,13 +24,13 @@ const FilterBar = () => {
           필터
           <Icon iconName={ICON_NAME.SELECT} />
         </S.FilterButton>
-        {modalValue['issues'] && (
+        {isModalOpen && (
           <Modal
             modalRef={modalRef}
             data={issues}
-            title='이슈'
-            type='is'
-            handleModalClick={handleModalClick}
+            title='이슈 필터'
+            isChecked={isChecked}
+            checkBoxClickHandler={checkBoxClickHandler}
           />
         )}
       </S.FilterButtonWrapper>

@@ -17,7 +17,7 @@ const typingStyles = css<{ isValueExist: boolean }>`
 
 export const Wrapper = styled.div`
   position: relative;
-  width: 840px;
+  width: 880px;
   height: 343px;
 `;
 
@@ -33,7 +33,7 @@ export const TextareaBox = styled.div<{ isValueExist: boolean }>`
 `;
 
 export const Textarea = styled.textarea`
-  width: 840px;
+  width: 880px;
   height: 343px;
   background-color: inherit;
   border: none;

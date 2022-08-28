@@ -6,7 +6,7 @@ import { LabelCreateType, LabelDataType } from '@type/label';
 export const getLabelsData = async (): Promise<LabelDataType> => {
   const accessToken = localStorage.getItem('accessToken')!;
   try {
-    const response = await axios.get(`${API.LABEL()}`, {
+    const response = await axios.get(`${API.LABEL}`, {
       headers: {
         Authorization: `Bearer ${JSON.parse(accessToken)}`,
       },
@@ -22,7 +22,7 @@ export const createLabel = async (newLabelData: LabelCreateType) => {
   const accessToken = localStorage.getItem('accessToken')!;
   try {
     const response = await axios.post(
-      `${API.LABEL_CREATE()}`,
+      `${API.LABEL_CREATE}`,
       { ...newLabelData },
       {
         headers: {

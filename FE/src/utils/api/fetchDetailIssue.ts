@@ -40,7 +40,7 @@ export async function fetchEditTitle(issueId: number, title: string) {
 export const fetchIssueUpdate = async (issueId: number, state: boolean) => {
   const accessToken = localStorage.getItem('accessToken')!;
   try {
-    const response = await axios.post(`${API.STATUS_UPDATE()}`, null, {
+    const response = await axios.post(`${API.STATUS_UPDATE}`, null, {
       headers: {
         Authorization: `Bearer ${JSON.parse(accessToken)}`,
       },

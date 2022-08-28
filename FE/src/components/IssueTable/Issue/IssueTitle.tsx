@@ -28,7 +28,7 @@ const IssueTitle = ({ issueId, isOpened, title, labels }: IssueTitlePropsType) =
         onMouseEnter={() => setIsPopOverOpen(true)}
         onMouseLeave={() => setIsPopOverOpen(false)}
       >
-        <Link to={`이슈 상세 페이지`}>
+        <Link to={`/issue-detail/${issueId}`}>
           <S.Title>{title}</S.Title>
         </Link>
         {isPopOverOpen && <IssuePopOver issueId={issueId} />}

@@ -5,7 +5,7 @@ import { API } from '@constants';
 export const getMilestonesData = async (state: string): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken')!;
   try {
-    const response = await axios.get(`${API.MILESTONE()}`, {
+    const response = await axios.get(`${API.MILESTONE}`, {
       headers: {
         Authorization: `Bearer ${JSON.parse(accessToken)}`,
       },
@@ -24,7 +24,7 @@ export async function fetchCreateMilestone(newMilestoneData: { [key: string]: st
   const accessToken = localStorage.getItem('accessToken')!;
   try {
     const response = await axios.post(
-      `${API.MILESTONE_CREATE()}`,
+      `${API.MILESTONE_CREATE}`,
       { ...newMilestoneData },
       {
         headers: {

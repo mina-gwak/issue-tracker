@@ -4,7 +4,7 @@ export const MilestoneEditWrapper = styled.div<{ type: string }>`
   padding: 2rem;
   border: none;
   border-top: 1px solid ${({ theme }) => theme.colors.grey5};
-  border-radius: 0px;
+  border-radius: 0;
   ${({ type, theme }) =>
     type === 'create' &&
     `margin-bottom: 1.5rem; border-radius: 16px;
@@ -32,7 +32,7 @@ export const MilestoneInputContainer = styled.div`
 export const ErrorMessage = styled.div`
   position: absolute;
   color: ${({ theme }) => theme.colors.red};
-  font-size: ${({ theme }) => theme.fontSizes.xSmall}px;
+  font-size: ${({ theme }) => theme.fontSizes.xSmall};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   left: 55%;
   top: 0;

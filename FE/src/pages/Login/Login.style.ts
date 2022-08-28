@@ -15,7 +15,7 @@ export const GithubLoginButton = styled.a`
   gap: 10px;
   width: 340px;
   height: 64px;
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.white}!important;
   font-size: ${({ theme }) => theme.fontSizes.medium};
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   background-color: ${({ theme }) => theme.colors.black};
