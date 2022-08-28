@@ -1,18 +1,31 @@
 import { useState } from 'react';
 
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import Button from '@components/common/Button';
 import { BUTTON_SIZE } from '@components/common/Button/constants';
 import Textarea from '@components/common/Textarea';
+import { detailIssueTrigger } from '@store/detailIssue';
+import { editComments } from '@utils/api/fetchComment';
 
-const EditComment = ({ issueId, content, handelCancelClick }: any) => {
-  const [comment, setComment] = useState('');
+const EditComment = ({ commentId, content, handelCancelClick }: any) => {
+  const setDetailIssueTrigger = useSetRecoilState(detailIssueTrigger);
 
-  const handleSubmitClick = async () => {};
+  const [editComment, setEditComment] = useState('');
+
+  const handleSubmitClick = async () => {
+    if (editComment === content) return handelCancelClick();
+
+    const editCommentResult = await editComments(commentId, editComment);
+    if (editCommentResult) {
+      setDetailIssueTrigger((prev) => prev + 1);
+      handelCancelClick();
+    }
+  };
   return (
     <EditCommentBlock>
-      <Textarea comment={comment} setComment={setComment} />
+      <Textarea comment={editComment} setComment={setEditComment} />
       <ButtonContainer>
         <Button size={BUTTON_SIZE.SMALL} onClick={handelCancelClick}>
           <span> 편집 취소</span>

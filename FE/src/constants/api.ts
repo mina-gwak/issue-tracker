@@ -17,4 +17,5 @@ export const API = {
   SHARE_DETAIL: (issueId: number) => `/api/issues/${issueId}`,
   SHARE_DETAIL_TITLE: (issueId: number) => `/api/issues/${issueId}/title`,
   COMMENT_CREATE: (issueId: number) => `/api/issues/${issueId}/comments `,
+  COMMENT_UPDATE: (commentId: number) => `/api/issues/${commentId}/comments `,
 } as const;
