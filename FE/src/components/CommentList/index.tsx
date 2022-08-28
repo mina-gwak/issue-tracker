@@ -20,21 +20,21 @@ interface CommentListPropsType {
 }
 
 const CommentList = ({ issueId, comments }: CommentListPropsType) => {
-  const [comment, setComment] = useState('');
+  const [content, setContent] = useState('');
   const setDetailIssueTrigger = useSetRecoilState(detailIssueTrigger);
   const { name, image } = useRecoilValue(userState);
 
   const handleCreateCommentClick = async () => {
-    if (!comment) return;
-    const createCommentResult = await createComment(issueId, comment);
+    if (!content) return;
+    const createCommentResult = await createComment(issueId, content);
     if (createCommentResult) {
       setDetailIssueTrigger((triggerCount) => triggerCount + 1);
-      setComment('');
+      setContent('');
     }
   };
 
-  const commentList = comments.map((comment: commentType, idx: number) => (
-    <Comment key={issueId + idx} comment={comment} />
+  const commentList = comments.map((comment: commentType) => (
+    <Comment key={comment.commentId} comment={comment} />
   ));
 
   return (
@@ -44,7 +44,7 @@ const CommentList = ({ issueId, comments }: CommentListPropsType) => {
         <S.CommentWriterImage>
           <Image url={image} alt={name} size={IMAGE_SIZE.MEDIUM} />
         </S.CommentWriterImage>
-        <Textarea comment={comment} setComment={setComment} />
+        <Textarea content={content} setContent={setContent} />
       </S.TextAreaContainer>
       <S.CreateButton>
         <Button size={BUTTON_SIZE.SMALL} onClick={handleCreateCommentClick}>
