@@ -10,13 +10,13 @@ import { commentType } from '@type/detailIssueType';
 import { calcTwoTimeDifference } from '@utils/date';
 
 interface CommentPropsType {
-  issueId: number;
   comment: commentType;
 }
 
-const Comment = ({ issueId, comment }: CommentPropsType) => {
+const Comment = ({ comment }: CommentPropsType) => {
   const {
     commentUserOutline: { optionName, imageUrl },
+    commentId,
     content,
     writtenTime,
   } = comment;
@@ -32,7 +32,11 @@ const Comment = ({ issueId, comment }: CommentPropsType) => {
         <Image url={imageUrl} alt={optionName} size={IMAGE_SIZE.MEDIUM} />
       </S.CommentWriterImage>
       {isEdit ? (
-        <EditComment issueId={issueId} content={content} handelCancelClick={handelCancelClick} />
+        <EditComment
+          commentId={commentId}
+          content={content}
+          handelCancelClick={handelCancelClick}
+        />
       ) : (
         <S.CommentContainer>
           <S.CommentHeader>
