@@ -9,16 +9,19 @@ export const DetailIssueWrapper = styled.div`
 `;
 
 export const DetailMain = styled.div`
-  display: grid;
-  grid-template-columns: 75% 25%;
+  display: flex;
+  gap: 32px;
   width: 100%;
 `;
 
 export const DetailOption = styled.div``;
 
-export const DetailDeleteButton = styled.div`
-  margin-top: 1rem;
-  margin-right: 2rem;
+export const IssueDeleteButton = styled.button`
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+  color: ${({ theme }) => theme.colors.red};
+  font-size: ${({ theme }) => theme.fontSizes.xSmall};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  margin: 18px 32px 0 auto;
 `;
