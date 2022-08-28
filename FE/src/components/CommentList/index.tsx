@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import styled from 'styled-components';
 
 import Comment from '@components/CommentList/Comment';
 import * as S from '@components/CommentList/CommentList.style';
@@ -13,7 +12,7 @@ import Textarea from '@components/common/Textarea';
 import { detailIssueTrigger } from '@store/detailIssue';
 import { userState } from '@store/user';
 import { commentType } from '@type/detailIssueType';
-import { CreateComment } from '@utils/api/fetchComment';
+import { createComment } from '@utils/api/fetchComment';
 
 interface CommentListPropsType {
   issueId: number;
@@ -27,7 +26,7 @@ const CommentList = ({ issueId, comments }: CommentListPropsType) => {
 
   const handleCreateCommentClick = async () => {
     if (!comment) return;
-    const createCommentResult = await CreateComment(issueId, comment);
+    const createCommentResult = await createComment(issueId, comment);
     if (createCommentResult) {
       setDetailIssueTrigger((triggerCount) => triggerCount + 1);
       setComment('');
@@ -35,7 +34,7 @@ const CommentList = ({ issueId, comments }: CommentListPropsType) => {
   };
 
   const commentList = comments.map((comment: commentType, idx: number) => (
-    <Comment key={idx} issueId={issueId} comment={comment} />
+    <Comment key={issueId + idx} comment={comment} />
   ));
 
   return (
