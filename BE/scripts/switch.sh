@@ -9,13 +9,11 @@ else
   SWITCH_PORT=8081
 fi
 
-function switch_proxy() {
-  # Change proxying port into target port
-  echo "set \$service_url http://127.0.0.1:${SWITCH_PORT};" | tee /home/ec2-user/config/service_url.inc
-  echo "> Now Nginx proxies to ${SWITCH_PORT}."
+# Change proxying port into target port
+echo "set \$service_url http://127.0.0.1:${SWITCH_PORT};" | tee /home/ec2-user/config/service_url.inc
+echo "> Now Nginx proxies to ${SWITCH_PORT}."
 
-  # Reload nginx.
-  sudo service nginx reload
-  echo "> Nginx reloaded."
-}
+# Reload nginx.
+sudo service nginx reload
+echo "> Nginx reloaded."
 
