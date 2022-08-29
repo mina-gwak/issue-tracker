@@ -5,10 +5,9 @@ import { TextColorArrType } from '@type/label';
 interface InputRadioPropsType {
   value: TextColorArrType;
   onChange: (color: string) => () => void;
-  name: string;
 }
 
-const InputRadio = ({ value, onChange, name }: InputRadioPropsType) => {
+const InputRadio = ({ value, onChange }: InputRadioPropsType) => {
   const [isCheckedRadioButton, setIsCheckedRadioButton] = useState<string>('#000');
 
   const handleOnChangeRadioButton = () => {
@@ -21,7 +20,6 @@ const InputRadio = ({ value, onChange, name }: InputRadioPropsType) => {
         type='radio'
         id={value.id}
         value={value.colorCode}
-        name={name}
         onChange={handleOnChangeRadioButton}
         checked={value.colorCode === isCheckedRadioButton}
       />
