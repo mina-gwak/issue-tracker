@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.codesquad.issueTracker.comment.domain.Comment;
 import com.codesquad.issueTracker.comment.domain.CommentRepository;
 import com.codesquad.issueTracker.comment.domain.CommentStatus;
-import com.codesquad.issueTracker.common.infrastructure.aspect.LogExecutionTime;
 import com.codesquad.issueTracker.exception.comment.CommentNotEditableException;
 import com.codesquad.issueTracker.exception.comment.CommentNotFoundException;
 import com.codesquad.issueTracker.exception.issue.IssueNotEditableException;
@@ -56,7 +55,6 @@ public class IssueService {
     private final MilestoneRepository milestoneRepository;
     private final CommentRepository commentRepository;
 
-    @LogExecutionTime
     @Transactional(readOnly = true)
     public IssueCoversResponse findIssuesByCondition(String query, Long userId, Pageable pageable) {
         FilterCondition condition = queryParser.makeFilterCondition(query);
