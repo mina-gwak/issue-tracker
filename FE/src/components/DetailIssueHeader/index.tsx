@@ -5,32 +5,39 @@ import DetailIssueStatus from '@components/DetailIssueHeader/DetailIssueStatus';
 import HeaderEditMode from '@components/DetailIssueHeader/HeaderEditMode';
 import HeaderViewMode from '@components/DetailIssueHeader/HeaderViewMode';
 import { titleEditMode } from '@store/detailIssue';
-import { DetailIssueType } from '@type/detailIssueType';
+import { commentType, issueContentType } from '@type/detailIssueType';
 import { calcTwoTimeDifference } from '@utils/date';
 interface DetailIssueHeaderPropsType {
-  detailData: DetailIssueType;
+  issueId: number;
+  title: string;
+  editable: boolean;
+  issueOutline: issueContentType;
+  commentOutlines: commentType[];
+  open: boolean;
 }
 
-const DetailIssueHeader = ({ detailData }: DetailIssueHeaderPropsType) => {
+const DetailIssueHeader = ({
+  issueId,
+  title,
+  editable,
+  issueOutline,
+  commentOutlines,
+  open,
+}: DetailIssueHeaderPropsType) => {
   const isTitleEditMode = useRecoilValue(titleEditMode);
-  const currentDate = new Date();
-  const passedTime = calcTwoTimeDifference(currentDate, detailData.writtenTime);
-  const author = detailData.writerOutline.optionName;
-  const headerInfo = `이 이슈가 ${passedTime}에 ${author}님에 의해 열렸습니다 ∙ 코멘트 ${detailData.commentOutlines.length}개`;
+  const passedTime = calcTwoTimeDifference(new Date(), issueOutline.writtenTime);
+  const author = issueOutline.writerOutline.optionName;
+  const headerInfo = `이 이슈가 ${passedTime}에 ${author}님에 의해 열렸습니다 ∙ 코멘트 ${commentOutlines.length}개`;
 
   return (
     <S.DetailIssueHeaderWrapper>
       {isTitleEditMode ? (
-        <HeaderEditMode issueId={detailData.issueId} title={detailData.title} />
+        <HeaderEditMode issueId={issueId} title={title} />
       ) : (
-        <HeaderViewMode
-          issueId={detailData.issueId}
-          status={detailData.open}
-          title={detailData.title}
-        />
+        <HeaderViewMode issueId={issueId} status={open} title={title} editable={editable} />
       )}
       <S.HeaderDescription>
-        <DetailIssueStatus isOpen={detailData.open} />
+        <DetailIssueStatus isOpen={open} />
         <S.IssueInfo>{headerInfo}</S.IssueInfo>
       </S.HeaderDescription>
     </S.DetailIssueHeaderWrapper>

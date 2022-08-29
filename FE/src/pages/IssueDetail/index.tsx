@@ -17,10 +17,13 @@ import { queryClient } from '@src';
 import { detailIdState, getDetailIssueData } from '@store/detailIssue';
 
 const IssueDetail = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
   const setDetailIssueId = useSetRecoilState(detailIdState);
 
-  const { id } = useParams();
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (id) setDetailIssueId(Number(id));
+  }, [id]);
 
   const { mutate } = useMutation(deleteIssue, {
     onSuccess: () => {
@@ -31,27 +34,26 @@ const IssueDetail = () => {
     },
   });
 
-  useEffect(() => {
-    if (id) setDetailIssueId(Number(id));
-  }, []);
+  const { state, contents } = useRecoilValueLoadable(getDetailIssueData);
 
-  const detailData = useRecoilValueLoadable(getDetailIssueData);
-  switch (detailData.state) {
+  switch (state) {
     case 'hasValue':
       return (
         <S.DetailIssueWrapper>
-          <DetailIssueHeader detailData={detailData.contents} />
+          <DetailIssueHeader {...contents} />
           <S.DetailMain>
-            <CommentList
-              issueId={detailData.contents.issueId}
-              comments={detailData.contents.commentOutlines}
-            />
+            <CommentList {...contents} />
             <S.DetailOption>
               <SideBar />
-              <S.IssueDeleteButton type='button' onClick={() => id && mutate(+id)}>
-                <Icon iconName={ICON_NAME.DELETE_ICON} iconSize={ICON_SIZE.SMALL} />
-                이슈 삭제
-              </S.IssueDeleteButton>
+              {contents.editable && (
+                <S.IssueDeleteButton
+                  type='button'
+                  onClick={() => contents.issueId && mutate(contents.issueId)}
+                >
+                  <Icon iconName={ICON_NAME.DELETE_ICON} iconSize={ICON_SIZE.SMALL} />
+                  이슈 삭제
+                </S.IssueDeleteButton>
+              )}
             </S.DetailOption>
           </S.DetailMain>
         </S.DetailIssueWrapper>
