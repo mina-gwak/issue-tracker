@@ -6,7 +6,7 @@ export interface UseInputReturnType {
   onChange: ({ target }: { target: HTMLInputElement }) => void;
 }
 
-const useInput = (defaultInputValue: string): UseInputReturnType => {
+const useInput = (defaultInputValue: string = ''): UseInputReturnType => {
   const [inputValue, setInputValue] = useState(defaultInputValue);
 
   const onChange = ({ target }: { target: HTMLInputElement }) => setInputValue(target.value);

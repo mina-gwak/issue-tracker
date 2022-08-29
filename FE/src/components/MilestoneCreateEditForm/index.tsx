@@ -6,11 +6,12 @@ import InputForm from '@components/InputForm';
 import * as S from '@components/MilestoneCreateEditForm/MilestoneCreateEditForm.style';
 import Button from '@components/common/Button';
 import { BUTTON_SIZE } from '@components/common/Button/constants';
-import { defaultMilestoneData } from '@data/milestoneData';
 import useInput from '@hooks/useInput';
 import { milestoneTrigger } from '@store/milestone';
 import { MilestoneTabType } from '@type/milestone';
 import { fetchCreateMilestone, fetchEditMilestone } from '@utils/api/fetchMilestone';
+import { getLocalDate, isCorrectDate } from '@utils/date';
+
 interface MilestoneCreateEditFormPropsType {
   title: string;
   type: string;
@@ -21,39 +22,33 @@ interface MilestoneCreateEditFormPropsType {
 const MilestoneCreateEditForm = ({
   title,
   type,
-  data = defaultMilestoneData,
+  data,
   setEditMode,
 }: MilestoneCreateEditFormPropsType) => {
-  const { id, name, description, dueDate } = data;
   const setMilestoneTrigger = useSetRecoilState(milestoneTrigger);
   const [dateInputError, setDateError] = useState(false);
 
-  const titleInput = useInput('');
-  const dateInput = useInput('');
-  const descriptionInput = useInput('');
+  const milestoneId = data?.id || 0;
+  const titleInput = useInput(data?.name || '');
+  const dateInput = useInput(getLocalDate(data?.dueDate));
+  const descriptionInput = useInput(data?.description || '');
 
   const alertDateTypeError = () => setDateError(true);
-
   const handleSubmitClick = async () => {
-    const timeChecking = (date: string) => {
-      const regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
-      return regex.test(date);
-    };
-
-    if (!timeChecking(dateInput.inputValue)) {
+    if (!isCorrectDate(dateInput.inputValue)) {
       alertDateTypeError();
       return;
     }
 
     const newMilestoneData = {
-      title: titleInput.inputValue,
-      dueDate: dateInput.inputValue,
+      name: titleInput.inputValue,
+      dueDate: new Date(dateInput.inputValue).toISOString(),
       description: descriptionInput.inputValue,
     };
 
     let isSuccessFetch;
     if (type === 'create') isSuccessFetch = await fetchCreateMilestone(newMilestoneData);
-    else isSuccessFetch = await fetchEditMilestone(id, newMilestoneData);
+    if (type === 'edit') isSuccessFetch = await fetchEditMilestone(milestoneId, newMilestoneData);
 
     if (isSuccessFetch) {
       if (setEditMode) setEditMode(false);
@@ -68,14 +63,14 @@ const MilestoneCreateEditForm = ({
       <S.Title>{title}</S.Title>
       <S.MilestoneInputContainer>
         <div>
-          <InputForm placeholder={name} {...titleInput} />
-          <InputForm placeholder={dueDate} {...dateInput} />
+          <InputForm placeholder='마일스톤 이름' {...titleInput} />
+          <InputForm placeholder='완료일 (양식 : YYYY-MM-DD)' {...dateInput} />
         </div>
 
         {dateInputError && (
-          <S.ErrorMessage>▮날짜 입력 양식이 잘못되었습니다 'YYYY - MM - DD' </S.ErrorMessage>
+          <S.ErrorMessage>▮날짜 입력 양식이 잘못되었습니다 'YYYY-MM-DD' </S.ErrorMessage>
         )}
-        <InputForm placeholder={description} {...descriptionInput} />
+        <InputForm placeholder='설명(선택)' {...descriptionInput} />
       </S.MilestoneInputContainer>
       <S.SubmitButton>
         {type === 'edit' && (
