@@ -6,21 +6,24 @@ import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
 import Image from '@components/common/Image';
 import { IMAGE_SIZE } from '@components/common/Image/constants';
-import { commentType } from '@type/detailIssueType';
+import { commentType, issueContentType } from '@type/detailIssueType';
 import { calcTwoTimeDifference } from '@utils/date';
 
 interface CommentPropsType {
-  comment: commentType;
+  comment?: commentType;
+  issueContent?: issueContentType;
+  editable: boolean;
 }
 
-const Comment = ({ comment }: CommentPropsType) => {
+const Comment = ({ comment, issueContent, editable }: CommentPropsType) => {
   const {
-    commentUserOutline: { optionName, imageUrl },
-    commentId,
+    writerOutline: { optionName, imageUrl },
     content,
     writtenTime,
-  } = comment;
+  } = (comment || issueContent)!; //writerOutline 백엔드 변경 전
+
   const [isEdit, setIsEdit] = useState(false);
+  const currentCommentId = comment?.commentId || 0;
   const handleEditClick = () => setIsEdit(true);
   const handelCancelClick = () => {
     setIsEdit(false);
@@ -29,11 +32,11 @@ const Comment = ({ comment }: CommentPropsType) => {
   return (
     <S.CommentWrapper>
       <S.CommentWriterImage>
-        <Image url={imageUrl} alt={optionName} size={IMAGE_SIZE.MEDIUM} />
+        <Image url={imageUrl} alt='유저 이미지' size={IMAGE_SIZE.MEDIUM} />
       </S.CommentWriterImage>
       {isEdit ? (
         <EditComment
-          commentId={commentId}
+          commentId={currentCommentId}
           content={content}
           handelCancelClick={handelCancelClick}
         />
@@ -47,11 +50,16 @@ const Comment = ({ comment }: CommentPropsType) => {
               </S.CommentHeaderDate>
             </S.CommentHeaderSection>
             <S.CommentHeaderSection>
-              <S.CommentWriter>작성자</S.CommentWriter>
-              <S.CommentEditButton onClick={handleEditClick}>
-                <Icon iconName={ICON_NAME.EDIT_ICON} />
-                <span>편집</span>
-              </S.CommentEditButton>
+              {editable && (
+                <>
+                  <S.CommentWriter>작성자</S.CommentWriter>
+                  <S.CommentEditButton onClick={handleEditClick}>
+                    <Icon iconName={ICON_NAME.EDIT_ICON} />
+                    <span>편집</span>
+                  </S.CommentEditButton>
+                </>
+              )}
+
               <Icon iconName={ICON_NAME.EMOJI} />
             </S.CommentHeaderSection>
           </S.CommentHeader>

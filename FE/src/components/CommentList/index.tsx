@@ -11,15 +11,22 @@ import { IMAGE_SIZE } from '@components/common/Image/constants';
 import Textarea from '@components/common/Textarea';
 import { detailIssueTrigger } from '@store/detailIssue';
 import { userState } from '@store/user';
-import { commentType } from '@type/detailIssueType';
+import { commentType, issueContentType } from '@type/detailIssueType';
 import { createComment } from '@utils/api/fetchComment';
 
 interface CommentListPropsType {
   issueId: number;
-  comments: commentType[];
+  commentOutlines: commentType[];
+  issueOutline: issueContentType;
+  editable: boolean;
 }
 
-const CommentList = ({ issueId, comments }: CommentListPropsType) => {
+const CommentList = ({
+  issueId,
+  commentOutlines,
+  issueOutline,
+  editable,
+}: CommentListPropsType) => {
   const [content, setContent] = useState('');
   const setDetailIssueTrigger = useSetRecoilState(detailIssueTrigger);
   const { name, image } = useRecoilValue(userState);
@@ -33,12 +40,13 @@ const CommentList = ({ issueId, comments }: CommentListPropsType) => {
     }
   };
 
-  const commentList = comments.map((comment: commentType) => (
-    <Comment key={comment.commentId} comment={comment} />
+  const commentList = commentOutlines.map((comment: commentType) => (
+    <Comment key={comment.commentId} comment={comment} editable={editable} />
   ));
 
   return (
     <S.CommentListWrapper>
+      <Comment issueContent={issueOutline} editable={editable} />
       {commentList}
       <S.TextAreaContainer>
         <S.CommentWriterImage>
