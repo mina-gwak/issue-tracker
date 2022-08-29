@@ -42,6 +42,8 @@ export const MilestoneItemWrapper = styled.div`
   padding: 10px;
 `;
 
+export const LeftContainer = styled.div``;
+
 export const MilestoneInfoTitle = styled.div`
   display: flex;
   div {
@@ -49,11 +51,20 @@ export const MilestoneInfoTitle = styled.div`
   }
 `;
 
-export const LeftContainer = styled.div``;
+export const NameDateContainer = styled.div`
+  display: flex;
+  margin-bottom: 8px;
+  svg {
+    margin-top: 5px;
+  }
+`;
+
+export const IconText = styled.span`
+  margin-left: 5px;
+`;
 
 export const Description = styled.div`
   display: flex;
-  padding-top: 5px;
   margin-left: 12px;
 `;
 
@@ -72,10 +83,6 @@ export const IconContainer = styled.div`
   display: flex;
   align-items: center;
   margin-left: 20px;
-`;
-
-export const IconText = styled.span`
-  margin-left: 5px;
 `;
 
 export const DeleteIcon = styled.div`
