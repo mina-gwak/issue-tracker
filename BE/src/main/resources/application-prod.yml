@@ -16,8 +16,8 @@ spring:
 
 
   redis:
-    host: 127.0.0.1
-    port: 6300
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
 
   sql:
     init:
