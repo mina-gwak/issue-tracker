@@ -18,24 +18,22 @@ public class IssueDetailResponse {
 
     private Long issueId;
     private String title;
-    private String content;
     private boolean isOpen;
-    private LocalDateTime writtenTime;
-
-    private UserOutlineResponse writerOutline;
+    private boolean editable;
+    private IssueOutline issueOutline;
     private List<UserOutlineResponse> assignees;
     private List<LabelOutline> labels;
-
     private MilestoneInformation milestoneInformation;
     private List<CommentOutline> commentOutlines;
 
-    public IssueDetailResponse(Issue issue) {
+    public IssueDetailResponse(Issue issue, boolean editable) {
         this.issueId = issue.getId();
         this.title = issue.getTitle();
-        this.content = issue.getContent();
         this.isOpen = issue.isOpened();
-        this.writtenTime = issue.getWrittenTime();
-        this.writerOutline = new UserOutlineResponse(issue.getWriter(), issue.getWriterImage());
+        this.editable = editable;
+        this.issueOutline = new IssueOutline(
+            new UserOutlineResponse(issue.getWriter(), issue.getWriterImage()),
+            issue.getContent(), issue.getWrittenTime());
         this.assignees = resolveAssignees(issue);
         this.labels = resolveLabels(issue);
         if (issue.getMilestone() != null) {

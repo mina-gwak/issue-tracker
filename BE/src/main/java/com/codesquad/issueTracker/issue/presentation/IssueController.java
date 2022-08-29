@@ -72,8 +72,9 @@ public class IssueController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<IssueDetailResponse> findIssue(@PathVariable Long id) {
-        return ResponseEntity.ok(issueService.findIssue(id));
+    public ResponseEntity<IssueDetailResponse> findIssue(@PathVariable Long id,
+        @RequestAttribute Long userId) {
+        return ResponseEntity.ok(issueService.findIssue(id, userId));
     }
 
     @DeleteMapping("/{issueId}")

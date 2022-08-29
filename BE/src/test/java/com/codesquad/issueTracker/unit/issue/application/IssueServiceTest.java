@@ -201,7 +201,7 @@ public class IssueServiceTest {
     @Test
     void find_detailed_inquiry_of_the_issue() {
         // given
-        User user = UserFactory.mockSingleUser(1);
+        User user = UserFactory.mockSingleUserWithId(1);
         Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
         Issue issue = IssueFactory.mockSingleIssue(1, user, milestone);
 
@@ -209,11 +209,11 @@ public class IssueServiceTest {
             .willReturn(Optional.of(issue));
 
         // when
-        IssueDetailResponse result = issueService.findIssue(1L);
+        IssueDetailResponse result = issueService.findIssue(1L, user.getId());
 
         // then
         assertThat(result.getTitle()).isEqualTo(issue.getTitle());
-        assertThat(result.getWriterOutline().getOptionName()).isEqualTo(user.getName());
+        assertThat(result.getIssueOutline().getWriterOutline().getOptionName()).isEqualTo(user.getName());
         assertThat(result.getMilestoneInformation().getMilestoneName()).isEqualTo(milestone.getName());
     }
 
@@ -221,7 +221,7 @@ public class IssueServiceTest {
     @Test
     void comment_is_order_by_written_time() {
         // given
-        User user = UserFactory.mockSingleUser(1);
+        User user = UserFactory.mockSingleUserWithId(1);
         Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
         Issue issue = IssueFactory.mockSingleIssue(1, user, milestone);
 
@@ -246,11 +246,11 @@ public class IssueServiceTest {
             .willReturn(Optional.of(issue));
 
         // when
-        IssueDetailResponse result = issueService.findIssue(1L);
+        IssueDetailResponse result = issueService.findIssue(1L, user.getId());
 
         // then
         assertThat(result.getTitle()).isEqualTo(issue.getTitle());
-        assertThat(result.getWriterOutline().getOptionName()).isEqualTo(user.getName());
+        assertThat(result.getIssueOutline().getWriterOutline().getOptionName()).isEqualTo(user.getName());
         assertThat(result.getMilestoneInformation().getMilestoneName()).isEqualTo(milestone.getName());
         List<Long> resultCommentIds = result.getCommentOutlines().stream()
             .map(CommentOutline::getCommentId)
@@ -269,7 +269,7 @@ public class IssueServiceTest {
 
         // when  & then
         assertThrows(IssueNotFoundException.class,
-            () -> issueService.findIssue(1L));
+            () -> issueService.findIssue(1L, 1L));
     }
 
     @DisplayName("작성자는 이슈를 삭제할 수 있다.")

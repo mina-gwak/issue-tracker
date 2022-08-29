@@ -240,8 +240,8 @@ class IssueControllerTest extends ControllerTest {
 
         Comment comment = new Comment(1L, "contents", LocalDateTime.now(), assignee1, issue, CommentStatus.INITIAL);
 
-        given(issueService.findIssue(issueId))
-            .willReturn(new IssueDetailResponse(issue));
+        given(issueService.findIssue(eq(issueId), anyLong()))
+            .willReturn(new IssueDetailResponse(issue, true));
 
         // when
         ResultActions perform = mockMvc.perform(
@@ -254,7 +254,7 @@ class IssueControllerTest extends ControllerTest {
             .andExpect(status().isOk());
 
         verify(issueService, times(1))
-            .findIssue(1L);
+            .findIssue(eq(1L), anyLong());
 
         // restdocs
         perform.andDo(
@@ -265,11 +265,12 @@ class IssueControllerTest extends ControllerTest {
                 responseFields(
                     fieldWithPath("issueId").type(NUMBER).description("이슈 id"),
                     fieldWithPath("title").type(STRING).description("이슈 타이틀"),
-                    fieldWithPath("content").type(STRING).description("이슈 컨텐츠"),
                     fieldWithPath("open").type(BOOLEAN).description("열린 이슈 여부"),
-                    fieldWithPath("writtenTime").type(STRING).description("작성 시간"),
-                    fieldWithPath("writerOutline.optionName").type(STRING).description("작성자"),
-                    fieldWithPath("writerOutline.imageUrl").type(STRING).description("작성자 이미지"),
+                    fieldWithPath("editable").type(BOOLEAN).description("수정 가능 여부"),
+                    fieldWithPath("issueOutline.writerOutline.optionName").type(STRING).description("작성자"),
+                    fieldWithPath("issueOutline.writerOutline.imageUrl").type(STRING).description("작성자 이미지"),
+                    fieldWithPath("issueOutline.content").type(STRING).description("이슈 컨텐츠"),
+                    fieldWithPath("issueOutline.writtenTime").type(STRING).description("작성 시간"),
                     fieldWithPath("assignees[].optionName").type(STRING).description("할당된 유저이름"),
                     fieldWithPath("assignees[].imageUrl").type(STRING).description("할당된 유저 이미지"),
                     fieldWithPath("labels[].labelName").type(STRING).description("라벨 이름"),

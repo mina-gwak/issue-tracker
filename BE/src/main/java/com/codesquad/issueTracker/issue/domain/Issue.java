@@ -180,4 +180,8 @@ public class Issue {
     public int hashCode() {
         return Objects.hash(getId());
     }
+
+    public boolean isEditable(Long userId) {
+        return this.user.isYourId(userId);
+    }
 }

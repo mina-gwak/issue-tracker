@@ -1133,7 +1133,7 @@ Content-Length: 721
     "issueId" : 1,
     "writer" : "user1",
     "writerImage" : "image1",
-    "modificationTime" : "2022-08-27T01:32:21.295427",
+    "modificationTime" : "2022-08-29T17:06:13.404782",
     "milestoneName" : "milestone1",
     "opened" : true
   } ],
@@ -1299,7 +1299,7 @@ Content-Length: 156
 {
   "title" : "BE Lucid가 작성한 issue",
   "content" : "내용은 이러하다",
-  "writtenTime" : "2022-08-27T01:32:21.241557",
+  "writtenTime" : "2022-08-29T17:06:13.350868",
   "assignedMe" : true
 }</code></pre>
 </div>
@@ -1518,16 +1518,19 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 920
+Content-Length: 978
 
 {
   "issueId" : 1,
   "title" : "title1",
-  "content" : "content1",
-  "writtenTime" : "2022-08-27T01:32:20.873311",
-  "writerOutline" : {
-    "optionName" : "user1",
-    "imageUrl" : "image1"
+  "editable" : true,
+  "issueOutline" : {
+    "writerOutline" : {
+      "optionName" : "user1",
+      "imageUrl" : "image1"
+    },
+    "content" : "content1",
+    "writtenTime" : "2022-08-29T17:06:13.049072"
   },
   "assignees" : [ {
     "optionName" : "user1",
@@ -1537,12 +1540,12 @@ Content-Length: 920
     "imageUrl" : "image1"
   } ],
   "labels" : [ {
-    "labelName" : "Lucid",
-    "colorCode" : "#008672",
-    "textColor" : "white"
-  }, {
     "labelName" : "BE",
     "colorCode" : "#000000",
+    "textColor" : "white"
+  }, {
+    "labelName" : "Lucid",
+    "colorCode" : "#008672",
     "textColor" : "white"
   } ],
   "milestoneInformation" : {
@@ -1557,7 +1560,7 @@ Content-Length: 920
     },
     "commentId" : 1,
     "content" : "contents",
-    "writtenTime" : "2022-08-27T01:32:20.873356",
+    "writtenTime" : "2022-08-29T17:06:13.049112",
     "status" : "INITIAL"
   } ],
   "open" : true
@@ -1592,29 +1595,34 @@ Content-Length: 920
 <td class="tableblock halign-left valign-top"><p class="tableblock">이슈 타이틀</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이슈 컨텐츠</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>open</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">열린 이슈 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>writtenTime</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">작성 시간</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>editable</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">수정 가능 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>writerOutline.optionName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>issueOutline.writerOutline.optionName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">작성자</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>writerOutline.imageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>issueOutline.writerOutline.imageUrl</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">작성자 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>issueOutline.content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이슈 컨텐츠</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>issueOutline.writtenTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성 시간</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>assignees[].optionName</code></p></td>
@@ -2084,7 +2092,7 @@ Content-Length: 687
   "milestoneSingleInfos" : [ {
     "id" : null,
     "name" : "m1",
-    "dueDate" : "2022-08-27T01:32:21.722887",
+    "dueDate" : "2022-08-29T17:06:13.791675",
     "description" : "m1 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2092,7 +2100,7 @@ Content-Length: 687
   }, {
     "id" : null,
     "name" : "m2",
-    "dueDate" : "2022-08-27T01:32:21.722945",
+    "dueDate" : "2022-08-29T17:06:13.791699",
     "description" : "m2 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2100,7 +2108,7 @@ Content-Length: 687
   }, {
     "id" : null,
     "name" : "m3",
-    "dueDate" : "2022-08-27T01:32:21.722949",
+    "dueDate" : "2022-08-29T17:06:13.791702",
     "description" : "m3 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2192,7 +2200,7 @@ Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-08-27T01:32:21.764461",
+  "dueDate" : "2022-08-29T17:06:13.827922",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2259,7 +2267,7 @@ Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-08-27T01:32:21.814803",
+  "dueDate" : "2022-08-29T17:06:13.874356",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2923,7 +2931,7 @@ Content-Length: 236
   },
   "commentId" : 1,
   "content" : "issue에 작성된 comments 입니다..",
-  "writtenTime" : "2022-08-27T01:32:21.436958",
+  "writtenTime" : "2022-08-29T17:06:13.556602",
   "status" : "INITIAL"
 }</code></pre>
 </div>

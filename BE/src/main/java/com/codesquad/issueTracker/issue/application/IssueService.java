@@ -95,9 +95,9 @@ public class IssueService {
     }
 
     @Transactional(readOnly = true)
-    public IssueDetailResponse findIssue(Long id) {
+    public IssueDetailResponse findIssue(Long id, Long userId) {
         Issue issue = findSingleIssue(id);
-        return new IssueDetailResponse(issue);
+        return new IssueDetailResponse(issue, issue.isEditable(userId));
     }
 
     @Transactional
