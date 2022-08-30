@@ -13,9 +13,10 @@ interface CommentPropsType {
   comment?: commentType;
   issueContent?: issueContentType;
   editable: boolean;
+  issueWriter: string;
 }
 
-const Comment = ({ comment, issueContent, editable }: CommentPropsType) => {
+const Comment = ({ comment, issueContent, editable, issueWriter }: CommentPropsType) => {
   const {
     writerOutline: { optionName, imageUrl },
     content,
@@ -43,16 +44,16 @@ const Comment = ({ comment, issueContent, editable }: CommentPropsType) => {
       ) : (
         <S.CommentContainer status={comment?.status || 'INITIAL'}>
           <S.CommentHeader>
-            <S.CommentHeaderSection>
-              <div>{optionName}</div>
+            <S.CommentHeaderLeftSection>
+              <p>{optionName}</p>
               <S.CommentHeaderDate>
                 {calcTwoTimeDifference(new Date(), writtenTime)}
               </S.CommentHeaderDate>
-            </S.CommentHeaderSection>
-            <S.CommentHeaderSection>
+            </S.CommentHeaderLeftSection>
+            <S.CommentHeaderRightSection>
+              {issueWriter === optionName && <S.CommentWriter>작성자</S.CommentWriter>}
               {editable && (
                 <>
-                  <S.CommentWriter>작성자</S.CommentWriter>
                   <S.CommentEditButton onClick={handleEditClick}>
                     <Icon iconName={ICON_NAME.EDIT_ICON} />
                     <span>편집</span>
@@ -61,7 +62,7 @@ const Comment = ({ comment, issueContent, editable }: CommentPropsType) => {
               )}
 
               <Icon iconName={ICON_NAME.EMOJI} />
-            </S.CommentHeaderSection>
+            </S.CommentHeaderRightSection>
           </S.CommentHeader>
           <S.CommentContent>
             <span>{content}</span>

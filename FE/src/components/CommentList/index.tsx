@@ -41,12 +41,12 @@ const CommentList = ({
   };
 
   const commentList = commentOutlines.map((comment: commentType) => (
-    <Comment key={comment.commentId} comment={comment} editable={editable} />
+    <Comment key={comment.commentId} comment={comment} editable={editable} issueWriter={issueOutline.writerOutline.optionName} />
   ));
 
   return (
     <S.CommentListWrapper>
-      <Comment issueContent={issueOutline} editable={editable} />
+      <Comment issueContent={issueOutline} editable={editable} issueWriter={issueOutline.writerOutline.optionName} />
       {commentList}
       <S.TextAreaContainer>
         <S.CommentWriterImage>
