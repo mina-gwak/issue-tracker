@@ -41,7 +41,7 @@ const Comment = ({ comment, issueContent, editable }: CommentPropsType) => {
           handelCancelClick={handelCancelClick}
         />
       ) : (
-        <S.CommentContainer>
+        <S.CommentContainer status={comment?.status || 'INITIAL'}>
           <S.CommentHeader>
             <S.CommentHeaderSection>
               <div>{optionName}</div>

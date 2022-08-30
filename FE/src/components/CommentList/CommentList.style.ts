@@ -1,5 +1,40 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
+interface StyledCommentProps {
+  status: 'INITIAL' | 'CLOSED' | 'REOPEN';
+}
+
+const statusStyles = css<StyledCommentProps>`
+  ${({ status }) =>
+    status === 'CLOSED' &&
+    css`
+      border: 1px solid ${({ theme }) => theme.colors.purple};
+      
+      ${CommentHeader} {
+        background-color: ${({ theme }) => theme.colors.lightPurple};
+        border-bottom: 1px solid ${({ theme }) => theme.colors.purple};
+      }
+      
+      ${CommentContent} {
+        color: ${({ theme }) => theme.colors.darkPurple};
+      }
+    `}
+
+  ${({ status }) =>
+    status === 'REOPEN' &&
+    css`
+      border: 1px solid ${({ theme }) => theme.colors.blue};
+
+      ${CommentHeader} {
+        background-color: ${({ theme }) => theme.colors.lightBlue};
+        border-bottom: 1px solid ${({ theme }) => theme.colors.blue};
+      }
+
+      ${CommentContent} {
+        color: ${({ theme }) => theme.colors.darkBlue};
+      }
+    `}
+`;
 //index.tsx
 export const CommentListWrapper = styled.div`
   min-width: 550px;
@@ -31,13 +66,15 @@ export const CommentWriterImage = styled.div`
   }
 `;
 
-export const CommentContainer = styled.div`
+export const CommentContainer = styled.div<StyledCommentProps>`
   display: flex;
   flex-direction: column;
   width: 880px;
-  border: 1px solid #d9dbe9;
+  border: 1px solid ${({ theme }) => theme.colors.grey4};
   border-radius: 16px;
   overflow: hidden;
+
+  ${statusStyles}
 `;
 
 export const CommentHeader = styled.div`

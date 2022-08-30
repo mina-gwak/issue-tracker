@@ -22,6 +22,7 @@ export interface commentType {
   commentId: number;
   content: string;
   writtenTime: string;
+  status: 'INITIAL' | 'CLOSED' | 'REOPEN';
 }
 
 export interface DetailIssueType {
