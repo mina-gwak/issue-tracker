@@ -89,3 +89,17 @@ export const CommentEditButton = styled.div`
   display: flex;
   align-items: center;
 `;
+
+//EditComment.tsx
+export const EditCommentBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+`;
