@@ -56,13 +56,13 @@ const TableHeader = ({ openedIssue = 0, closedIssue = 0 }: TableHeaderPropsType)
         <>
           <S.IssueTabs>
             <li>
-              <S.IssueTab onClick={issueTabClickHandler('open')}>
+              <S.IssueTab onClick={issueTabClickHandler('open')} isActive={filterBarValue.is.includes('open')}>
                 <Icon iconName={ICON_NAME.ALERT_CIRCLE} />
                 열린 이슈({openedIssue})
               </S.IssueTab>
             </li>
             <li>
-              <S.IssueTab onClick={issueTabClickHandler('close')}>
+              <S.IssueTab onClick={issueTabClickHandler('close')} isActive={filterBarValue.is.includes('close')}>
                 <Icon iconName={ICON_NAME.ARCHIVE} />
                 닫힌 이슈({closedIssue})
               </S.IssueTab>

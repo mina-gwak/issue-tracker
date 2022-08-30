@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface StyledTabProps {
+  isActive?: boolean;
+}
+
 export const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -18,11 +22,21 @@ export const IssueTabs = styled.ul`
   gap: 24px;
 `;
 
-export const IssueTab = styled.button`
+export const IssueTab = styled.button<StyledTabProps>`
   display: flex;
   align-items: center;
   gap: 4px;
   line-height: 26px;
+
+  ${({ isActive, theme }) =>
+    isActive &&
+    `color: ${theme.colors.black};
+     font-weight: ${theme.fontWeights.bold};
+     
+     svg path {
+        stroke: ${theme.colors.black};
+     }
+    `}
 `;
 
 export const FilterList = styled.ul`
