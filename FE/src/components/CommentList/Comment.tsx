@@ -6,6 +6,7 @@ import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
 import Image from '@components/common/Image';
 import { IMAGE_SIZE } from '@components/common/Image/constants';
+import MarkDown from '@components/common/MarkDown';
 import { commentType, issueContentType } from '@type/detailIssueType';
 import { calcTwoTimeDifference } from '@utils/date';
 
@@ -65,7 +66,7 @@ const Comment = ({ comment, issueContent, editable, issueWriter }: CommentPropsT
             </S.CommentHeaderRightSection>
           </S.CommentHeader>
           <S.CommentContent>
-            <span>{content}</span>
+            <MarkDown>{content}</MarkDown>
           </S.CommentContent>
         </S.CommentContainer>
       )}
