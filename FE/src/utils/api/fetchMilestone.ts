@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { API } from '@constants';
 
-export const getMilestonesData = async (state: string): Promise<any> => {
+export const getMilestonesData = async (isOpenMilestone: boolean) => {
   const accessToken = localStorage.getItem('accessToken')!;
   try {
     const response = await axios.get(`${API.MILESTONE}`, {
@@ -10,7 +10,7 @@ export const getMilestonesData = async (state: string): Promise<any> => {
         Authorization: `Bearer ${JSON.parse(accessToken)}`,
       },
       params: {
-        open: state,
+        open: isOpenMilestone,
       },
     });
 
@@ -60,15 +60,16 @@ export async function fetchEditMilestone(id: number, newMilestoneData: { [key: s
   }
 }
 
-export async function fetchChangeStateMilestone(id: number, state: string) {
+export async function fetchChangeStateMilestone(id: number, isOpenMilestone: boolean) {
   const accessToken = localStorage.getItem('accessToken')!;
+
   try {
-    const response = await axios.patch(API.MILESTONE_OPEN_CLOSE(id), {
+    const response = await axios.patch(API.MILESTONE_OPEN_CLOSE(id), null, {
       headers: {
         Authorization: `Bearer ${JSON.parse(accessToken)}`,
       },
       params: {
-        open: state,
+        open: !isOpenMilestone,
       },
     });
 

@@ -17,9 +17,8 @@ export const getMilestoneData = selector({
   get: async ({ get }) => {
     get(milestoneTrigger);
     const isOpenMilestone = get(milestoneStatus);
-    let status = isOpenMilestone ? 'open' : 'close';
 
-    const milestoneData = await getMilestonesData(status);
+    const milestoneData = await getMilestonesData(isOpenMilestone);
     return milestoneData;
   },
 });

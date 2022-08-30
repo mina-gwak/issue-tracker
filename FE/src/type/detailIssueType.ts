@@ -11,24 +11,28 @@ export interface milestonesType {
   closedIssueCount: number;
 }
 
+export interface issueContentType {
+  writerOutline: writerType;
+  content: string;
+  writtenTime: string;
+}
+
 export interface commentType {
-  commentUserOutline: writerType;
+  writerOutline: writerType;
   commentId: number;
   content: string;
   writtenTime: string;
-  editable: boolean;
 }
 
 export interface DetailIssueType {
   issueId: number;
   title: string;
-  content: string;
-  writtenTime: string;
+  editable: boolean;
+  issueOutline: issueContentType;
   writerOutline: writerType;
   assignees: writerType[];
   labels: LabelType[];
   milestoneInformation: milestonesType;
   commentOutlines: commentType[];
-  imageUrls: string[];
   open: boolean;
 }

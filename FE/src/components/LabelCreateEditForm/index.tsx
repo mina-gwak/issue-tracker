@@ -6,32 +6,29 @@ import LabelCreateEdit from '@components/LabelCreateEditForm/LabelCreateEdit';
 import * as S from '@components/LabelCreateEditForm/LabelCreateEditForm.style';
 import Button from '@components/common/Button';
 import { BUTTON_SIZE } from '@components/common/Button/constants';
-import { defaultLabelData } from '@data/labelData';
 import useInput from '@hooks/useInput';
 import { labelTrigger } from '@store/label';
 import { LabelTabType } from '@type/label';
 import { createLabel, editLabel } from '@utils/api/fetchLabel';
+
 interface LabelCreateEditFormType {
   title: string;
   data?: LabelTabType;
   handelClickCancel: () => void;
 }
 
-const LabelCreateEditForm = ({
-  title,
-  data = defaultLabelData,
-  handelClickCancel,
-}: LabelCreateEditFormType) => {
-  const { id, name, description, colorCode, textColor } = data;
-
-  const [labelTextColor, setLabelTextColor] = useState(textColor);
+const LabelCreateEditForm = ({ title, data, handelClickCancel }: LabelCreateEditFormType) => {
+  const [labelTextColor, setLabelTextColor] = useState(data?.textColor || '');
   const setLabelTrigger = useSetRecoilState(labelTrigger);
 
-  const titleInput = useInput('');
-  const descriptionInput = useInput('');
-  const colorInput = useInput('');
+  const labelId = data?.id || 0;
+  const titleInput = useInput(data?.name || '');
+  const descriptionInput = useInput(data?.description || '');
+  const colorInput = useInput(data?.colorCode || '');
 
   const handleSubmitClick = async () => {
+    if (!titleInput.inputValue || !colorInput.inputValue) return false;
+
     const newLabelData = {
       name: titleInput.inputValue,
       description: descriptionInput.inputValue,
@@ -40,8 +37,8 @@ const LabelCreateEditForm = ({
     };
 
     let isSuccessFetch = false;
-    if (id === 0) isSuccessFetch = await createLabel(newLabelData);
-    else isSuccessFetch = await editLabel(id, newLabelData);
+    if (labelId === 0) isSuccessFetch = await createLabel(newLabelData);
+    else isSuccessFetch = await editLabel(labelId, newLabelData);
 
     if (isSuccessFetch) {
       setLabelTrigger((prev) => prev + 1);
@@ -58,10 +55,7 @@ const LabelCreateEditForm = ({
             titleInput,
             descriptionInput,
             colorInput,
-            name,
-            description,
-            colorCode,
-            textColor,
+            labelTextColor,
             setLabelTextColor,
           }}
         />

@@ -10,9 +10,10 @@ interface HeaderViewModePropsType {
   issueId: number;
   status: boolean;
   title: string;
+  editable: boolean;
 }
 
-const HeaderViewMode = ({ issueId, status, title }: HeaderViewModePropsType) => {
+const HeaderViewMode = ({ issueId, status, title, editable }: HeaderViewModePropsType) => {
   const setTitleEditMode = useSetRecoilState(titleEditMode);
   const setIssueOpenClose = useSetRecoilState(detailIssueTrigger);
   const issueStateValue = status ? '이슈닫기' : '이슈열기';
@@ -30,9 +31,11 @@ const HeaderViewMode = ({ issueId, status, title }: HeaderViewModePropsType) => 
         <S.IssueNumber> {' #' + issueId}</S.IssueNumber>
       </S.HeaderTitleContainer>
       <S.ViewButtonContainer>
-        <Button size={BUTTON_SIZE.SMALL} outline={true} onClick={handleEditClick}>
-          <span> 제목편집</span>
-        </Button>
+        {editable && (
+          <Button size={BUTTON_SIZE.SMALL} outline={true} onClick={handleEditClick}>
+            <span> 제목편집</span>
+          </Button>
+        )}
         <Button size={BUTTON_SIZE.SMALL} outline={true} onClick={handleOpenClose}>
           <span>{issueStateValue}</span>
         </Button>

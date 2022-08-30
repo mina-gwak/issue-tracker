@@ -9,6 +9,7 @@ import ProgressBar from '@components/common/ProgressBar';
 import { milestoneStatus, milestoneTrigger } from '@store/milestone';
 import { MilestoneTabType } from '@type/milestone';
 import { fetchDeleteMilestone, fetchChangeStateMilestone } from '@utils/api/fetchMilestone';
+import { getDate } from '@utils/date';
 import { progress } from '@utils/ratio';
 
 interface MilestoneInfoPropsType {
@@ -24,8 +25,7 @@ const MilestoneInfo = ({ data, setEditMode }: MilestoneInfoPropsType) => {
   const setMilestoneTrigger = useSetRecoilState(milestoneTrigger);
 
   const handleOpenClose = async () => {
-    let state = isOpenMilestone ? 'open' : 'close';
-    const isSuccessFetch = await fetchChangeStateMilestone(id, state);
+    const isSuccessFetch = await fetchChangeStateMilestone(id, isOpenMilestone);
     if (isSuccessFetch) setMilestoneTrigger((prev) => prev + 1);
   };
 
@@ -40,14 +40,14 @@ const MilestoneInfo = ({ data, setEditMode }: MilestoneInfoPropsType) => {
     <S.MilestoneItemWrapper>
       <S.LeftContainer>
         <S.MilestoneInfoTitle>
-          <div>
+          <S.NameDateContainer>
             <Icon iconName={ICON_NAME.OPEN_MILESTONE} />
             <S.IconText>{name}</S.IconText>
-          </div>
-          <div>
+          </S.NameDateContainer>
+          <S.NameDateContainer>
             <Icon iconName={ICON_NAME.CALENDAR} />
-            <S.IconText>{dueDate} </S.IconText>
-          </div>
+            <S.IconText>{getDate(dueDate)} </S.IconText>
+          </S.NameDateContainer>
         </S.MilestoneInfoTitle>
         <S.Description>{description}</S.Description>
       </S.LeftContainer>

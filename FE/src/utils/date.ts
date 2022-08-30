@@ -14,3 +14,24 @@ export const getDate = (registeredDate: string) => {
   const date = new Date(registeredDate);
   return `${month[date.getMonth()]} ${date.getDate()}`;
 };
+
+export const isCorrectDate = (date: string) => {
+  const regex = RegExp(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/);
+  return regex.test(date);
+};
+
+const leftPad = (value: number) => {
+  if (value >= 10) return value;
+  return `0${value}`;
+};
+
+export const getLocalDate = (dueDate?: string) => {
+  if (!dueDate) return '';
+  const date = new Date(dueDate);
+
+  const year = date.getFullYear();
+  const month = leftPad(date.getMonth() + 1);
+  const day = leftPad(date.getDate());
+
+  return [year, month, day].join('-');
+};

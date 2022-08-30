@@ -14,10 +14,7 @@ interface LabelCreateEditPropsType {
   titleInput: UseInputReturnType;
   descriptionInput: UseInputReturnType;
   colorInput: UseInputReturnType;
-  name: string;
-  description: string;
-  colorCode: string;
-  textColor: string;
+  labelTextColor: string;
   setLabelTextColor: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -25,14 +22,11 @@ const LabelCreateEdit = ({
   titleInput,
   descriptionInput,
   colorInput,
-  name,
-  description,
-  colorCode,
-  textColor,
+  labelTextColor,
   setLabelTextColor,
 }: LabelCreateEditPropsType) => {
-  const [labelBadgeColorCode, setLabelBadgeColorCode] = useState<string>(colorCode);
-  const [labelBadgeTextColor, setLabelBadgeTextColor] = useState<string>(textColor);
+  const [labelBadgeColorCode, setLabelBadgeColorCode] = useState<string>(colorInput.inputValue);
+  const [labelBadgeTextColor, setLabelBadgeTextColor] = useState<string>(labelTextColor);
 
   const handleChangeRadioButton = (color: string) => () => {
     setLabelTextColor(color);
@@ -47,12 +41,16 @@ const LabelCreateEdit = ({
 
   return (
     <S.LabelEditWrapper>
-      <LabelBadge colorCode={labelBadgeColorCode} textColor={labelBadgeTextColor} name={name} />
+      <LabelBadge
+        colorCode={labelBadgeColorCode}
+        textColor={labelBadgeTextColor}
+        name={titleInput.inputValue}
+      />
       <S.LabelEdit>
-        <InputForm placeholder={name} {...titleInput} />
-        <InputForm placeholder={description} {...descriptionInput} />
+        <InputForm placeholder='레이블 이름' {...titleInput} />
+        <InputForm placeholder='설명(선택)' {...descriptionInput} />
         <S.LabelEditColor>
-          <InputForm placeholder={colorCode} {...colorInput}>
+          <InputForm placeholder='배경색상' {...colorInput}>
             <button onClick={handleClickRefreshColor}>
               <Icon iconName={ICON_NAME.REFRESH_ICON} />
             </button>
@@ -60,12 +58,7 @@ const LabelCreateEdit = ({
           <S.RadioButtonContainer>
             <span>텍스트 색상</span>
             {textColorArr.map((item) => (
-              <InputRadio
-                key={item.id}
-                value={item}
-                name={name}
-                onChange={handleChangeRadioButton}
-              />
+              <InputRadio key={item.id} value={item} onChange={handleChangeRadioButton} />
             ))}
           </S.RadioButtonContainer>
         </S.LabelEditColor>
