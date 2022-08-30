@@ -1133,7 +1133,7 @@ Content-Length: 721
     "issueId" : 1,
     "writer" : "user1",
     "writerImage" : "image1",
-    "modificationTime" : "2022-08-29T17:06:13.404782",
+    "modificationTime" : "2022-08-30T14:49:08.086989",
     "milestoneName" : "milestone1",
     "opened" : true
   } ],
@@ -1299,7 +1299,7 @@ Content-Length: 156
 {
   "title" : "BE Lucid가 작성한 issue",
   "content" : "내용은 이러하다",
-  "writtenTime" : "2022-08-29T17:06:13.350868",
+  "writtenTime" : "2022-08-30T14:49:08.010001",
   "assignedMe" : true
 }</code></pre>
 </div>
@@ -1518,7 +1518,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 978
+Content-Length: 973
 
 {
   "issueId" : 1,
@@ -1530,7 +1530,7 @@ Content-Length: 978
       "imageUrl" : "image1"
     },
     "content" : "content1",
-    "writtenTime" : "2022-08-29T17:06:13.049072"
+    "writtenTime" : "2022-08-30T14:49:07.695343"
   },
   "assignees" : [ {
     "optionName" : "user1",
@@ -1540,12 +1540,12 @@ Content-Length: 978
     "imageUrl" : "image1"
   } ],
   "labels" : [ {
-    "labelName" : "BE",
-    "colorCode" : "#000000",
-    "textColor" : "white"
-  }, {
     "labelName" : "Lucid",
     "colorCode" : "#008672",
+    "textColor" : "white"
+  }, {
+    "labelName" : "BE",
+    "colorCode" : "#000000",
     "textColor" : "white"
   } ],
   "milestoneInformation" : {
@@ -1554,13 +1554,13 @@ Content-Length: 978
     "closedIssueCount" : 0
   },
   "commentOutlines" : [ {
-    "commentUserOutline" : {
+    "writerOutline" : {
       "optionName" : "user1",
       "imageUrl" : "image1"
     },
     "commentId" : 1,
     "content" : "contents",
-    "writtenTime" : "2022-08-29T17:06:13.049112",
+    "writtenTime" : "2022-08-30T14:49:07.695381",
     "status" : "INITIAL"
   } ],
   "open" : true
@@ -1665,12 +1665,12 @@ Content-Length: 978
 <td class="tableblock halign-left valign-top"><p class="tableblock">마일스톤에 할당된 issue 중 close 된 issue 수</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>commentOutlines[].commentUserOutline.optionName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>commentOutlines[].writerOutline.optionName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">코멘트 단 유저 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>commentOutlines[].commentUserOutline.imageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>commentOutlines[].writerOutline.imageUrl</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">코멘트 단 유저 이미지</p></td>
 </tr>
@@ -2092,7 +2092,7 @@ Content-Length: 687
   "milestoneSingleInfos" : [ {
     "id" : null,
     "name" : "m1",
-    "dueDate" : "2022-08-29T17:06:13.791675",
+    "dueDate" : "2022-08-30T14:49:08.468092",
     "description" : "m1 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2100,7 +2100,7 @@ Content-Length: 687
   }, {
     "id" : null,
     "name" : "m2",
-    "dueDate" : "2022-08-29T17:06:13.791699",
+    "dueDate" : "2022-08-30T14:49:08.468108",
     "description" : "m2 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2108,7 +2108,7 @@ Content-Length: 687
   }, {
     "id" : null,
     "name" : "m3",
-    "dueDate" : "2022-08-29T17:06:13.791702",
+    "dueDate" : "2022-08-30T14:49:08.468111",
     "description" : "m3 입니다.",
     "openIssueCount" : 0,
     "closeIssueCount" : 0,
@@ -2200,7 +2200,7 @@ Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-08-29T17:06:13.827922",
+  "dueDate" : "2022-08-30T14:49:08.514508",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2267,7 +2267,7 @@ Host: localhost:8080
 
 {
   "name" : "milestone1",
-  "dueDate" : "2022-08-29T17:06:13.874356",
+  "dueDate" : "2022-08-30T14:49:08.573418",
   "description" : "마일스톤입니다."
 }</code></pre>
 </div>
@@ -2922,16 +2922,16 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 236
+Content-Length: 231
 
 {
-  "commentUserOutline" : {
+  "writerOutline" : {
     "optionName" : "user1",
     "imageUrl" : "image1"
   },
   "commentId" : 1,
   "content" : "issue에 작성된 comments 입니다..",
-  "writtenTime" : "2022-08-29T17:06:13.556602",
+  "writtenTime" : "2022-08-30T14:49:08.236371",
   "status" : "INITIAL"
 }</code></pre>
 </div>
@@ -2954,12 +2954,12 @@ Content-Length: 236
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>commentUserOutline.optionName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>writerOutline.optionName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment 작성자 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>commentUserOutline.imageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>writerOutline.imageUrl</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">comment 작성자 사진</p></td>
 </tr>

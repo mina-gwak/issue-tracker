@@ -281,9 +281,9 @@ class IssueControllerTest extends ControllerTest {
                         .description("마일스톤에 할당된 전체 issue 수"),
                     fieldWithPath("milestoneInformation.closedIssueCount").type(NUMBER)
                         .description("마일스톤에 할당된 issue 중 close 된 issue 수"),
-                    fieldWithPath("commentOutlines[].commentUserOutline.optionName").type(STRING)
+                    fieldWithPath("commentOutlines[].writerOutline.optionName").type(STRING)
                         .description("코멘트 단 유저 이름"),
-                    fieldWithPath("commentOutlines[].commentUserOutline.imageUrl").type(STRING)
+                    fieldWithPath("commentOutlines[].writerOutline.imageUrl").type(STRING)
                         .description("코멘트 단 유저 이미지"),
                     fieldWithPath("commentOutlines[].commentId").type(NUMBER).description("코멘트 id"),
                     fieldWithPath("commentOutlines[].content").type(STRING).description("코멘트 내용"),
@@ -458,8 +458,8 @@ class IssueControllerTest extends ControllerTest {
         // then
         perform
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.commentUserOutline.optionName").value("user1"))
-            .andExpect(jsonPath("$.commentUserOutline.imageUrl").value("image1"))
+            .andExpect(jsonPath("$.writerOutline.optionName").value("user1"))
+            .andExpect(jsonPath("$.writerOutline.imageUrl").value("image1"))
             .andExpect(jsonPath("$.content").value("issue에 작성된 comments 입니다.."))
             .andExpect(jsonPath("$.status").value("INITIAL"));
 
@@ -476,8 +476,8 @@ class IssueControllerTest extends ControllerTest {
                     fieldWithPath("contents").description("comment 내용")
                 ),
                 responseFields(
-                    fieldWithPath("commentUserOutline.optionName").type(STRING).description("comment 작성자 이름"),
-                    fieldWithPath("commentUserOutline.imageUrl").type(STRING).description("comment 작성자 사진"),
+                    fieldWithPath("writerOutline.optionName").type(STRING).description("comment 작성자 이름"),
+                    fieldWithPath("writerOutline.imageUrl").type(STRING).description("comment 작성자 사진"),
                     fieldWithPath("commentId").type(NUMBER).description("comment id"),
                     fieldWithPath("content").type(STRING).description("comment 내용"),
                     fieldWithPath("writtenTime").type(STRING).description("comment 작성된 시간"),

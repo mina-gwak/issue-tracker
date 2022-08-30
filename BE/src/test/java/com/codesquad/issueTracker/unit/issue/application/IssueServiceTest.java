@@ -469,8 +469,8 @@ public class IssueServiceTest {
 
         // then
         assertThat(resultCommentOutline.getContent()).isEqualTo("it is comment");
-        assertThat(resultCommentOutline.getCommentUserOutline().getOptionName()).isEqualTo(another.getName());
-        assertThat(resultCommentOutline.getCommentUserOutline().getImageUrl()).isEqualTo(another.getImage());
+        assertThat(resultCommentOutline.getWriterOutline().getOptionName()).isEqualTo(another.getName());
+        assertThat(resultCommentOutline.getWriterOutline().getImageUrl()).isEqualTo(another.getImage());
     }
 
     @DisplayName("유효하지 않은 이슈에 댓글을 달 때는 예외가 발생한다.")
