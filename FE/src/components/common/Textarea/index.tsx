@@ -14,6 +14,7 @@ export interface TextareaPropsType {
 
 const Textarea = ({ content, setContent }: TextareaPropsType) => {
   const [letterCount, setLetterCount] = useState(0);
+  const [isFocused, setIsFocused] = useState(false);
 
   const isValueExist = content.length > 0;
 
@@ -40,8 +41,8 @@ const Textarea = ({ content, setContent }: TextareaPropsType) => {
   };
 
   return (
-    <S.Wrapper>
-      <S.TextareaBox isValueExist={isValueExist}>
+    <S.Wrapper isValueExist={isValueExist} isFocused={isFocused} onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)}>
+      <S.TextareaBox>
         <S.Textarea value={content} onChange={textareaChangeHandler} />
         <S.TextareaLabel>코멘트를 입력하세요</S.TextareaLabel>
         {letterCount > 0 && <S.LetterCount>띄어쓰기 포함 {letterCount}자</S.LetterCount>}
