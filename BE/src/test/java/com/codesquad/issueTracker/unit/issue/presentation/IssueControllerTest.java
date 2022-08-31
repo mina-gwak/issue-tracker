@@ -30,6 +30,7 @@ import com.codesquad.issueTracker.issue.application.dto.IssueDetailResponse;
 import com.codesquad.issueTracker.issue.application.dto.PopUpResponse;
 import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueContentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeLabelsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.CommentsRequest;
@@ -62,7 +63,7 @@ class IssueControllerTest extends ControllerTest {
         IssueCoverResponse responses = new IssueCoverResponse(issue);
 
         given(issueService.findIssuesByCondition(eq("is:open"), anyLong(), eq(pageRequest)))
-            .willReturn(new IssueCoversResponse(List.of(responses), 1, 2, 3, 4));
+            .willReturn(new IssueCoversResponse(List.of(responses), 1, 2, 3, 4, 10, 100));
 
         // when
         ResultActions perform = mockMvc.perform(get("/api/issues")
@@ -87,7 +88,8 @@ class IssueControllerTest extends ControllerTest {
                             "메인 필터(중복 불가) : [is:open(열린 이슈), is:close(닫힌 이슈), is:write_by_me(내가 작성한 이슈), is:assigned_me(나에게 할당된 이슈), is:add_comment_by_me(내가 댓글을 남긴 이슈)], "
                                 + "서브 필터(중복 가능) : [labels:xx(라벨 필터 적용), "
                                 + "assignees:yy(assignee 필터 적용), "
-                                + "milestones:zz(마일스톤 필터 적용)]")
+                                + "milestones:zz(마일스톤 필터 적용), "
+                                + "writers:aa(writer 필터 적용)]")
                 ),
                 responseFields(
                     fieldWithPath("issueCoverResponses[].labelCoverResponses").type(ARRAY).description("라벨 리스트"),
@@ -111,7 +113,9 @@ class IssueControllerTest extends ControllerTest {
                     fieldWithPath("openIssueCount").type(NUMBER).description("open 수"),
                     fieldWithPath("closeIssueCount").type(NUMBER).description("close 수"),
                     fieldWithPath("labelCount").type(NUMBER).description("전체 라벨 수"),
-                    fieldWithPath("milestoneCount").type(NUMBER).description("전체 마일스톤 수")
+                    fieldWithPath("milestoneCount").type(NUMBER).description("전체 마일스톤 수"),
+                    fieldWithPath("totalPages").type(NUMBER).description("size 기준 전체 페이지 수 (element / size(default = 10))"),
+                    fieldWithPath("totalElements").type(NUMBER).description("전체 element 수")
                 )));
     }
 
@@ -226,12 +230,12 @@ class IssueControllerTest extends ControllerTest {
     void find_single_issue() throws Exception {
         // given
         Long issueId = 1L;
-        User writer = new User("user1", "nickname1", "image1");
+        User writer = new User(1L, "user1", "nickname1", "image1");
         Milestone milestone = new Milestone("milestone1", LocalDateTime.now(), "description1");
         Issue issue = new Issue(1L, "title1", "content1", LocalDateTime.now(), LocalDateTime.now(), writer, milestone);
 
-        User assignee1 = new User("user1", "nickname1", "image1");
-        User assignee2 = new User("user1", "nickname1", "image1");
+        User assignee1 = new User(2L, "user1", "nickname1", "image1");
+        User assignee2 = new User(3L, "user1", "nickname1", "image1");
         issue.assignUser(List.of(assignee1, assignee2));
 
         Label label1 = new Label("Lucid", "Lucid's label", "#008672", "white");
@@ -241,7 +245,7 @@ class IssueControllerTest extends ControllerTest {
         Comment comment = new Comment(1L, "contents", LocalDateTime.now(), assignee1, issue, CommentStatus.INITIAL);
 
         given(issueService.findIssue(eq(issueId), anyLong()))
-            .willReturn(new IssueDetailResponse(issue, true));
+            .willReturn(new IssueDetailResponse(issue, 1L));
 
         // when
         ResultActions perform = mockMvc.perform(
@@ -288,8 +292,8 @@ class IssueControllerTest extends ControllerTest {
                     fieldWithPath("commentOutlines[].commentId").type(NUMBER).description("코멘트 id"),
                     fieldWithPath("commentOutlines[].content").type(STRING).description("코멘트 내용"),
                     fieldWithPath("commentOutlines[].writtenTime").type(STRING).description("코멘트 단 시간"),
-                    fieldWithPath("commentOutlines[].status").type(STRING)
-                        .description("comment 상태 [INITIAL, CLOSED, REOPEN]")
+                    fieldWithPath("commentOutlines[].status").type(STRING).description("comment 상태 [INITIAL, CLOSED, REOPEN]"),
+                    fieldWithPath("commentOutlines[].editable").type(BOOLEAN).description("comment 수정 가능 여부")
                 )));
     }
 
@@ -438,14 +442,14 @@ class IssueControllerTest extends ControllerTest {
         CommentsRequest request = new CommentsRequest("issue에 작성된 comments 입니다..");
         String content = objectMapper.writeValueAsString(request);
 
-        User writer = new User("user1", "nickname1", "image1");
+        User writer = new User(1L, "user1", "nickname1", "image1");
         Issue issue = new Issue(1L, "title1", "content1", LocalDateTime.now(), LocalDateTime.now(), writer, null);
 
         Comment comment = new Comment(1L, "issue에 작성된 comments 입니다..", LocalDateTime.now(),
-            new User("user1", "name1", "image1"), issue, CommentStatus.INITIAL);
+            new User(2L, "user1", "name1", "image1"), issue, CommentStatus.INITIAL);
 
         given(issueService.addComments(eq(issueId), any(CommentsRequest.class), eq(10L)))
-            .willReturn(new CommentOutline(comment));
+            .willReturn(new CommentOutline(comment, 1L));
 
         // when
         ResultActions perform = mockMvc.perform(
@@ -481,7 +485,8 @@ class IssueControllerTest extends ControllerTest {
                     fieldWithPath("commentId").type(NUMBER).description("comment id"),
                     fieldWithPath("content").type(STRING).description("comment 내용"),
                     fieldWithPath("writtenTime").type(STRING).description("comment 작성된 시간"),
-                    fieldWithPath("status").type(STRING).description("comment 상태 - [INITIAL, CLOSED, REOPEN]")
+                    fieldWithPath("status").type(STRING).description("comment 상태 - [INITIAL, CLOSED, REOPEN]"),
+                    fieldWithPath("editable").type(BOOLEAN).description("comment 수정 가능 여부")
                 )));
 
     }
@@ -545,6 +550,43 @@ class IssueControllerTest extends ControllerTest {
             document("remove-comments", getDocumentRequest(), getDocumentResponse(),
                 pathParameters(
                     parameterWithName("commentId").description("수정할 comment id")
+                )));
+    }
+
+    @DisplayName("이슈 컨텐츠를 수정한다.")
+    @Test
+    void edit_issue_contents() throws Exception {
+        // given
+        Long issueId = 1L;
+        Long userId = 10L;
+
+        ChangeIssueContentsRequest changeContents = new ChangeIssueContentsRequest("change Contents");
+
+        String content = objectMapper.writeValueAsString(changeContents);
+
+        // when
+        ResultActions perform = mockMvc.perform(
+            RestDocumentationRequestBuilders.patch("/api/issues/{issueId}", issueId)
+                .header("Authorization", "Bearer testToken")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk());
+
+        verify(issueService, times(1))
+            .changeIssueContents(eq(issueId), any(ChangeIssueContentsRequest.class), eq(userId));
+
+        // restdocs
+        perform.andDo(
+            document("change-issue-contents", getDocumentRequest(), getDocumentResponse(),
+                pathParameters(
+                    parameterWithName("issueId").description("변경할 이슈 id")
+                ),
+                requestFields(
+                    fieldWithPath("contents").description("변경할 issue 내용")
                 )));
     }
 }

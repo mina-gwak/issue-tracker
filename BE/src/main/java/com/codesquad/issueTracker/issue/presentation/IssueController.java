@@ -26,6 +26,7 @@ import com.codesquad.issueTracker.issue.application.dto.IssueCoversResponse;
 import com.codesquad.issueTracker.issue.application.dto.IssueDetailResponse;
 import com.codesquad.issueTracker.issue.application.dto.PopUpResponse;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueContentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeLabelsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.CommentsRequest;
@@ -89,6 +90,15 @@ public class IssueController {
         @RequestBody ChangeIssueTitleRequest request,
         @RequestAttribute Long userId) {
         issueService.changeIssueTitle(issueId, request, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{issueId}")
+    public ResponseEntity<Void> changeIssueContents(
+        @PathVariable Long issueId,
+        @RequestBody ChangeIssueContentsRequest request,
+        @RequestAttribute Long userId) {
+        issueService.changeIssueContents(issueId, request, userId);
         return ResponseEntity.ok().build();
     }
 

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ import com.codesquad.issueTracker.issue.domain.MainFilter;
 import com.codesquad.issueTracker.issue.domain.repository.IssueRepository;
 import com.codesquad.issueTracker.issue.infrastructure.QueryParser;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueContentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeLabelsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.CommentsRequest;
@@ -60,17 +62,18 @@ public class IssueService {
     @Transactional(readOnly = true)
     public IssueCoversResponse findIssuesByCondition(String query, Long userId, Pageable pageable) {
         FilterCondition condition = queryParser.makeFilterCondition(query);
-        List<Issue> issues = issueRepository.search(condition, userId, pageable);
+        Page<Issue> results = issueRepository.search(condition, userId, pageable);
 
-        List<IssueCoverResponse> result = issues.stream()
+        List<IssueCoverResponse> issueCoverResponses = results.stream()
             .map(IssueCoverResponse::new)
             .collect(Collectors.toList());
 
         Long openCount = issueRepository.findCountByMainStatus(condition, MainFilter.OPEN);
         Long closeCount = issueRepository.findCountByMainStatus(condition, MainFilter.CLOSE);
 
-        return new IssueCoversResponse(result, openCount, closeCount, labelRepository.count(),
-            milestoneRepository.count());
+        return new IssueCoversResponse(
+            issueCoverResponses, openCount, closeCount, labelRepository.count(),
+            milestoneRepository.count(), results.getTotalPages(), results.getTotalElements());
     }
 
     @Cacheable(value = "PopUpResponse", key = "#issueId", cacheManager = "cacheManager", unless = "#issueId == ''")
@@ -99,7 +102,7 @@ public class IssueService {
     @Transactional(readOnly = true)
     public IssueDetailResponse findIssue(Long id, Long userId) {
         Issue issue = findSingleIssue(id);
-        return new IssueDetailResponse(issue, issue.isEditable(userId));
+        return new IssueDetailResponse(issue, userId);
     }
 
     @CacheEvict(value = "PopUpResponse", key = "#issueId", cacheManager = "cacheManager")
@@ -114,6 +117,14 @@ public class IssueService {
     public PopUpResponse changeIssueTitle(Long issueId, ChangeIssueTitleRequest request, Long userId) {
         Issue issue = checkEditableIssue(issueId, userId);
         issue.updateTitle(request.getTitle());
+        return new PopUpResponse(issue, issue.isAssignedThisUser(userId));
+    }
+
+    @CachePut(value = "PopUpResponse", key = "#issueId", cacheManager = "cacheManager", unless = "#issueId == ''")
+    @Transactional
+    public PopUpResponse changeIssueContents(Long issueId, ChangeIssueContentsRequest request, Long userId) {
+        Issue issue = checkEditableIssue(issueId, userId);
+        issue.updateContents(request.getContents());
         return new PopUpResponse(issue, issue.isAssignedThisUser(userId));
     }
 
@@ -139,7 +150,7 @@ public class IssueService {
         User user = findUser(userId);
         Comment comment = new Comment(request.getContents(), LocalDateTime.now(), user, issue, CommentStatus.INITIAL);
         Comment savedComment = commentRepository.save(comment);
-        return new CommentOutline(savedComment);
+        return new CommentOutline(savedComment, userId);
     }
 
     @Transactional

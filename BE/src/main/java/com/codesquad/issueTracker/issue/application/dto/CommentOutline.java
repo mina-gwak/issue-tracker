@@ -16,12 +16,14 @@ public class CommentOutline {
     private String content;
     private LocalDateTime writtenTime;
     private CommentStatus status;
+    private boolean editable;
 
-    public CommentOutline(Comment comment) {
+    public CommentOutline(Comment comment, long userId) {
         this.writerOutline = new UserOutlineResponse(comment.getWriterName(), comment.getWriterImage());
         this.commentId = comment.getId();
         this.content = comment.getContent();
         this.writtenTime = comment.getWrittenTime();
         this.status = comment.getCommentStatus();
+        this.editable = comment.isEditable(userId);
     }
 }

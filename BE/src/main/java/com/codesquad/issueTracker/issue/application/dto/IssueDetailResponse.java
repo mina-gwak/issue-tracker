@@ -26,11 +26,11 @@ public class IssueDetailResponse {
     private MilestoneInformation milestoneInformation;
     private List<CommentOutline> commentOutlines;
 
-    public IssueDetailResponse(Issue issue, boolean editable) {
+    public IssueDetailResponse(Issue issue, long userId) {
         this.issueId = issue.getId();
         this.title = issue.getTitle();
         this.isOpen = issue.isOpened();
-        this.editable = editable;
+        this.editable = issue.isEditable(userId);
         this.issueOutline = new IssueOutline(
             new UserOutlineResponse(issue.getWriter(), issue.getWriterImage()),
             issue.getContent(), issue.getWrittenTime());
@@ -40,7 +40,7 @@ public class IssueDetailResponse {
             this.milestoneInformation = new MilestoneInformation(issue.getMilestone());
         }
         this.commentOutlines = issue.getComments()
-            .stream().map(CommentOutline::new)
+            .stream().map(comment -> new CommentOutline(comment, userId))
             .sorted(Comparator.comparing(CommentOutline::getWrittenTime))
             .collect(Collectors.toList());
     }

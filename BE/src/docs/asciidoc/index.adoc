@@ -73,6 +73,11 @@ operation::delete-single-issue[snippets='http-request,path-parameters,http-respo
 === 🔒 이슈 제목 변경
 operation::change-issue-title[snippets='http-request,path-parameters,request-fields,http-response']
 
+[[change-issue-contents]]
+=== 🔒 이슈 내용 변경
+operation::change-issue-contents[snippets='http-request,path-parameters,request-fields,http-response']
+
+
 [[change-issue-assignees]]
 === 🔒 이슈 assignees 변경
 operation::change-issue-assignees[snippets='http-request,path-parameters,request-fields,http-response']

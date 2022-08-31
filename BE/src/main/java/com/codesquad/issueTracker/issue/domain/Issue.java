@@ -184,4 +184,8 @@ public class Issue {
     public boolean isEditable(Long userId) {
         return this.user.isYourId(userId);
     }
+
+    public void updateContents(String content) {
+        this.content = content;
+    }
 }
