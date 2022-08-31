@@ -88,7 +88,8 @@ class IssueControllerTest extends ControllerTest {
                             "메인 필터(중복 불가) : [is:open(열린 이슈), is:close(닫힌 이슈), is:write_by_me(내가 작성한 이슈), is:assigned_me(나에게 할당된 이슈), is:add_comment_by_me(내가 댓글을 남긴 이슈)], "
                                 + "서브 필터(중복 가능) : [labels:xx(라벨 필터 적용), "
                                 + "assignees:yy(assignee 필터 적용), "
-                                + "milestones:zz(마일스톤 필터 적용)]")
+                                + "milestones:zz(마일스톤 필터 적용), "
+                                + "writers:aa(writer 필터 적용)]")
                 ),
                 responseFields(
                     fieldWithPath("issueCoverResponses[].labelCoverResponses").type(ARRAY).description("라벨 리스트"),

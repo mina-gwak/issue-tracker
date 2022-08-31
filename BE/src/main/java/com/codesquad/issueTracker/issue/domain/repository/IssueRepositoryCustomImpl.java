@@ -9,19 +9,16 @@ import static com.codesquad.issueTracker.milestone.domain.QMilestone.*;
 import static com.codesquad.issueTracker.user.domain.QUser.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.MultiValueMap;
 
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
-import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
 import com.codesquad.issueTracker.issue.application.dto.SubFilterDetail;
 import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.issue.domain.MainFilter;
@@ -61,7 +58,8 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
                 addMainCondition(condition.getMainFilter(), userId, assignedUser),
                 matching(milestone.name, subFilters.get("MILESTONES")),
                 matching(label.name, subFilters.get("LABELS")),
-                matching(assignedUser.name, subFilters.get("ASSIGNEES")))
+                matching(assignedUser.name, subFilters.get("ASSIGNEES")),
+                matching(issue.user.name, subFilters.get("WRITERS")))
             .orderBy(issue.modificationTime.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -81,7 +79,8 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
                 addMainCondition(condition.getMainFilter(), userId, assignedUser),
                 matching(milestone.name, subFilters.get("MILESTONES")),
                 matching(label.name, subFilters.get("LABELS")),
-                matching(assignedUser.name, subFilters.get("ASSIGNEES")));
+                matching(assignedUser.name, subFilters.get("ASSIGNEES")),
+                matching(issue.user.name, subFilters.get("WRITERS")));
 
         return PageableExecutionUtils.getPage(issues, pageable, countQuery::fetchOne);
     }
@@ -103,7 +102,8 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
                 addMainCondition(mainFilter),
                 matching(milestone.name, subFilters.get("MILESTONES")),
                 matching(label.name, subFilters.get("LABELS")),
-                matching(assignedUser.name, subFilters.get("ASSIGNEES")))
+                matching(assignedUser.name, subFilters.get("ASSIGNEES")),
+                matching(issue.user.name, subFilters.get("WRITERS")))
             .fetchOne();
     }
 
