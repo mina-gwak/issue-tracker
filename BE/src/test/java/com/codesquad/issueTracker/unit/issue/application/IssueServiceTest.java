@@ -42,6 +42,7 @@ import com.codesquad.issueTracker.issue.domain.MainFilter;
 import com.codesquad.issueTracker.issue.domain.repository.IssueRepository;
 import com.codesquad.issueTracker.issue.infrastructure.QueryParser;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueContentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeLabelsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.CommentsRequest;
@@ -347,6 +348,46 @@ public class IssueServiceTest {
         // when & then
         assertThrows(IssueNotEditableException.class,
             () -> issueService.changeIssueTitle(issue.getId(), changedTitle, another.getId()));
+    }
+
+    @DisplayName("작성자는 이슈의 컨텐츠를 수정할 수 있다.")
+    @Test
+    void writer_can_edit_issue_contents() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, milestone);
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        ChangeIssueContentsRequest contentsRequest = new ChangeIssueContentsRequest("changed contents");
+
+        // when
+        issueService.changeIssueContents(issue.getId(), contentsRequest, writer.getId());
+
+        // then
+        assertThat(issue.getContent()).isEqualTo("changed contents");
+    }
+
+    @DisplayName("작성자가 아니라면 컨텐츠를 수정할 수 없다.")
+    @Test
+    void another_cannot_edit_issue_contents() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, milestone);
+
+        User another = UserFactory.mockSingleUserWithId(2L);
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        ChangeIssueContentsRequest contentsRequest = new ChangeIssueContentsRequest("changed contents");
+
+        // when & then
+        assertThrows(IssueNotEditableException.class,
+            () -> issueService.changeIssueContents(issue.getId(), contentsRequest, another.getId()));
     }
 
     @DisplayName("작성자만 assignee를 수정할 수 있다.")

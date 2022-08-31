@@ -30,6 +30,7 @@ import com.codesquad.issueTracker.issue.application.dto.IssueDetailResponse;
 import com.codesquad.issueTracker.issue.application.dto.PopUpResponse;
 import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueContentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeLabelsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.CommentsRequest;
@@ -546,6 +547,43 @@ class IssueControllerTest extends ControllerTest {
             document("remove-comments", getDocumentRequest(), getDocumentResponse(),
                 pathParameters(
                     parameterWithName("commentId").description("수정할 comment id")
+                )));
+    }
+
+    @DisplayName("이슈 컨텐츠를 수정한다.")
+    @Test
+    void edit_issue_contents() throws Exception {
+        // given
+        Long issueId = 1L;
+        Long userId = 10L;
+
+        ChangeIssueContentsRequest changeContents = new ChangeIssueContentsRequest("change Contents");
+
+        String content = objectMapper.writeValueAsString(changeContents);
+
+        // when
+        ResultActions perform = mockMvc.perform(
+            RestDocumentationRequestBuilders.patch("/api/issues/{issueId}", issueId)
+                .header("Authorization", "Bearer testToken")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk());
+
+        verify(issueService, times(1))
+            .changeIssueContents(eq(issueId), any(ChangeIssueContentsRequest.class), eq(userId));
+
+        // restdocs
+        perform.andDo(
+            document("change-issue-contents", getDocumentRequest(), getDocumentResponse(),
+                pathParameters(
+                    parameterWithName("issueId").description("변경할 이슈 id")
+                ),
+                requestFields(
+                    fieldWithPath("contents").description("변경할 issue 내용")
                 )));
     }
 }

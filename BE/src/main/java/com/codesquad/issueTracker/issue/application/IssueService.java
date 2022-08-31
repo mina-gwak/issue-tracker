@@ -31,6 +31,7 @@ import com.codesquad.issueTracker.issue.domain.MainFilter;
 import com.codesquad.issueTracker.issue.domain.repository.IssueRepository;
 import com.codesquad.issueTracker.issue.infrastructure.QueryParser;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueContentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeLabelsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.CommentsRequest;
@@ -114,6 +115,14 @@ public class IssueService {
     public PopUpResponse changeIssueTitle(Long issueId, ChangeIssueTitleRequest request, Long userId) {
         Issue issue = checkEditableIssue(issueId, userId);
         issue.updateTitle(request.getTitle());
+        return new PopUpResponse(issue, issue.isAssignedThisUser(userId));
+    }
+
+    @CachePut(value = "PopUpResponse", key = "#issueId", cacheManager = "cacheManager", unless = "#issueId == ''")
+    @Transactional
+    public PopUpResponse changeIssueContents(Long issueId, ChangeIssueContentsRequest request, Long userId) {
+        Issue issue = checkEditableIssue(issueId, userId);
+        issue.updateContents(request.getContents());
         return new PopUpResponse(issue, issue.isAssignedThisUser(userId));
     }
 
