@@ -3,6 +3,11 @@
 source /home/ec2-user/.bash_profile
 cd ~
 
+echo -e "upstream myserver {\n server 127.0.0.1:8082;\n}" | sudo tee /etc/nginx/conf.d/loadbalance.conf
+
+sudo service nginx reload
+echo "> Nginx proxying only 8082."
+
 TARGET_PID=$(lsof -Fp -i TCP:8081 | grep -Po '[0-9]+')
 
 if [ ! -z ${TARGET_PID} ]; then
@@ -30,6 +35,11 @@ do
     sleep 10
 done
 
+echo -e "upstream myserver {\n server 127.0.0.1:8081;\n}" | sudo tee /etc/nginx/conf.d/loadbalance.conf
+
+sudo service nginx reload
+echo "> Nginx proxying only 8081."
+
 TARGET_PID=$(lsof -Fp -i TCP:8082 | grep -Po '[0-9]+')
 
 if [ ! -z ${TARGET_PID} ]; then
@@ -56,5 +66,10 @@ do
     fi
     sleep 10
 done
+
+echo -e "upstream myserver {\n server 127.0.0.1:8081; server 127.0.0.1:8082;\n}" | sudo tee /etc/nginx/conf.d/loadbalance.conf
+
+sudo service nginx reload
+echo "> Nginx proxying 8081, 8082."
 
 exit 0
