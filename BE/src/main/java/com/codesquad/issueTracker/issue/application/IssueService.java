@@ -99,7 +99,7 @@ public class IssueService {
     @Transactional(readOnly = true)
     public IssueDetailResponse findIssue(Long id, Long userId) {
         Issue issue = findSingleIssue(id);
-        return new IssueDetailResponse(issue, issue.isEditable(userId));
+        return new IssueDetailResponse(issue, userId);
     }
 
     @CacheEvict(value = "PopUpResponse", key = "#issueId", cacheManager = "cacheManager")
@@ -139,7 +139,7 @@ public class IssueService {
         User user = findUser(userId);
         Comment comment = new Comment(request.getContents(), LocalDateTime.now(), user, issue, CommentStatus.INITIAL);
         Comment savedComment = commentRepository.save(comment);
-        return new CommentOutline(savedComment);
+        return new CommentOutline(savedComment, userId);
     }
 
     @Transactional

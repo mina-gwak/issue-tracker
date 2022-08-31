@@ -226,12 +226,12 @@ class IssueControllerTest extends ControllerTest {
     void find_single_issue() throws Exception {
         // given
         Long issueId = 1L;
-        User writer = new User("user1", "nickname1", "image1");
+        User writer = new User(1L, "user1", "nickname1", "image1");
         Milestone milestone = new Milestone("milestone1", LocalDateTime.now(), "description1");
         Issue issue = new Issue(1L, "title1", "content1", LocalDateTime.now(), LocalDateTime.now(), writer, milestone);
 
-        User assignee1 = new User("user1", "nickname1", "image1");
-        User assignee2 = new User("user1", "nickname1", "image1");
+        User assignee1 = new User(2L, "user1", "nickname1", "image1");
+        User assignee2 = new User(3L, "user1", "nickname1", "image1");
         issue.assignUser(List.of(assignee1, assignee2));
 
         Label label1 = new Label("Lucid", "Lucid's label", "#008672", "white");
@@ -241,7 +241,7 @@ class IssueControllerTest extends ControllerTest {
         Comment comment = new Comment(1L, "contents", LocalDateTime.now(), assignee1, issue, CommentStatus.INITIAL);
 
         given(issueService.findIssue(eq(issueId), anyLong()))
-            .willReturn(new IssueDetailResponse(issue, true));
+            .willReturn(new IssueDetailResponse(issue, 1L));
 
         // when
         ResultActions perform = mockMvc.perform(
@@ -288,8 +288,8 @@ class IssueControllerTest extends ControllerTest {
                     fieldWithPath("commentOutlines[].commentId").type(NUMBER).description("코멘트 id"),
                     fieldWithPath("commentOutlines[].content").type(STRING).description("코멘트 내용"),
                     fieldWithPath("commentOutlines[].writtenTime").type(STRING).description("코멘트 단 시간"),
-                    fieldWithPath("commentOutlines[].status").type(STRING)
-                        .description("comment 상태 [INITIAL, CLOSED, REOPEN]")
+                    fieldWithPath("commentOutlines[].status").type(STRING).description("comment 상태 [INITIAL, CLOSED, REOPEN]"),
+                    fieldWithPath("commentOutlines[].editable").type(BOOLEAN).description("comment 수정 가능 여부")
                 )));
     }
 
@@ -438,14 +438,14 @@ class IssueControllerTest extends ControllerTest {
         CommentsRequest request = new CommentsRequest("issue에 작성된 comments 입니다..");
         String content = objectMapper.writeValueAsString(request);
 
-        User writer = new User("user1", "nickname1", "image1");
+        User writer = new User(1L, "user1", "nickname1", "image1");
         Issue issue = new Issue(1L, "title1", "content1", LocalDateTime.now(), LocalDateTime.now(), writer, null);
 
         Comment comment = new Comment(1L, "issue에 작성된 comments 입니다..", LocalDateTime.now(),
-            new User("user1", "name1", "image1"), issue, CommentStatus.INITIAL);
+            new User(2L, "user1", "name1", "image1"), issue, CommentStatus.INITIAL);
 
         given(issueService.addComments(eq(issueId), any(CommentsRequest.class), eq(10L)))
-            .willReturn(new CommentOutline(comment));
+            .willReturn(new CommentOutline(comment, 1L));
 
         // when
         ResultActions perform = mockMvc.perform(
@@ -481,7 +481,8 @@ class IssueControllerTest extends ControllerTest {
                     fieldWithPath("commentId").type(NUMBER).description("comment id"),
                     fieldWithPath("content").type(STRING).description("comment 내용"),
                     fieldWithPath("writtenTime").type(STRING).description("comment 작성된 시간"),
-                    fieldWithPath("status").type(STRING).description("comment 상태 - [INITIAL, CLOSED, REOPEN]")
+                    fieldWithPath("status").type(STRING).description("comment 상태 - [INITIAL, CLOSED, REOPEN]"),
+                    fieldWithPath("editable").type(BOOLEAN).description("comment 수정 가능 여부")
                 )));
 
     }

@@ -82,4 +82,8 @@ public class Comment {
     public void removeRelationWithIssue() {
         issue.deleteComment(this);
     }
+
+    public boolean isEditable(long userId) {
+        return this.user.getId() == userId;
+    }
 }
