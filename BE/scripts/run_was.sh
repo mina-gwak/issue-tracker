@@ -19,6 +19,8 @@ nohup java -jar -Dspring.profiles.active=prod -Dserver.port=8081 /home/ec2-user/
 echo "> first new WAS runs at 8081."
 echo "> Start health check of WAS at 'http://127.0.0.1:8081' ..."
 
+sleep 10
+
 for RETRY_COUNT in 1 2 3 4 5 6 7 8 9 10
 do
     echo "> #${RETRY_COUNT} trying..."
@@ -51,6 +53,8 @@ nohup java -jar -Dspring.profiles.active=prod -Dserver.port=8082 /home/ec2-user/
 echo "> second new WAS runs at 8082."
 echo "> Start health check of WAS at 'http://127.0.0.1:8082' ..."
 
+sleep 10
+
 for RETRY_COUNT in 1 2 3 4 5 6 7 8 9 10
 do
     echo "> #${RETRY_COUNT} trying..."
@@ -70,6 +74,6 @@ done
 echo -e "upstream myserver {\n server 127.0.0.1:8081; server 127.0.0.1:8082;\n}" | sudo tee /etc/nginx/conf.d/loadbalance.conf
 
 sudo service nginx reload
-echo "> Nginx proxying 8081, 8082."
+echo "> Nginx proxying to 8081 & 8082"
 
 exit 0
