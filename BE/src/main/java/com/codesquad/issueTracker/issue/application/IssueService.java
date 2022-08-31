@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -100,16 +102,19 @@ public class IssueService {
         return new IssueDetailResponse(issue, issue.isEditable(userId));
     }
 
+    @CacheEvict(value = "PopUpResponse", key = "#issueId", cacheManager = "cacheManager")
     @Transactional
     public void deleteIssue(Long issueId, Long userId) {
         Issue issue = checkEditableIssue(issueId, userId);
         issueRepository.delete(issue);
     }
 
+    @CachePut(value = "PopUpResponse", key = "#issueId", cacheManager = "cacheManager", unless = "#issueId == ''")
     @Transactional
-    public void changeIssueTitle(Long issueId, ChangeIssueTitleRequest request, Long userId) {
+    public PopUpResponse changeIssueTitle(Long issueId, ChangeIssueTitleRequest request, Long userId) {
         Issue issue = checkEditableIssue(issueId, userId);
         issue.updateTitle(request.getTitle());
+        return new PopUpResponse(issue, issue.isAssignedThisUser(userId));
     }
 
     @Transactional
