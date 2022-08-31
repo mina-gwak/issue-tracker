@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -88,9 +89,11 @@ public class IssueServiceTest {
         given(queryParser.makeFilterCondition(query))
             .willReturn(filterCondition);
 
+        PageImpl<Issue> issues = new PageImpl<>(IssueFactory.mockIssueList(UserFactory.mockMultipleUser(10),
+            MilestoneFactory.mockMultipleMilestone(10)), pageable, 10);
+
         given(issueRepository.search(filterCondition, userId, pageable))
-            .willReturn(IssueFactory.mockIssueList(UserFactory.mockMultipleUser(10),
-                MilestoneFactory.mockMultipleMilestone(10)));
+            .willReturn(issues);
 
         given(issueRepository.findCountByMainStatus(filterCondition, MainFilter.OPEN))
             .willReturn(10L);

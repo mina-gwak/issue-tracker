@@ -9,14 +9,19 @@ import static com.codesquad.issueTracker.milestone.domain.QMilestone.*;
 import static com.codesquad.issueTracker.user.domain.QUser.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.MultiValueMap;
 
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
+import com.codesquad.issueTracker.issue.application.dto.IssueCoverResponse;
 import com.codesquad.issueTracker.issue.application.dto.SubFilterDetail;
 import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.issue.domain.MainFilter;
@@ -24,6 +29,7 @@ import com.codesquad.issueTracker.user.domain.QUser;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,11 +45,11 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
     }
 
     @Override
-    public List<Issue> search(FilterCondition condition, Long userId, Pageable pageable) {
+    public Page<Issue> search(FilterCondition condition, Long userId, Pageable pageable) {
         QUser assignedUser = new QUser("assignedUser");
         MultiValueMap<String, SubFilterDetail> subFilters = condition.getSubFilters();
 
-        return queryFactory.selectFrom(issue)
+        List<Issue> issues = queryFactory.selectFrom(issue)
             .join(issue.user, user).fetchJoin()
             .leftJoin(issue.milestone, milestone).fetchJoin()
             .leftJoin(issue.assignedIssues, assignedIssue)
@@ -61,6 +67,23 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
             .limit(pageable.getPageSize())
             .distinct()
             .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(issue.countDistinct())
+            .from(issue)
+            .join(issue.user, user)
+            .leftJoin(issue.milestone, milestone)
+            .leftJoin(issue.assignedIssues, assignedIssue)
+            .leftJoin(assignedIssue.user, assignedUser)
+            .leftJoin(issue.comments, comment)
+            .leftJoin(issue.attachedLabels, attachedLabel)
+            .leftJoin(attachedLabel.label, label)
+            .where(
+                addMainCondition(condition.getMainFilter(), userId, assignedUser),
+                matching(milestone.name, subFilters.get("MILESTONES")),
+                matching(label.name, subFilters.get("LABELS")),
+                matching(assignedUser.name, subFilters.get("ASSIGNEES")));
+
+        return PageableExecutionUtils.getPage(issues, pageable, countQuery::fetchOne);
     }
 
     @Override

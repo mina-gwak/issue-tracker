@@ -15,6 +15,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
@@ -153,7 +154,7 @@ public class IssueRepositoryTest {
         PageRequest request = PageRequest.of(0, 10);
 
         // when
-        List<Issue> issues = issueRepository.search(filterCondition, 1L, request);
+        List<Issue> issues = issueRepository.search(filterCondition, 1L, request).getContent();
 
         // then
         assertThat(issues.size()).isEqualTo(10);
@@ -166,14 +167,14 @@ public class IssueRepositoryTest {
         FilterCondition filterCondition = new FilterCondition();
         PageRequest request = PageRequest.of(0, 20);
 
-        List<Issue> beforeIssues = issueRepository.search(filterCondition, 1L, request);
+        List<Issue> beforeIssues = issueRepository.search(filterCondition, 1L, request).getContent();
         assertThat(beforeIssues.size()).isEqualTo(10);
         beforeIssues.get(0).changeStatus(false);
         testEntityManager.flush();
         testEntityManager.clear();
 
         // when
-        List<Issue> afterIssues = issueRepository.search(filterCondition, 1L, request);
+        List<Issue> afterIssues = issueRepository.search(filterCondition, 1L, request).getContent();
 
         // then
         assertThat(afterIssues.size()).isEqualTo(9);
@@ -186,7 +187,7 @@ public class IssueRepositoryTest {
         FilterCondition filterCondition = new FilterCondition();
         PageRequest request = PageRequest.of(0, 20);
 
-        List<Issue> beforeIssues = issueRepository.search(filterCondition, 1L, request);
+        List<Issue> beforeIssues = issueRepository.search(filterCondition, 1L, request).getContent();
         assertThat(beforeIssues.size()).isEqualTo(10);
         beforeIssues.get(0).changeStatus(false);
         testEntityManager.flush();
@@ -194,7 +195,7 @@ public class IssueRepositoryTest {
 
         // when
         filterCondition.changeMainFilter(MainFilter.CLOSE);
-        List<Issue> afterIssues = issueRepository.search(filterCondition, 1L, request);
+        List<Issue> afterIssues = issueRepository.search(filterCondition, 1L, request).getContent();
 
         // then
         assertThat(afterIssues.size()).isEqualTo(1);
@@ -218,7 +219,7 @@ public class IssueRepositoryTest {
         FilterCondition filterCondition = new FilterCondition();
         filterCondition.changeMainFilter(MainFilter.WRITE_BY_ME);
         PageRequest request = PageRequest.of(0, 20);
-        List<Issue> issues = issueRepository.search(filterCondition, writer.getId(), request);
+        List<Issue> issues = issueRepository.search(filterCondition, writer.getId(), request).getContent();
 
         // then
         assertThat(issues.size()).isEqualTo(3);
@@ -250,7 +251,7 @@ public class IssueRepositoryTest {
         FilterCondition filterCondition = new FilterCondition();
         filterCondition.changeMainFilter(MainFilter.ASSIGNED_ME);
         PageRequest request = PageRequest.of(0, 20);
-        List<Issue> issues = issueRepository.search(filterCondition, assignee.getId(), request);
+        List<Issue> issues = issueRepository.search(filterCondition, assignee.getId(), request).getContent();
 
         // then
         assertThat(issues.size()).isEqualTo(2);
@@ -283,7 +284,7 @@ public class IssueRepositoryTest {
         FilterCondition filterCondition = new FilterCondition();
         filterCondition.changeMainFilter(MainFilter.ADD_COMMENT_BY_ME);
         PageRequest request = PageRequest.of(0, 20);
-        List<Issue> issues = issueRepository.search(filterCondition, commenter.getId(), request);
+        List<Issue> issues = issueRepository.search(filterCondition, commenter.getId(), request).getContent();
 
         // then
         assertThat(issues.size()).isEqualTo(2);
@@ -327,7 +328,7 @@ public class IssueRepositoryTest {
             filterCondition.addSubFilter(subFilter);
             PageRequest request = PageRequest.of(0, 10);
 
-            List<Issue> issues = issueRepository.search(filterCondition, 1L, request);
+            List<Issue> issues = issueRepository.search(filterCondition, 1L, request).getContent();
 
             // then
             assertThat(issues.size()).isEqualTo(resultSize);
@@ -357,7 +358,7 @@ public class IssueRepositoryTest {
             filterCondition.addSubFilter(subFilter2);
             PageRequest request = PageRequest.of(0, 10);
 
-            List<Issue> issues = issueRepository.search(filterCondition, 1L, request);
+            List<Issue> issues = issueRepository.search(filterCondition, 1L, request).getContent();
 
             // then
             assertThat(issues).hasSize(2).hasSameElementsAs(List.of(issue1, issue2));
@@ -402,7 +403,7 @@ public class IssueRepositoryTest {
             SubFilterDetail subFilter = new SubFilterDetail(SubFilter.MILESTONES, "m1");
             filterCondition.addSubFilter(subFilter);
             PageRequest request = PageRequest.of(0, 10);
-            List<Issue> issues = issueRepository.search(filterCondition, 1L, request);
+            List<Issue> issues = issueRepository.search(filterCondition, 1L, request).getContent();
 
             // then
             assertThat(issues.size()).isEqualTo(1);
@@ -433,7 +434,7 @@ public class IssueRepositoryTest {
             filterCondition.addSubFilter(subFilter2);
             filterCondition.addSubFilter(subFilter3);
             PageRequest request = PageRequest.of(0, 10);
-            List<Issue> findIssues = issueRepository.search(filterCondition, 1L, request);
+            List<Issue> findIssues = issueRepository.search(filterCondition, 1L, request).getContent();
 
             // then
             assertThat(findIssues).hasSize(issues.size()).hasSameElementsAs(issues);
@@ -467,7 +468,7 @@ public class IssueRepositoryTest {
         SubFilterDetail subFilter = new SubFilterDetail(SubFilter.ASSIGNEES, "name1");
         filterCondition.addSubFilter(subFilter);
         PageRequest request = PageRequest.of(0, 10);
-        List<Issue> findIssues = issueRepository.search(filterCondition, 1L, request);
+        List<Issue> findIssues = issueRepository.search(filterCondition, 1L, request).getContent();
 
         // then
         assertThat(findIssues.size()).isEqualTo(1);
@@ -503,7 +504,7 @@ public class IssueRepositoryTest {
         filterCondition.addSubFilter(subFilter1);
         filterCondition.addSubFilter(subFilter2);
         PageRequest request = PageRequest.of(0, 10);
-        List<Issue> findIssues = issueRepository.search(filterCondition, 1L, request);
+        List<Issue> findIssues = issueRepository.search(filterCondition, 1L, request).getContent();
 
         // then
         assertThat(findIssues).hasSize(2).hasSameElementsAs(List.of(issue1, issue2));
@@ -548,7 +549,7 @@ public class IssueRepositoryTest {
         filterCondition.addSubFilter(subFilter1);
         filterCondition.addSubFilter(subFilter2);
         PageRequest request = PageRequest.of(0, 10);
-        List<Issue> findIssues = issueRepository.search(filterCondition, 1L, request);
+        List<Issue> findIssues = issueRepository.search(filterCondition, 1L, request).getContent();
 
         // then
         assertThat(findIssues).hasSize(1).hasSameElementsAs(List.of(issue1));
@@ -579,7 +580,7 @@ public class IssueRepositoryTest {
         SubFilterDetail subFilter = new SubFilterDetail(SubFilter.ASSIGNEES, subUser.getName());
         filterCondition.addSubFilter(subFilter);
         PageRequest request = PageRequest.of(0, 10);
-        List<Issue> findIssues = issueRepository.search(filterCondition, mainUser.getId(), request);
+        List<Issue> findIssues = issueRepository.search(filterCondition, mainUser.getId(), request).getContent();
 
         // then
         assertThat(findIssues).hasSize(1).hasSameElementsAs(List.of(subUserAssignedIssue));

@@ -63,7 +63,7 @@ class IssueControllerTest extends ControllerTest {
         IssueCoverResponse responses = new IssueCoverResponse(issue);
 
         given(issueService.findIssuesByCondition(eq("is:open"), anyLong(), eq(pageRequest)))
-            .willReturn(new IssueCoversResponse(List.of(responses), 1, 2, 3, 4));
+            .willReturn(new IssueCoversResponse(List.of(responses), 1, 2, 3, 4, 10, 100));
 
         // when
         ResultActions perform = mockMvc.perform(get("/api/issues")
@@ -112,7 +112,9 @@ class IssueControllerTest extends ControllerTest {
                     fieldWithPath("openIssueCount").type(NUMBER).description("open 수"),
                     fieldWithPath("closeIssueCount").type(NUMBER).description("close 수"),
                     fieldWithPath("labelCount").type(NUMBER).description("전체 라벨 수"),
-                    fieldWithPath("milestoneCount").type(NUMBER).description("전체 마일스톤 수")
+                    fieldWithPath("milestoneCount").type(NUMBER).description("전체 마일스톤 수"),
+                    fieldWithPath("totalPages").type(NUMBER).description("size 기준 전체 페이지 수 (element / size(default = 10))"),
+                    fieldWithPath("totalElements").type(NUMBER).description("전체 element 수")
                 )));
     }
 

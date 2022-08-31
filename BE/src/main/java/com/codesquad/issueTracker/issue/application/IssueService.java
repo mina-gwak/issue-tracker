@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,17 +62,18 @@ public class IssueService {
     @Transactional(readOnly = true)
     public IssueCoversResponse findIssuesByCondition(String query, Long userId, Pageable pageable) {
         FilterCondition condition = queryParser.makeFilterCondition(query);
-        List<Issue> issues = issueRepository.search(condition, userId, pageable);
+        Page<Issue> results = issueRepository.search(condition, userId, pageable);
 
-        List<IssueCoverResponse> result = issues.stream()
+        List<IssueCoverResponse> issueCoverResponses = results.stream()
             .map(IssueCoverResponse::new)
             .collect(Collectors.toList());
 
         Long openCount = issueRepository.findCountByMainStatus(condition, MainFilter.OPEN);
         Long closeCount = issueRepository.findCountByMainStatus(condition, MainFilter.CLOSE);
 
-        return new IssueCoversResponse(result, openCount, closeCount, labelRepository.count(),
-            milestoneRepository.count());
+        return new IssueCoversResponse(
+            issueCoverResponses, openCount, closeCount, labelRepository.count(),
+            milestoneRepository.count(), results.getTotalPages(), results.getTotalElements());
     }
 
     @Cacheable(value = "PopUpResponse", key = "#issueId", cacheManager = "cacheManager", unless = "#issueId == ''")
