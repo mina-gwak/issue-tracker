@@ -1,6 +1,6 @@
 import axios from 'axios';
 import qs from 'qs';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 
 import { IconsType } from '@assets/icons';
 import { FilterType } from '@components/Modal';
@@ -8,7 +8,8 @@ import { ICON_NAME } from '@components/common/Icon/constants';
 import { API } from '@constants';
 import useCheckBox from '@hooks/useCheckBox';
 import { queryClient } from '@src';
-import { filterBarArrState, filterBarState } from '@store/filterBar';
+import { filterBarArrState, filterBarState, FilterBarStateKeyType } from '@store/filterBar';
+import { currentPageState } from '@store/issue';
 import { checkBoxClickHandlerType, isCheckedType } from '@type/useOption';
 
 interface CheckedListType {
@@ -21,8 +22,12 @@ interface UseDropDownType {
 }
 
 const useFilterOptions = ({ type }: UseDropDownType) => {
-  const filterBarArrValue = useRecoilValue(filterBarArrState);
   const [filterBarValue, setFilterBarValue] = useRecoilState(filterBarState);
+  const resetCurrentPage = useResetRecoilState(currentPageState);
+  const filterBarArrValue = useRecoilValue(filterBarArrState) as Array<
+    [FilterBarStateKeyType & 'stateModify', string[]]
+  >;
+
   const { isCheckedItems, resetCheckedItems } = useCheckBox();
 
   const isChecked: isCheckedType = (value) => {
@@ -31,12 +36,10 @@ const useFilterOptions = ({ type }: UseDropDownType) => {
     if (!value) return checkBoxIcon;
 
     for (const [objKey, objValue] of filterBarArrValue) {
-      if (Array.isArray(objValue)) {
-        if (objKey === type) {
-          objValue.forEach((item: string) => {
-            if (item === value) checkBoxIcon = ICON_NAME.CHECKBOX_CIRCLE_ACTIVE;
-          });
-        }
+      if (objKey === type) {
+        objValue.forEach((item: string) => {
+          if (item === value) checkBoxIcon = ICON_NAME.CHECKBOX_CIRCLE_ACTIVE;
+        });
       }
     }
     return checkBoxIcon;
@@ -44,23 +47,22 @@ const useFilterOptions = ({ type }: UseDropDownType) => {
 
   const checkBoxClickHandler: checkBoxClickHandlerType = (value) => () => {
     if (!value) return;
-    for (const [, objValue] of filterBarArrValue) {
-      if (Array.isArray(objValue)) {
+
+    for (const [objKey, objValue] of filterBarArrValue) {
+      if (objKey === type) {
         const checkSameValue = objValue.includes(value);
         if (type === 'is') {
           setFilterBarValue({ ...filterBarValue, [type]: ['issue', value] });
         } else if (type === 'stateModify') {
           fetchStateModify(value);
         } else {
-          if (!checkSameValue) {
-            setFilterBarValue({ ...filterBarValue, [type]: [value] });
-          }
-          if (checkSameValue) {
-            setFilterBarValue({ ...filterBarValue, [type]: [] });
-          }
+          if (checkSameValue) setFilterBarValue({ ...filterBarValue, [type]: [] });
+          else setFilterBarValue({ ...filterBarValue, [type]: [value] });
         }
       }
     }
+    resetCurrentPage();
+    queryClient.resetQueries('issues');
   };
 
   const fetchStateModify = async (value: string) => {

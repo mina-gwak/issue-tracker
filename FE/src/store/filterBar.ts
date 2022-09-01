@@ -1,7 +1,23 @@
 import { atom, selector } from 'recoil';
 
-export const defaultFilterBarState = {
+interface DefaultFilterBarStateType {
+  is: string[];
+  issues: string[];
+  labels: string[];
+  milestones: string[];
+  writers: string[];
+  assignees: string[];
+}
+
+export type FilterBarStateKeyType = keyof DefaultFilterBarStateType;
+
+export const defaultFilterBarState: DefaultFilterBarStateType = {
   is: ['issue', 'open'],
+  issues: [],
+  labels: [],
+  milestones: [],
+  writers: [],
+  assignees: [],
 };
 
 export const filterBarState = atom({
@@ -13,8 +29,7 @@ export const filterBarArrState = selector({
   key: 'filterBarArrState',
   get: ({ get }) => {
     const filterBarValue = get(filterBarState);
-    const filterBarValueArr = Object.entries(filterBarValue);
-    return filterBarValueArr;
+    return Object.entries(filterBarValue);
   },
 });
 
