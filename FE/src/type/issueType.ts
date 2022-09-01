@@ -32,6 +32,8 @@ export interface IssueDataType {
   closeIssueCount: number;
   labelCount: number;
   milestoneCount: number;
+  totalElements: number;
+  totalPages: number;
 }
 
 export interface IssuePopOverDataType {

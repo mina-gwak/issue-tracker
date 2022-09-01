@@ -1,12 +1,24 @@
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 
 import { API } from '@constants';
 import { AddIssueDataType, IssueDataType } from '@type/issueType';
 
-type IssueQueryPropsType<T> = (data: IssueDataType) => T;
+export interface FetchIssuesPropsType {
+  filterBarValue: string;
+  pageParam?: number;
+}
 
-export const fetchIssues = async <T>(filterBarValue: string): Promise<T> => {
+export interface FetchIssuesReturnType {
+  issues: IssueDataType;
+  previousPage: number;
+  nextPage: number;
+}
+
+export const fetchIssues = async ({
+  filterBarValue,
+  pageParam = 0,
+}: FetchIssuesPropsType): Promise<FetchIssuesReturnType> => {
   const accessToken = localStorage.getItem('accessToken')!;
 
   const response = await axios.get(`${API.ISSUE}`, {
@@ -15,10 +27,11 @@ export const fetchIssues = async <T>(filterBarValue: string): Promise<T> => {
     },
     params: {
       query: filterBarValue,
+      page: pageParam,
     },
   });
 
-  return response.data;
+  return { issues: response.data, nextPage: pageParam + 1, previousPage: pageParam - 1 };
 };
 
 export const addIssue = async (newIssue: AddIssueDataType): Promise<AddIssueDataType> => {
@@ -45,10 +58,18 @@ export const deleteIssue = async (issueId: number): Promise<AddIssueDataType> =>
   return data;
 };
 
-export const useIssuesQuery = <T>(filterBarValue: string, select?: IssueQueryPropsType<T>) =>
-  useQuery(['issues', filterBarValue], () => fetchIssues<IssueDataType>(filterBarValue), {
-    select,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    onError: (err) => console.log(err),
-  });
+export const useIssuesQuery = (filterBarValue: string) =>
+  useInfiniteQuery(
+    ['issues', filterBarValue],
+    ({ pageParam = 0 }) => fetchIssues({ filterBarValue, pageParam }),
+    {
+      getNextPageParam: (lastPage) => {
+        const totalPage = lastPage.issues.totalPages;
+        if (totalPage > lastPage.nextPage) return lastPage.nextPage;
+        return undefined;
+      },
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      onError: (err) => console.log(err),
+    },
+  );
