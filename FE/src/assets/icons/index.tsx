@@ -15,9 +15,11 @@ import Emoji from '@assets/icons/emoji.svg';
 import Github from '@assets/icons/github.svg';
 import Label from '@assets/icons/label.svg';
 import Milestone from '@assets/icons/milestone.svg';
+import Next from '@assets/icons/next.svg';
 import OpenIssue from '@assets/icons/openIssue.svg';
 import OpenMilestone from '@assets/icons/openMilestone.svg';
 import Paperclip from '@assets/icons/paperclip.svg';
+import Previous from '@assets/icons/previous.svg';
 import RefreshIcon from '@assets/icons/refreshIcon.svg';
 import Search from '@assets/icons/search.svg';
 import Select from '@assets/icons/select.svg';
@@ -25,28 +27,30 @@ import XSquare from '@assets/icons/xSquare.svg';
 
 export const Icons = {
   Add,
-  Archive,
   AlertCircle,
+  Archive,
+  Calendar,
   CheckBoxActive,
   CheckBoxCircleActive,
   CheckBoxCircleInitial,
   CheckBoxDisabled,
   CheckBoxInitial,
+  CloseIssue,
+  CloseMilestone,
   DeleteIcon,
   EditIcon,
+  Emoji,
   Github,
   Label,
   Milestone,
+  Next,
+  OpenIssue,
+  OpenMilestone,
   Paperclip,
+  Previous,
   RefreshIcon,
   Search,
   Select,
-  OpenMilestone,
-  CloseMilestone,
-  Calendar,
-  OpenIssue,
-  CloseIssue,
-  Emoji,
   XSquare,
 } as const;
 
