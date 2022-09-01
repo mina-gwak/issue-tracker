@@ -41,7 +41,7 @@ const CommentList = ({
   };
 
   const commentList = commentOutlines.map((comment: commentType) => (
-    <Comment key={comment.commentId} comment={comment} editable={editable} issueWriter={issueOutline.writerOutline.optionName} />
+    <Comment key={comment.commentId} comment={comment} editable={comment.editable} issueWriter={issueOutline.writerOutline.optionName} />
   ));
 
   return (

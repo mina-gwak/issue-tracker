@@ -23,6 +23,7 @@ export interface commentType {
   content: string;
   writtenTime: string;
   status: 'INITIAL' | 'CLOSED' | 'REOPEN';
+  editable: boolean;
 }
 
 export interface DetailIssueType {
