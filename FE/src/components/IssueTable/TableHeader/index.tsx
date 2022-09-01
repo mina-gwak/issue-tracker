@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 
 import Filter from '@components/IssueTable/TableHeader/Filter';
 import * as S from '@components/IssueTable/TableHeader/TableHeader.style';
@@ -7,7 +7,9 @@ import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
 import { filterList } from '@data';
 import useCheckBox from '@hooks/useCheckBox';
+import { queryClient } from '@src';
 import { filterBarArrState, filterBarState } from '@store/filterBar';
+import { currentPageState } from '@store/issue';
 
 export interface TableHeaderPropsType {
   openedIssue: number | undefined;
@@ -16,6 +18,7 @@ export interface TableHeaderPropsType {
 
 const TableHeader = ({ openedIssue = 0, closedIssue = 0 }: TableHeaderPropsType) => {
   const filterBarArrValue = useRecoilValue(filterBarArrState);
+  const resetCurrentPage = useResetRecoilState(currentPageState);
   const [filterBarValue, setFilterBarValue] = useRecoilState(filterBarState);
   const { isCheckedItems, isAllChecked, toggleIsAllChecked } = useCheckBox();
   const isChecked = isCheckedItems.size > 0;
@@ -30,6 +33,8 @@ const TableHeader = ({ openedIssue = 0, closedIssue = 0 }: TableHeaderPropsType)
         }
       }
     }
+    resetCurrentPage();
+    queryClient.resetQueries('issues');
   };
 
   return (
