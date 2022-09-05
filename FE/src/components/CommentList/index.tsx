@@ -46,7 +46,7 @@ const CommentList = ({
 
   return (
     <S.CommentListWrapper>
-      <Comment issueContent={issueOutline} editable={editable} issueWriter={issueOutline.writerOutline.optionName} />
+      <Comment issueId={issueId} issueContent={issueOutline} editable={editable} issueWriter={issueOutline.writerOutline.optionName} />
       {commentList}
       <S.TextAreaContainer>
         <S.CommentWriterImage>

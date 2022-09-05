@@ -11,13 +11,14 @@ import { commentType, issueContentType } from '@type/detailIssueType';
 import { calcTwoTimeDifference } from '@utils/date';
 
 interface CommentPropsType {
+  issueId?: number;
   comment?: commentType;
   issueContent?: issueContentType;
   editable: boolean;
   issueWriter: string;
 }
 
-const Comment = ({ comment, issueContent, editable, issueWriter }: CommentPropsType) => {
+const Comment = ({ issueId, comment, issueContent, editable, issueWriter }: CommentPropsType) => {
   const {
     writerOutline: { optionName, imageUrl },
     content,
@@ -26,8 +27,10 @@ const Comment = ({ comment, issueContent, editable, issueWriter }: CommentPropsT
 
   const [isEdit, setIsEdit] = useState(false);
   const currentCommentId = comment?.commentId || 0;
+  const isEditable = editable && comment?.status === 'INITIAL';
+
   const handleEditClick = () => setIsEdit(true);
-  const handelCancelClick = () => {
+  const handleCancelClick = () => {
     setIsEdit(false);
   };
 
@@ -38,9 +41,10 @@ const Comment = ({ comment, issueContent, editable, issueWriter }: CommentPropsT
       </S.CommentWriterImage>
       {isEdit ? (
         <EditComment
+          issueId={issueId}
           commentId={currentCommentId}
           content={content}
-          handelCancelClick={handelCancelClick}
+          handleCancleClick={handleCancelClick}
         />
       ) : (
         <S.CommentContainer status={comment?.status || 'INITIAL'}>
@@ -53,7 +57,7 @@ const Comment = ({ comment, issueContent, editable, issueWriter }: CommentPropsT
             </S.CommentHeaderLeftSection>
             <S.CommentHeaderRightSection>
               {issueWriter === optionName && <S.CommentWriter>작성자</S.CommentWriter>}
-              {editable && (
+              {isEditable && (
                 <>
                   <S.CommentEditButton onClick={handleEditClick}>
                     <Icon iconName={ICON_NAME.EDIT_ICON} />

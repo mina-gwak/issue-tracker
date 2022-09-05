@@ -58,6 +58,22 @@ export const deleteIssue = async (issueId: number): Promise<AddIssueDataType> =>
   return data;
 };
 
+export const editIssueContent = async (issueId: number, contents: string) => {
+  const accessToken = localStorage.getItem('accessToken')!;
+
+  const { status } = await axios.patch(
+    `${API.EDIT_ISSUE_CONTENT(issueId)}`,
+    { contents },
+    {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(accessToken)}`,
+      },
+    },
+  );
+
+  if (status === 200) return true;
+};
+
 export const useIssuesQuery = (filterBarValue: string) =>
   useInfiniteQuery(
     ['issues', filterBarValue],
