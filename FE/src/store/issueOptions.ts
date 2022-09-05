@@ -3,7 +3,7 @@ import { atom } from 'recoil';
 interface issueOptionsStateType {
   assignees: string[];
   labels: string[];
-  milestone: string;
+  milestone: string | null;
 }
 
 const defaultState: issueOptionsStateType = {

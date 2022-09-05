@@ -32,7 +32,7 @@ export const useMilestonesQuery = (trigger: string) =>
     enabled: trigger === 'milestone',
   });
 
-export const useSelectedMilestoneQuery = (selectedMilestone: string) =>
+export const useSelectedMilestoneQuery = (selectedMilestone: string | null) =>
   useQuery(['milestones'], fetchMilestones, {
     select: (data) => data.milestoneSingleInfos.filter(item => item.name === selectedMilestone),
     refetchOnMount: false,
