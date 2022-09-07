@@ -1,14 +1,11 @@
 package com.codesquad.issueTracker.label.domain;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -50,5 +47,20 @@ public class Label {
         this.description = description;
         this.labelColor = colorCode;
         this.textColor = textColor;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Label label = (Label)o;
+        return Objects.equals(getId(), label.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
