@@ -12,7 +12,7 @@ const IssueTable = () => {
       {issues && (
         <>
           <S.Wrapper>
-            <TableHeader openedIssue={issues.openIssueCount} closedIssue={issues.openIssueCount} />
+            <TableHeader openedIssue={issues.openIssueCount} closedIssue={issues.closeIssueCount} />
             {!issues.issueCoverResponses.length && <S.NoIssue>등록된 이슈가 없습니다</S.NoIssue>}
             {issues.issueCoverResponses.map((issueInfo: IssueType) => (
               <Issue {...issueInfo} key={issueInfo.issueId} />

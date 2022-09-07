@@ -27,7 +27,7 @@ const Comment = ({ issueId, comment, issueContent, editable, issueWriter }: Comm
 
   const [isEdit, setIsEdit] = useState(false);
   const currentCommentId = comment?.commentId || 0;
-  const isEditable = editable && comment?.status === 'INITIAL';
+  const isEditable = editable && (comment ? comment.status === 'INITIAL' : true);
 
   const handleEditClick = () => setIsEdit(true);
   const handleCancelClick = () => {
