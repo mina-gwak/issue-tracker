@@ -15,6 +15,16 @@ export interface FetchIssuesReturnType {
   nextPage: number;
 }
 
+interface EditLabelsPropsType {
+  issueId: number;
+  labels: string[];
+}
+
+interface EditAssigneesPropsType {
+  issueId: number;
+  assignees: string[];
+}
+
 export const fetchIssues = async ({
   filterBarValue,
   pageParam = 0,
@@ -64,6 +74,38 @@ export const editIssueContent = async (issueId: number, contents: string) => {
   const { status } = await axios.patch(
     `${API.EDIT_ISSUE_CONTENT(issueId)}`,
     { contents },
+    {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(accessToken)}`,
+      },
+    },
+  );
+
+  if (status === 200) return true;
+};
+
+export const editLabels = async ({ issueId, labels }: EditLabelsPropsType) => {
+  const accessToken = localStorage.getItem('accessToken')!;
+
+  const { status } = await axios.patch(
+    `${API.EDIT_LABELS(issueId)}`,
+    { labels },
+    {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(accessToken)}`,
+      },
+    },
+  );
+
+  if (status === 200) return true;
+};
+
+export const editAssignees = async ({ issueId, assignees }: EditAssigneesPropsType) => {
+  const accessToken = localStorage.getItem('accessToken')!;
+
+  const { status } = await axios.patch(
+    `${API.EDIT_ASSIGNEES(issueId)}`,
+    { assignees },
     {
       headers: {
         Authorization: `Bearer ${JSON.parse(accessToken)}`,
