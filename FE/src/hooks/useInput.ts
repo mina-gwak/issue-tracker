@@ -1,17 +1,14 @@
-import { useState } from 'react';
+import { useState, Dispatch, SetStateAction } from 'react';
 
 export interface UseInputReturnType {
-  inputValue: string;
-  setInputValue: React.Dispatch<React.SetStateAction<string>>;
-  onChange: ({ target }: { target: HTMLInputElement }) => void;
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
 }
 
 const useInput = (defaultInputValue: string = ''): UseInputReturnType => {
-  const [inputValue, setInputValue] = useState(defaultInputValue);
+  const [value, setValue] = useState(defaultInputValue);
 
-  const onChange = ({ target }: { target: HTMLInputElement }) => setInputValue(target.value);
-
-  return { inputValue, setInputValue, onChange };
+  return { value, setValue };
 };
 
 export default useInput;

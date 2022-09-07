@@ -1,6 +1,44 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 //index.ts
+
+interface StyledTabProps {
+  isActive: boolean;
+}
+
+interface StyledIconProps {
+  isOpened?: boolean;
+}
+
+const activeStyles = css<StyledTabProps>`
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      color: ${({ theme }) => theme.colors.black};
+      font-weight: ${({ theme }) => theme.fontWeights.bold};
+
+      svg path {
+        stroke: ${({ theme }) => theme.colors.black};
+      }
+    `}
+`;
+
+const openStyles = css<StyledIconProps>`
+  ${({ isOpened, theme }) => isOpened && css`
+    svg path {
+      stroke: ${theme.colors.blue};
+      fill: ${theme.colors.lightBlue};
+    }
+  `}
+
+  ${({ isOpened, theme }) => !isOpened && css`
+    svg path {
+      stroke: ${theme.colors.purple};
+      fill: ${theme.colors.lightPurple};
+    }
+  `}
+`;
+
 export const Wrapper = styled.div`
   width: 1280px;
   border: 1px solid ${({ theme }) => theme.colors.grey4};
@@ -10,62 +48,76 @@ export const Wrapper = styled.div`
   & > *:last-child {
     border-radius: 0 0 11px 11px;
   }
+  
+  & > *:not(:last-child) {
+    border-bottom: 1px solid ${({ theme }) => theme.colors.grey4};
+  }
 `;
 
-//MilestoneTableHeader
+// MilestoneTableHeader
+
 export const MilestoneTableHeaderTitle = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
   height: 64px;
   background-color: ${({ theme }) => theme.colors.grey6};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.grey4};
   border-radius: 16px 16px 0 0;
   padding: 0 32px;
 `;
 
-export const MilestoneTab = styled.div<{ focus: boolean }>`
+export const MilestoneTab = styled.div<StyledTabProps>`
   display: flex;
   align-items: center;
   gap: 6px;
   cursor: pointer;
 
-  color: ${({ focus, theme }) => focus && theme.colors.black};
-  font-weight: ${({ focus, theme }) => focus && theme.fontWeights.bold};
+  /* 활성화 여부 */
+  ${activeStyles};
 `;
 
-//MilestoneInfo
+// MilestoneInfo
+
 export const MilestoneItemWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid ${({ theme }) => theme.colors.grey2};
-  padding: 10px;
+  background-color: ${({ theme }) => theme.colors.white};
+  padding: 16px 32px;
 `;
 
 export const LeftContainer = styled.div``;
 
 export const MilestoneInfoTitle = styled.div`
   display: flex;
-  div {
-    padding-left: 12px;
-  }
+  gap: 8px;
+  margin-bottom: 8px;
 `;
 
-export const NameDateContainer = styled.div`
+export const NameDateContainer = styled.div<StyledIconProps>`
   display: flex;
-  margin-bottom: 8px;
+  align-items: center;
+  gap: 8px;
+
+  &:first-of-type {
+    color: ${({ theme }) => theme.colors.black};
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+    font-size: ${({ theme }) => theme.fontSizes.medium};
+    
+    /* 마일스톤 열림 여부 */
+    ${openStyles};
+  }
+  
   svg {
-    margin-top: 5px;
+    position: relative;
+    top: 1px;
   }
 `;
 
 export const IconText = styled.span`
-  margin-left: 5px;
 `;
 
 export const Description = styled.div`
   display: flex;
-  margin-left: 12px;
 `;
 
 export const RightContainer = styled.div`
@@ -73,16 +125,18 @@ export const RightContainer = styled.div`
 `;
 
 export const EditIcons = styled.div`
-  cursor: pointer;
   display: flex;
-  font-size: ${({ theme }) => theme.fontSizes.xSmall};
   justify-content: flex-end;
+  gap: 24px;
+  font-size: ${({ theme }) => theme.fontSizes.xSmall};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  cursor: pointer;
 `;
 
 export const IconContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 20px;
+  gap: 4px;
 `;
 
 export const DeleteIcon = styled.div`
@@ -93,4 +147,9 @@ export const StateContainer = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: ${({ theme }) => theme.fontSizes.xSmall};
+`;
+
+export const IssueCounts = styled.div`
+  display: flex;
+  gap: 8px;
 `;

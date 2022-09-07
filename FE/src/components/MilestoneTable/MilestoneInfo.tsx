@@ -23,6 +23,7 @@ const MilestoneInfo = ({ data, setEditMode }: MilestoneInfoPropsType) => {
 
   const isOpenMilestone = useRecoilValue(milestoneStatus);
   const setMilestoneTrigger = useSetRecoilState(milestoneTrigger);
+  const status = useRecoilValue(milestoneStatus);
 
   const handleOpenClose = async () => {
     const isSuccessFetch = await fetchChangeStateMilestone(id, isOpenMilestone);
@@ -40,8 +41,8 @@ const MilestoneInfo = ({ data, setEditMode }: MilestoneInfoPropsType) => {
     <S.MilestoneItemWrapper>
       <S.LeftContainer>
         <S.MilestoneInfoTitle>
-          <S.NameDateContainer>
-            <Icon iconName={ICON_NAME.OPEN_MILESTONE} />
+          <S.NameDateContainer isOpened={status}>
+            <Icon iconName={status ? ICON_NAME.MILESTONE : ICON_NAME.ARCHIVE} />
             <S.IconText>{name}</S.IconText>
           </S.NameDateContainer>
           <S.NameDateContainer>
@@ -55,7 +56,7 @@ const MilestoneInfo = ({ data, setEditMode }: MilestoneInfoPropsType) => {
       <S.RightContainer>
         <S.EditIcons>
           <S.IconContainer onClick={handleOpenClose}>
-            <Icon iconName={ICON_NAME.CLOSE_MILESTONE} />
+            <Icon iconName={ICON_NAME.ARCHIVE} />
             {isOpenMilestone ? <S.IconText>닫기</S.IconText> : <S.IconText>열기</S.IconText>}
           </S.IconContainer>
           <S.IconContainer onClick={handleEdit}>
@@ -71,11 +72,11 @@ const MilestoneInfo = ({ data, setEditMode }: MilestoneInfoPropsType) => {
         <div>
           <ProgressBar progress={Number(progress(openIssueCount, closeIssueCount))} />
           <S.StateContainer>
-            <div>{Number(progress(openIssueCount, closeIssueCount))}%</div>
-            <div>
-              <S.IconText> 열린 이슈({openIssueCount}) </S.IconText>
+            <span>{Number(progress(openIssueCount, closeIssueCount))}%</span>
+            <S.IssueCounts>
+              <S.IconText>열린 이슈({openIssueCount})</S.IconText>
               <S.IconText>닫힌 이슈({closeIssueCount})</S.IconText>
-            </div>
+            </S.IssueCounts>
           </S.StateContainer>
         </div>
       </S.RightContainer>

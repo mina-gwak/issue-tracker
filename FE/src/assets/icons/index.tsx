@@ -8,7 +8,6 @@ import CheckBoxCircleInitial from '@assets/icons/checkBoxCircleInitial.svg';
 import CheckBoxDisabled from '@assets/icons/checkBoxDisabled.svg';
 import CheckBoxInitial from '@assets/icons/checkBoxInitial.svg';
 import CloseIssue from '@assets/icons/closeIssue.svg';
-import CloseMilestone from '@assets/icons/closeMilestone.svg';
 import DeleteIcon from '@assets/icons/deleteIcon.svg';
 import EditIcon from '@assets/icons/editIcon.svg';
 import Emoji from '@assets/icons/emoji.svg';
@@ -36,7 +35,6 @@ export const Icons = {
   CheckBoxDisabled,
   CheckBoxInitial,
   CloseIssue,
-  CloseMilestone,
   DeleteIcon,
   EditIcon,
   Emoji,

@@ -12,13 +12,10 @@ const sizeStyles = css<InputBoxProps>`
     size === INPUT_SIZE.SMALL &&
     css`
       ${TextInput} {
-        width: fit-content;
+        width: 100%;
         height: 40px;
+        border-radius: 11px;
         padding-left: 112px;
-      }
-
-      ${Label} {
-        width: 80px;
       }
     `}
 
@@ -44,6 +41,7 @@ const typingStyles = css<InputBoxProps>`
     isValueExist &&
     css`
       ${Label} {
+        width: 80px;
         color: ${({ theme }) => theme.colors.grey2};
         font-size: ${({ theme }) => theme.fontSizes.xSmall};
       }
@@ -92,12 +90,15 @@ const statusStyles = css<WrapperProps>`
 `;
 
 export const Wrapper = styled.div<WrapperProps>`
+  flex-grow: 1;
+  
   ${statusStyles}
 `;
 
 export const InputBox = styled.div<InputBoxProps>`
+  flex-grow: 1;
   position: relative;
-  width: fit-content;
+  width: 100%;
   background-color: ${({ theme }) => theme.colors.grey5};
   border-radius: 16px;
 

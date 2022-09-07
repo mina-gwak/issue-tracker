@@ -15,7 +15,8 @@ export const TabContainer = styled.div`
 export const Tab = styled(Link)<{ active: string }>`
   ${flexCenter};
   width: 50%;
-  background-color: ${({ active, theme }) => (active === 'true' ? theme.colors.grey4 : undefined)};
+  background-color: ${({ active, theme }) =>
+          active === 'true' ? theme.colors.grey4 : undefined};
   color: ${({ theme }) => theme.colors.black};
   transition: all 200ms;
 
@@ -24,7 +25,7 @@ export const Tab = styled(Link)<{ active: string }>`
   }
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.grey5};
+    ${({ theme, active }) => active === 'false' && `background-color: ${theme.colors.grey5}`};
   }
 
   &:active {

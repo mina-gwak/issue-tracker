@@ -1,29 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import * as S from '@components/LabelCreateEditForm/LabelCreateEditForm.style';
+import Icon from '@components/common/Icon';
+import { ICON_NAME } from '@components/common/Icon/constants';
 import { TextColorArrType } from '@type/label';
 
 interface InputRadioPropsType {
   value: TextColorArrType;
-  onChange: (color: string) => () => void;
+  selectedValue: string;
+  onChange: (color: string) => void;
 }
 
-const InputRadio = ({ value, onChange }: InputRadioPropsType) => {
-  const [isCheckedRadioButton, setIsCheckedRadioButton] = useState<string>('#000');
+const InputRadio = ({ value, selectedValue, onChange }: InputRadioPropsType) => {
+  const [active, setActive] = useState(value.colorCode === selectedValue);
 
-  const handleOnChangeRadioButton = () => {
-    onChange(value.colorCode);
-    setIsCheckedRadioButton((prev) => (prev === '#000' ? '#fff' : '#000'));
-  };
+  const checkBoxIcon = active
+    ? ICON_NAME.CHECKBOX_CIRCLE_ACTIVE
+    : ICON_NAME.CHECKBOX_CIRCLE_INITIAL;
+
+  useEffect(() => {
+    setActive(selectedValue === value.colorCode);
+  }, [selectedValue]);
+
   return (
     <div>
-      <input
+      <S.RadioButton
         type='radio'
         id={value.id}
         value={value.colorCode}
-        onChange={handleOnChangeRadioButton}
-        checked={value.colorCode === isCheckedRadioButton}
+        onChange={() => onChange(value.colorCode)}
+        checked={value.colorCode === selectedValue}
       />
-      <label htmlFor={value.id}>{value.title}</label>
+      <S.RadioLabel htmlFor={value.id}>
+        <Icon iconName={checkBoxIcon} />
+        {value.title}
+      </S.RadioLabel>
     </div>
   );
 };

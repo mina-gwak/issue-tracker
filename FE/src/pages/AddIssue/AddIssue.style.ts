@@ -39,4 +39,8 @@ export const FormElements = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  
+  input {
+    width: 100%;
+  }
 `;

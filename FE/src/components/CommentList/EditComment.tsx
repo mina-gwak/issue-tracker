@@ -1,7 +1,5 @@
 import { useState } from 'react';
 
-import { useSetRecoilState } from 'recoil';
-
 import * as S from '@components/CommentList/CommentList.style';
 import Button from '@components/common/Button';
 import { BUTTON_SIZE } from '@components/common/Button/constants';
@@ -9,7 +7,7 @@ import Icon from '@components/common/Icon';
 import { ICON_NAME, ICON_SIZE } from '@components/common/Icon/constants';
 import Textarea from '@components/common/Textarea';
 import { editIssueContent } from '@query/issue';
-import { detailIssueTrigger } from '@store/detailIssue';
+import { queryClient } from '@src';
 import { editComments } from '@utils/api/fetchComment';
 
 interface EditCommentPropsType {
@@ -22,8 +20,6 @@ interface EditCommentPropsType {
 const EditComment = ({ issueId, commentId, content, handleCancleClick }: EditCommentPropsType) => {
   const [editContent, setEditContent] = useState(content);
 
-  const setDetailIssueTrigger = useSetRecoilState(detailIssueTrigger);
-
   const isSubmitDisabled = editContent === content;
 
   const handleSubmitClick = async () => {
@@ -31,10 +27,11 @@ const EditComment = ({ issueId, commentId, content, handleCancleClick }: EditCom
     if (issueId) result = await editIssueContent(issueId, editContent);
     else result = await editComments(commentId, editContent);
     if (result) {
-      setDetailIssueTrigger((prev) => prev + 1);
       handleCancleClick();
+      queryClient.invalidateQueries(['issues', issueId]);
     }
   };
+
   return (
     <S.EditCommentBlock>
       <Textarea content={editContent} setContent={setEditContent} />
