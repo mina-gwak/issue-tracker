@@ -1,16 +1,31 @@
 import { atom } from 'recoil';
 
-interface issueOptionsStateType {
+interface IssueOptionsStateType {
   assignees: string[];
   labels: string[];
   milestone: string | null;
 }
 
-const defaultState: issueOptionsStateType = {
+interface IssueOptionsTriggerStateType {
+  type: string;
+  count: number;
+}
+
+const defaultState: IssueOptionsStateType = {
   assignees: [],
   labels: [],
   milestone: '',
 };
+
+const defaultTriggerState: IssueOptionsTriggerStateType = {
+  type: '',
+  count: 0,
+};
+
+export const issueOptionsTriggerState = atom({
+  key: 'issueOptionsTrigger',
+  default: defaultTriggerState,
+});
 
 export const issueOptionsState = atom({
   key: 'issueOptions',

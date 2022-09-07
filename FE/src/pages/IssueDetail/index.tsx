@@ -61,7 +61,7 @@ const IssueDetail = () => {
           <S.DetailMain>
             <CommentList {...data} />
             <S.DetailOption>
-              <SideBar />
+              <SideBar issueId={data.issueId} editable={data.editable} />
               {data.editable && (
                 <S.IssueDeleteButton
                   type='button'
