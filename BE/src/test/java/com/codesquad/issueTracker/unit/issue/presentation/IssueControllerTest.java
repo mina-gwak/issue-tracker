@@ -33,6 +33,7 @@ import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueContentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeLabelsRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeMilestoneRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.CommentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
 import com.codesquad.issueTracker.label.domain.Label;
@@ -587,6 +588,43 @@ class IssueControllerTest extends ControllerTest {
                 ),
                 requestFields(
                     fieldWithPath("contents").description("변경할 issue 내용")
+                )));
+    }
+
+    @DisplayName("이슈의 마일스톤을 수정한다.")
+    @Test
+    void edit_issue_milestone() throws Exception {
+        // given
+        Long issueId = 1L;
+        Long userId = 10L;
+
+        ChangeMilestoneRequest changedMilestone = new ChangeMilestoneRequest("changedMilestone");
+
+        String milestone = objectMapper.writeValueAsString(changedMilestone);
+
+        // when
+        ResultActions perform = mockMvc.perform(
+            RestDocumentationRequestBuilders.patch("/api/issues/{issueId}/milestones", issueId)
+                .header("Authorization", "Bearer testToken")
+                .content(milestone)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL));
+
+        // then
+        perform
+            .andExpect(status().isOk());
+
+        verify(issueService, times(1))
+            .changeMilestone(eq(issueId), any(ChangeMilestoneRequest.class), eq(userId));
+
+        // restdocs
+        perform.andDo(
+            document("change-issue-milestone", getDocumentRequest(), getDocumentResponse(),
+                pathParameters(
+                    parameterWithName("issueId").description("변경할 이슈 id")
+                ),
+                requestFields(
+                    fieldWithPath("milestone").description("변경할 마일스톤 이름")
                 )));
     }
 }
