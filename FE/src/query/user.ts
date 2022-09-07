@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 
 import { API } from '@constants';
 
-interface UserQueryType {
+export interface UserQueryType {
   usersOutlineResponses: {
     optionName: string;
     imageUrl: string;
@@ -29,12 +29,4 @@ export const useUsersQuery = (trigger: string) =>
     refetchOnWindowFocus: false,
     onError: (err) => console.log(err),
     enabled: trigger === 'assignees',
-  });
-
-export const useSelectedUsersQuery = (selectedUsers: string[]) =>
-  useQuery(['users'], fetchUsers, {
-    select: (data) => data.usersOutlineResponses.filter(item => selectedUsers.includes(item.optionName)),
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    onError: (err) => console.log(err),
   });

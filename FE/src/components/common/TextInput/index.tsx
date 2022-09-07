@@ -9,7 +9,7 @@ import {
 } from '@components/common/TextInput/constants';
 
 export interface TextInputPropsType {
-  size: InputSizeValues;
+  size?: InputSizeValues;
   name: string;
   placeholder: string;
   disabled?: boolean;
@@ -44,7 +44,7 @@ const TextInput = ({
         />
         <S.Label htmlFor={name}>{placeholder}</S.Label>
       </S.InputBox>
-      {message && <S.Message>{message}</S.Message>}
+      {status === INPUT_STATUS.ERROR && message && <S.Message>{message}</S.Message>}
     </S.Wrapper>
   );
 };

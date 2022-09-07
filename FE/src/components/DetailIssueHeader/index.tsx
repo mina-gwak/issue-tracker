@@ -27,7 +27,7 @@ const DetailIssueHeader = ({
   const isTitleEditMode = useRecoilValue(titleEditMode);
   const passedTime = calcTwoTimeDifference(new Date(), issueOutline.writtenTime);
   const author = issueOutline.writerOutline.optionName;
-  const headerInfo = `이 이슈가 ${passedTime}에 ${author}님에 의해 열렸습니다 ∙ 코멘트 ${commentOutlines.length}개`;
+  const headerInfo = `이 이슈가 ${passedTime}에 ${author}님에 의해 작성되었습니다 ∙ 코멘트 ${commentOutlines.length}개`;
 
   return (
     <S.DetailIssueHeaderWrapper>

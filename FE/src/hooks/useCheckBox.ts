@@ -1,20 +1,17 @@
 import { useEffect } from 'react';
 
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 
-import { useIssuesQuery } from '@query/issue';
+import useIssues from '@hooks/useIssues';
 import { isAllCheckedState, isCheckedState } from '@store/checkbox';
-import { filterBarQueryString } from '@store/filterBar';
-import { IssueType } from '@type/issueType';
 
 const useCheckBox = () => {
-  const filterBarValue = useRecoilValue(filterBarQueryString);
 
   const [isCheckedItems, setIsCheckedItems] = useRecoilState(isCheckedState);
   const [isAllChecked, setIsAllChecked] = useRecoilState(isAllCheckedState);
   const resetCheckedItems = useResetRecoilState(isCheckedState);
 
-  const { data } = useIssuesQuery<IssueType[]>(filterBarValue, (data) => data.issueCoverResponses);
+  const issues = useIssues();
 
   const getIsChecked = (id: number) => {
     return isCheckedItems.has(id);
@@ -35,8 +32,8 @@ const useCheckBox = () => {
     if (isAllChecked) {
       setIsCheckedItems(new Set());
     } else {
-      if (data) {
-        const ids = data.map((item) => item.issueId);
+      if (issues) {
+        const ids = issues.issueCoverResponses.map((item) => item.issueId);
         setIsCheckedItems(new Set([...ids]));
       }
     }
@@ -44,7 +41,7 @@ const useCheckBox = () => {
   };
 
   useEffect(() => {
-    if (data) setIsAllChecked(() => isCheckedItems.size === data.length);
+    if (issues) setIsAllChecked(() => isCheckedItems.size === issues.issueCoverResponses.length);
   }, [isCheckedItems]);
 
   return {

@@ -1,27 +1,29 @@
 import { LabelType } from '@type/issueType';
 
-export interface writerType {
+export interface WriterType {
   optionName: string;
   imageUrl: string;
 }
 
-export interface milestonesType {
+export interface MilestonesType {
   milestoneName: string;
   allIssueCount: number;
   closedIssueCount: number;
 }
 
 export interface issueContentType {
-  writerOutline: writerType;
+  writerOutline: WriterType;
   content: string;
   writtenTime: string;
 }
 
 export interface commentType {
-  writerOutline: writerType;
+  writerOutline: WriterType;
   commentId: number;
   content: string;
   writtenTime: string;
+  status: 'INITIAL' | 'CLOSED' | 'REOPEN';
+  editable: boolean;
 }
 
 export interface DetailIssueType {
@@ -29,10 +31,10 @@ export interface DetailIssueType {
   title: string;
   editable: boolean;
   issueOutline: issueContentType;
-  writerOutline: writerType;
-  assignees: writerType[];
+  writerOutline: WriterType;
+  assignees: WriterType[];
   labels: LabelType[];
-  milestoneInformation: milestonesType;
+  milestoneInformation: MilestonesType;
   commentOutlines: commentType[];
   open: boolean;
 }

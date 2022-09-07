@@ -1,35 +1,42 @@
 import { useState } from 'react';
 
-import { useSetRecoilState } from 'recoil';
-
 import * as S from '@components/CommentList/CommentList.style';
 import Button from '@components/common/Button';
 import { BUTTON_SIZE } from '@components/common/Button/constants';
 import Icon from '@components/common/Icon';
 import { ICON_NAME, ICON_SIZE } from '@components/common/Icon/constants';
 import Textarea from '@components/common/Textarea';
-import { detailIssueTrigger } from '@store/detailIssue';
+import { editIssueContent } from '@query/issue';
+import { queryClient } from '@src';
 import { editComments } from '@utils/api/fetchComment';
 
-const EditComment = ({ commentId, content, handelCancelClick }: any) => {
-  const [editContent, setEditContent] = useState(content);
+interface EditCommentPropsType {
+  issueId?: number;
+  commentId: number;
+  content: string;
+  handleCancleClick: () => void;
+}
 
-  const setDetailIssueTrigger = useSetRecoilState(detailIssueTrigger);
+const EditComment = ({ issueId, commentId, content, handleCancleClick }: EditCommentPropsType) => {
+  const [editContent, setEditContent] = useState(content);
 
   const isSubmitDisabled = editContent === content;
 
   const handleSubmitClick = async () => {
-    const editCommentResult = await editComments(commentId, editContent);
-    if (editCommentResult) {
-      setDetailIssueTrigger((prev) => prev + 1);
-      handelCancelClick();
+    let result;
+    if (issueId) result = await editIssueContent(issueId, editContent);
+    else result = await editComments(commentId, editContent);
+    if (result) {
+      handleCancleClick();
+      queryClient.invalidateQueries(['issues', issueId]);
     }
   };
+
   return (
     <S.EditCommentBlock>
       <Textarea content={editContent} setContent={setEditContent} />
       <S.ButtonContainer>
-        <Button size={BUTTON_SIZE.SMALL} onClick={handelCancelClick} outline={true}>
+        <Button size={BUTTON_SIZE.SMALL} onClick={handleCancleClick} outline={true}>
           <Icon iconName={ICON_NAME.X_SQUARE} iconSize={ICON_SIZE.SMALL} />
           <span> 편집 취소</span>
         </Button>

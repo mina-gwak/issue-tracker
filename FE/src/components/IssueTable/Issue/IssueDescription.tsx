@@ -40,10 +40,12 @@ const IssueDescription = ({
         </S.AuthorPopOverWrapper>
         <S.Text>님에 의해 작성되었습니다</S.Text>
       </S.TimeStamp>
-      <S.Milestone to='../milestone'>
-        <Icon iconName={ICON_NAME.MILESTONE} />
-        <S.Text>{milestoneName}</S.Text>
-      </S.Milestone>
+      {milestoneName && (
+        <S.Milestone to='../milestone'>
+          <Icon iconName={ICON_NAME.MILESTONE} />
+          <S.Text>{milestoneName}</S.Text>
+        </S.Milestone>
+      )}
     </S.Description>
   );
 };

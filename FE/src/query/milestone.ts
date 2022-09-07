@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import { API } from '@constants';
 import { MilestoneTabType } from '@type/milestone';
 
-interface MilestoneQueryType {
+export interface MilestoneQueryType {
   milestoneSingleInfos: MilestoneTabType[];
 }
 
@@ -30,12 +30,4 @@ export const useMilestonesQuery = (trigger: string) =>
     refetchOnWindowFocus: false,
     onError: (err) => console.log(err),
     enabled: trigger === 'milestone',
-  });
-
-export const useSelectedMilestoneQuery = (selectedMilestone: string) =>
-  useQuery(['milestones'], fetchMilestones, {
-    select: (data) => data.milestoneSingleInfos.filter(item => item.name === selectedMilestone),
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    onError: (err) => console.log(err),
   });

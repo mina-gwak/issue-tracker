@@ -24,12 +24,12 @@ const MilestoneTableHeader = ({
 
   return (
     <S.MilestoneTableHeaderTitle>
-      <S.MilestoneTab onClick={() => handleClickChange(1)} focus={milestoneStatusValue}>
-        <Icon iconName={ICON_NAME.OPEN_MILESTONE} />
+      <S.MilestoneTab onClick={() => handleClickChange(1)} isActive={milestoneStatusValue}>
+        <Icon iconName={ICON_NAME.MILESTONE} />
         열린 마일스톤({milestoneOpenCount})
       </S.MilestoneTab>
-      <S.MilestoneTab onClick={() => handleClickChange(0)} focus={!milestoneStatusValue}>
-        <Icon iconName={ICON_NAME.CLOSE_MILESTONE} />
+      <S.MilestoneTab onClick={() => handleClickChange(0)} isActive={!milestoneStatusValue}>
+        <Icon iconName={ICON_NAME.ARCHIVE} />
         닫힌 마일스톤({milestoneCloseCount})
       </S.MilestoneTab>
     </S.MilestoneTableHeaderTitle>

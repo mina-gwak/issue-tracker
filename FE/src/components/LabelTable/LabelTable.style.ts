@@ -12,6 +12,10 @@ export const Wrapper = styled.div`
   & > *:last-child {
     border-radius: 0 0 11px 11px;
   }
+
+  & > *:not(:last-child) {
+    border-bottom: 1px solid ${({ theme }) => theme.colors.grey4};
+  }
 `;
 
 //LabelTableHeader
@@ -27,9 +31,6 @@ export const LabelTableTitle = styled.div`
 
 //LabelItem
 export const EditFormWrapper = styled.div`
-  border-radius: 0;
-  border: none;
-  border-top: 1px solid ${({ theme }) => theme.colors.grey4};
 `;
 
 export const EditFormContainer = styled.div`
@@ -42,10 +43,6 @@ export const EditFormContainer = styled.div`
   height: 90px;
   background: ${({ theme }) => theme.colors.white};
   padding: 16px 63px 16px 32px;
-
-  &:not(:last-of-type) {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.grey4};
-  }
 `;
 
 export const Description = styled.div`

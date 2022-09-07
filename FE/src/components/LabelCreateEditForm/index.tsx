@@ -27,12 +27,12 @@ const LabelCreateEditForm = ({ title, data, handelClickCancel }: LabelCreateEdit
   const colorInput = useInput(data?.colorCode || '');
 
   const handleSubmitClick = async () => {
-    if (!titleInput.inputValue || !colorInput.inputValue) return false;
+    if (!titleInput.value || !colorInput.value) return false;
 
     const newLabelData = {
-      name: titleInput.inputValue,
-      description: descriptionInput.inputValue,
-      colorCode: colorInput.inputValue,
+      name: titleInput.value,
+      description: descriptionInput.value,
+      colorCode: colorInput.value,
       textColor: labelTextColor,
     };
 
@@ -62,10 +62,10 @@ const LabelCreateEditForm = ({ title, data, handelClickCancel }: LabelCreateEdit
       </div>
       <S.ButtonContainer>
         <Button size={BUTTON_SIZE.SMALL} outline={true} onClick={handelClickCancel}>
-          <span> ❌ 취소</span>
+          <span>취소</span>
         </Button>
         <Button size={BUTTON_SIZE.SMALL} onClick={handleSubmitClick}>
-          <span> ➕ 완료</span>
+          <span>완료</span>
         </Button>
       </S.ButtonContainer>
     </S.LabelEditFormWrapper>

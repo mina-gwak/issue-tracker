@@ -1,5 +1,40 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
+interface StyledCommentProps {
+  status: 'INITIAL' | 'CLOSED' | 'REOPEN';
+}
+
+const statusStyles = css<StyledCommentProps>`
+  ${({ status }) =>
+    status === 'CLOSED' &&
+    css`
+      border: 1px solid ${({ theme }) => theme.colors.purple};
+
+      ${CommentHeader} {
+        background-color: ${({ theme }) => theme.colors.lightPurple};
+        border-bottom: 1px solid ${({ theme }) => theme.colors.purple};
+      }
+
+      ${CommentContent} {
+        color: ${({ theme }) => theme.colors.darkPurple};
+      }
+    `}
+
+  ${({ status }) =>
+    status === 'REOPEN' &&
+    css`
+      border: 1px solid ${({ theme }) => theme.colors.blue};
+
+      ${CommentHeader} {
+        background-color: ${({ theme }) => theme.colors.lightBlue};
+        border-bottom: 1px solid ${({ theme }) => theme.colors.blue};
+      }
+
+      ${CommentContent} {
+        color: ${({ theme }) => theme.colors.darkBlue};
+      }
+    `}
+`;
 //index.tsx
 export const CommentListWrapper = styled.div`
   min-width: 550px;
@@ -31,13 +66,15 @@ export const CommentWriterImage = styled.div`
   }
 `;
 
-export const CommentContainer = styled.div`
+export const CommentContainer = styled.div<StyledCommentProps>`
   display: flex;
   flex-direction: column;
   width: 880px;
-  border: 1px solid #d9dbe9;
+  border: 1px solid ${({ theme }) => theme.colors.grey4};
   border-radius: 16px;
   overflow: hidden;
+
+  ${statusStyles}
 `;
 
 export const CommentHeader = styled.div`
@@ -58,36 +95,44 @@ export const CommentContent = styled.div`
   padding: 16px 24px;
 `;
 
-export const CommentHeaderSection = styled.div`
+export const CommentHeaderLeftSection = styled.div`
   display: flex;
   align-items: center;
+  gap: 8px;
+`;
 
-  &:last-child {
-    & > div,
-    & > svg {
-      cursor: pointer;
-    }
+export const CommentHeaderRightSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
 
-    & > div {
-      margin-right: 1rem;
-    }
+  & > div,
+  & > svg {
+    cursor: pointer;
   }
 `;
 
 export const CommentHeaderDate = styled.div`
-  margin-left: 8px;
   color: ${({ theme }) => theme.colors.grey2};
 `;
 
 export const CommentWriter = styled.span`
-  border: ${({ theme }) => `1px solid ${theme.colors.grey6}`};
+  display: block;
+  color: ${({ theme }) => theme.colors.grey2};
+  font-size: ${({ theme }) => theme.fontSizes.xSmall};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  border: 1px solid ${({ theme }) => theme.colors.grey4};
   border-radius: 30px;
-  padding: 2px 16px;
+  padding: 4px 16px;
 `;
 
 export const CommentEditButton = styled.div`
   display: flex;
   align-items: center;
+  gap: 4px;
+  color: ${({ theme }) => theme.colors.grey2};
+  font-size: ${({ theme }) => theme.fontSizes.xSmall};
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
 `;
 
 //EditComment.tsx

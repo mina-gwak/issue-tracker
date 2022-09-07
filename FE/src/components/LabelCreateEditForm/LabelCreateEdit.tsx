@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, Dispatch, SetStateAction } from 'react';
 
-import InputForm from '@components/InputForm';
 import InputRadio from '@components/InputRadio';
 import * as S from '@components/LabelCreateEditForm/LabelCreateEditForm.style';
 import LabelBadge from '@components/LabelTable/LabelBadge';
 import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
+import TextInput from '@components/common/TextInput';
 import { textColorArr } from '@data/labelData';
 import { UseInputReturnType } from '@hooks/useInput';
 import { getRandomLabelColor } from '@utils/randomColor';
@@ -15,7 +15,7 @@ interface LabelCreateEditPropsType {
   descriptionInput: UseInputReturnType;
   colorInput: UseInputReturnType;
   labelTextColor: string;
-  setLabelTextColor: React.Dispatch<React.SetStateAction<string>>;
+  setLabelTextColor: Dispatch<SetStateAction<string>>;
 }
 
 const LabelCreateEdit = ({
@@ -25,10 +25,10 @@ const LabelCreateEdit = ({
   labelTextColor,
   setLabelTextColor,
 }: LabelCreateEditPropsType) => {
-  const [labelBadgeColorCode, setLabelBadgeColorCode] = useState<string>(colorInput.inputValue);
-  const [labelBadgeTextColor, setLabelBadgeTextColor] = useState<string>(labelTextColor);
+  const [labelBadgeColorCode, setLabelBadgeColorCode] = useState<string>(colorInput.value || '#EFF0F6');
+  const [labelBadgeTextColor, setLabelBadgeTextColor] = useState<string>(labelTextColor || '#000');
 
-  const handleChangeRadioButton = (color: string) => () => {
+  const handleChangeRadioButton = (color: string) => {
     setLabelTextColor(color);
     setLabelBadgeTextColor(color);
   };
@@ -36,7 +36,7 @@ const LabelCreateEdit = ({
   const handleClickRefreshColor = () => {
     const randomLabelBackgroundColor = getRandomLabelColor();
     setLabelBadgeColorCode(randomLabelBackgroundColor);
-    colorInput.setInputValue(randomLabelBackgroundColor);
+    colorInput.setValue(randomLabelBackgroundColor);
   };
 
   return (
@@ -44,21 +44,27 @@ const LabelCreateEdit = ({
       <LabelBadge
         colorCode={labelBadgeColorCode}
         textColor={labelBadgeTextColor}
-        name={titleInput.inputValue}
+        name={titleInput.value || '레이블 이름'}
       />
       <S.LabelEdit>
-        <InputForm placeholder='레이블 이름' {...titleInput} />
-        <InputForm placeholder='설명(선택)' {...descriptionInput} />
+        <TextInput name='labelName' placeholder='레이블 이름' {...titleInput} />
+        <TextInput name='description' placeholder='설명(선택)' {...descriptionInput} />
         <S.LabelEditColor>
-          <InputForm placeholder='배경색상' {...colorInput}>
-            <button onClick={handleClickRefreshColor}>
+          <S.BackgroundColorInputContainer>
+            <TextInput name='backgroundColor' placeholder='배경 색상' value={colorInput.value || labelBadgeColorCode} setValue={colorInput.setValue} />
+            <S.ChangeColorButton type='button' onClick={handleClickRefreshColor}>
               <Icon iconName={ICON_NAME.REFRESH_ICON} />
-            </button>
-          </InputForm>
+            </S.ChangeColorButton>
+          </S.BackgroundColorInputContainer>
           <S.RadioButtonContainer>
-            <span>텍스트 색상</span>
+            <S.RadioTitle>텍스트 색상</S.RadioTitle>
             {textColorArr.map((item) => (
-              <InputRadio key={item.id} value={item} onChange={handleChangeRadioButton} />
+              <InputRadio
+                key={item.id}
+                value={item}
+                selectedValue={labelBadgeTextColor}
+                onChange={handleChangeRadioButton}
+              />
             ))}
           </S.RadioButtonContainer>
         </S.LabelEditColor>

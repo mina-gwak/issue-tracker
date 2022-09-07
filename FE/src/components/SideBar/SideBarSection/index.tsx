@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState, memo } from 'react';
 
 import Modal from '@components/Modal';
 import { POSITION } from '@components/Modal/constants';
@@ -15,16 +15,18 @@ import { DropdownType } from '@type/dropdownType';
 interface SideBarSectionPropsType {
   title: '담당자' | '레이블' | '마일스톤';
   type: 'assignees' | 'labels' | 'milestone';
+  issueId?: number;
+  editable?: boolean;
   children?: ReactNode;
 }
 
-const SideBarSection = ({ title, children, type }: SideBarSectionPropsType) => {
+const SideBarSection = ({ title, children, issueId, editable, type }: SideBarSectionPropsType) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [modalData, setModalData] = useState<DropdownType[]>();
   const [trigger, setTrigger] = useState<string>('');
 
   const [isModalOpen, toggleModal] = useModal({ modalRef });
-  const { isChecked, checkBoxClickHandler } = useIssueOptions({ type });
+  const { isChecked, checkBoxClickHandler } = useIssueOptions({ type, issueId });
 
   const { data: assignees } = useUsersQuery(trigger);
   const { data: labels } = useLabelsQuery(trigger);
@@ -41,7 +43,7 @@ const SideBarSection = ({ title, children, type }: SideBarSectionPropsType) => {
 
   return (
     <S.Container>
-      <S.AddButton type='button' onMouseEnter={() => setTrigger(type)} onClick={toggleModal}>
+      <S.AddButton type='button' onMouseEnter={() => (editable ?? true) && setTrigger(type)} onClick={() => (editable ?? true) && toggleModal()}>
         <S.Title>{title}</S.Title>
         <Icon iconName={ICON_NAME.ADD} iconSize={ICON_SIZE.SMALL} />
       </S.AddButton>
@@ -60,4 +62,4 @@ const SideBarSection = ({ title, children, type }: SideBarSectionPropsType) => {
   );
 };
 
-export default SideBarSection;
+export default memo(SideBarSection);

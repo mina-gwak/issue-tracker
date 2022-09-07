@@ -86,8 +86,4 @@ export const Milestone = styled(Link)`
   display: flex;
   align-items: center;
   gap: 8px;
-
-  path {
-    fill: ${({ theme }) => theme.colors.grey2};
-  }
 `;

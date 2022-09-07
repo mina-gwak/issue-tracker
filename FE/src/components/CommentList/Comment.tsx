@@ -6,16 +6,19 @@ import Icon from '@components/common/Icon';
 import { ICON_NAME } from '@components/common/Icon/constants';
 import Image from '@components/common/Image';
 import { IMAGE_SIZE } from '@components/common/Image/constants';
+import MarkDown from '@components/common/MarkDown';
 import { commentType, issueContentType } from '@type/detailIssueType';
 import { calcTwoTimeDifference } from '@utils/date';
 
 interface CommentPropsType {
+  issueId?: number;
   comment?: commentType;
   issueContent?: issueContentType;
   editable: boolean;
+  issueWriter: string;
 }
 
-const Comment = ({ comment, issueContent, editable }: CommentPropsType) => {
+const Comment = ({ issueId, comment, issueContent, editable, issueWriter }: CommentPropsType) => {
   const {
     writerOutline: { optionName, imageUrl },
     content,
@@ -24,8 +27,10 @@ const Comment = ({ comment, issueContent, editable }: CommentPropsType) => {
 
   const [isEdit, setIsEdit] = useState(false);
   const currentCommentId = comment?.commentId || 0;
+  const isEditable = editable && (comment ? comment.status === 'INITIAL' : true);
+
   const handleEditClick = () => setIsEdit(true);
-  const handelCancelClick = () => {
+  const handleCancelClick = () => {
     setIsEdit(false);
   };
 
@@ -36,23 +41,24 @@ const Comment = ({ comment, issueContent, editable }: CommentPropsType) => {
       </S.CommentWriterImage>
       {isEdit ? (
         <EditComment
+          issueId={issueId}
           commentId={currentCommentId}
           content={content}
-          handelCancelClick={handelCancelClick}
+          handleCancleClick={handleCancelClick}
         />
       ) : (
-        <S.CommentContainer>
+        <S.CommentContainer status={comment?.status || 'INITIAL'}>
           <S.CommentHeader>
-            <S.CommentHeaderSection>
-              <div>{optionName}</div>
+            <S.CommentHeaderLeftSection>
+              <p>{optionName}</p>
               <S.CommentHeaderDate>
                 {calcTwoTimeDifference(new Date(), writtenTime)}
               </S.CommentHeaderDate>
-            </S.CommentHeaderSection>
-            <S.CommentHeaderSection>
-              {editable && (
+            </S.CommentHeaderLeftSection>
+            <S.CommentHeaderRightSection>
+              {issueWriter === optionName && <S.CommentWriter>작성자</S.CommentWriter>}
+              {isEditable && (
                 <>
-                  <S.CommentWriter>작성자</S.CommentWriter>
                   <S.CommentEditButton onClick={handleEditClick}>
                     <Icon iconName={ICON_NAME.EDIT_ICON} />
                     <span>편집</span>
@@ -61,10 +67,10 @@ const Comment = ({ comment, issueContent, editable }: CommentPropsType) => {
               )}
 
               <Icon iconName={ICON_NAME.EMOJI} />
-            </S.CommentHeaderSection>
+            </S.CommentHeaderRightSection>
           </S.CommentHeader>
           <S.CommentContent>
-            <span>{content}</span>
+            <MarkDown>{content}</MarkDown>
           </S.CommentContent>
         </S.CommentContainer>
       )}

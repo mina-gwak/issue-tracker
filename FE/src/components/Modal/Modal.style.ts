@@ -27,13 +27,12 @@ export const MenuTitle = styled.h3`
 
 export const MenuOptionList = styled.ul`
   max-height: 149px;
-  overflow: scroll;
+  overflow-y: scroll;
 `;
 
 export const MenuOptionGroup = styled.li`
   ${flexBetween};
   padding: 6px 16px;
-  overflow: scroll;
 
   &:not(:last-child) {
     border-bottom: 1px solid ${({ theme }) => theme.colors.grey4};

@@ -1,16 +1,26 @@
+import { useEffect } from 'react';
+
+import { useMutation } from 'react-query';
 import { useRecoilState } from 'recoil';
 
 import { IconsType } from '@assets/icons';
 import { ICON_NAME } from '@components/common/Icon/constants';
-import { issueOptionsState } from '@store/issueOptions';
+import { editAssignees, editLabels } from '@query/issue';
+import { issueOptionsState, issueOptionsTriggerState } from '@store/issueOptions';
 import { checkBoxClickHandlerType, isCheckedType } from '@type/useOption';
 
 interface UseDropDownType {
   type: 'assignees' | 'labels' | 'milestone';
+  issueId?: number;
 }
 
-const useIssueOptions = ({ type }: UseDropDownType) => {
+const useIssueOptions = ({ type, issueId }: UseDropDownType) => {
   const [issueOptions, setIssueOptions] = useRecoilState(issueOptionsState);
+  const [issueOptionsTrigger, setIssueOptionsTrigger] = useRecoilState(issueOptionsTriggerState);
+
+  const { mutate: mutateLabel } = useMutation(editLabels);
+
+  const { mutate: mutateAssignees } = useMutation(editAssignees);
 
   const isChecked: isCheckedType = (value) => {
     let checkBoxIcon: IconsType = ICON_NAME.CHECKBOX_CIRCLE_INITIAL;
@@ -45,7 +55,19 @@ const useIssueOptions = ({ type }: UseDropDownType) => {
           [type]: [...issueOptions[type], value],
         }));
     }
+
+    setIssueOptionsTrigger((prev) => ({
+      type,
+      count: prev.count + 1,
+    }));
   };
+
+  useEffect(() => {
+    if (issueId && issueOptionsTrigger.type === type) {
+      if (type === 'labels') mutateLabel({ issueId, labels: issueOptions.labels });
+      if (type === 'assignees') mutateAssignees({ issueId, assignees: issueOptions.assignees });
+    }
+  }, [issueOptionsTrigger.count]);
 
   return { isChecked, checkBoxClickHandler };
 };
