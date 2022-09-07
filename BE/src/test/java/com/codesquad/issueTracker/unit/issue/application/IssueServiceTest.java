@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +50,7 @@ import com.codesquad.issueTracker.issue.presentation.dto.ChangeLabelsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeMilestoneRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.CommentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
-import com.codesquad.issueTracker.label.domain.AttachedLabel;
+import com.codesquad.issueTracker.issue.domain.AttachedLabel;
 import com.codesquad.issueTracker.label.domain.Label;
 import com.codesquad.issueTracker.label.domain.LabelRepository;
 import com.codesquad.issueTracker.milestone.domain.Milestone;
@@ -449,7 +450,8 @@ public class IssueServiceTest {
             .willReturn(Optional.of(issue));
 
         ChangeAssigneesRequest request = new ChangeAssigneesRequest(List.of("user10", "user11"));
-        List<User> assigneeForChange = List.of(UserFactory.mockSingleUserWithId(10L), UserFactory.mockSingleUserWithId(11L));
+        List<User> assigneeForChange = new ArrayList<>(
+            List.of(UserFactory.mockSingleUserWithId(10L), UserFactory.mockSingleUserWithId(11L)));
         given(userRepository.findByNameIn(request.getAssignees()))
             .willReturn(Optional.of(assigneeForChange));
 
@@ -494,7 +496,8 @@ public class IssueServiceTest {
             .willReturn(Optional.of(issue));
 
         ChangeLabelsRequest request = new ChangeLabelsRequest(List.of("label1", "label2"));
-        List<Label> labels = List.of(LabelFactory.mockSingleLabelWithId(1L), LabelFactory.mockSingleLabelWithId(2L));
+        List<Label> labels = new ArrayList<>(
+            List.of(LabelFactory.mockSingleLabelWithId(1L), LabelFactory.mockSingleLabelWithId(2L)));
 
         given(labelRepository.findByNameIn(request.getLabels()))
             .willReturn(Optional.of(labels));
