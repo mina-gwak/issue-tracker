@@ -20,6 +20,7 @@ import com.codesquad.issueTracker.exception.comment.CommentNotFoundException;
 import com.codesquad.issueTracker.exception.issue.IssueNotEditableException;
 import com.codesquad.issueTracker.exception.issue.IssueNotFoundException;
 import com.codesquad.issueTracker.exception.label.LabelNotFoundException;
+import com.codesquad.issueTracker.exception.milestone.MilestoneNotFoundException;
 import com.codesquad.issueTracker.exception.user.UserNotFoundException;
 import com.codesquad.issueTracker.issue.application.dto.CommentOutline;
 import com.codesquad.issueTracker.issue.application.dto.FilterCondition;
@@ -35,6 +36,7 @@ import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueContentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeLabelsRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeMilestoneRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.CommentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
 import com.codesquad.issueTracker.label.domain.Label;
@@ -126,6 +128,14 @@ public class IssueService {
         Issue issue = checkEditableIssue(issueId, userId);
         issue.updateContents(request.getContents());
         return new PopUpResponse(issue, issue.isAssignedThisUser(userId));
+    }
+
+    @Transactional
+    public void changeMilestone(Long issueId, ChangeMilestoneRequest request, Long userId) {
+        Issue issue = checkEditableIssue(issueId, userId);
+        Milestone milestone = milestoneRepository.findByName(request.getMilestone())
+            .orElseThrow(MilestoneNotFoundException::new);
+        issue.changeMilestone(milestone);
     }
 
     @Transactional

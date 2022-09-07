@@ -188,4 +188,8 @@ public class Issue {
     public void updateContents(String content) {
         this.content = content;
     }
+
+    public void changeMilestone(Milestone milestone) {
+        this.milestone = milestone;
+    }
 }
