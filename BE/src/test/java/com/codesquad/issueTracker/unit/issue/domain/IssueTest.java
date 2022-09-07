@@ -3,8 +3,10 @@ package com.codesquad.issueTracker.unit.issue.domain;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +18,7 @@ import com.codesquad.issueTracker.common.factory.MilestoneFactory;
 import com.codesquad.issueTracker.common.factory.UserFactory;
 import com.codesquad.issueTracker.issue.domain.AssignedIssue;
 import com.codesquad.issueTracker.issue.domain.Issue;
-import com.codesquad.issueTracker.label.domain.AttachedLabel;
+import com.codesquad.issueTracker.issue.domain.AttachedLabel;
 import com.codesquad.issueTracker.label.domain.Label;
 import com.codesquad.issueTracker.user.domain.User;
 
@@ -98,52 +100,46 @@ public class IssueTest {
     @Test
     void update_assignee_list() {
         // given
-        List<User> oldUsers = List.of(UserFactory.mockSingleUserWithId(1L), UserFactory.mockSingleUserWithId(2L));
+        List<User> oldUsers = new ArrayList<>(
+            List.of(UserFactory.mockSingleUserWithId(1L), UserFactory.mockSingleUserWithId(2L)));
         issue.assignUser(oldUsers);
 
         // when
-        List<User> updateUsers = List.of(UserFactory.mockSingleUserWithId(3L), UserFactory.mockSingleUserWithId(4L),
-            UserFactory.mockSingleUserWithId(5L));
+        List<User> updateUsers = new ArrayList<>(
+            List.of(UserFactory.mockSingleUserWithId(3L), UserFactory.mockSingleUserWithId(4L),
+                UserFactory.mockSingleUserWithId(5L)));
 
         issue.updateAssignee(updateUsers);
 
         // then
         Set<AssignedIssue> assignedIssues = issue.getAssignedIssues();
+        List<Long> ids = assignedIssues.stream()
+            .map(assignedIssue -> assignedIssue.getUser().getId())
+            .collect(Collectors.toList());
 
-        assertThat(assignedIssues.size()).isEqualTo(3);
-
-        assertTrue(assignedIssues.stream()
-            .map(AssignedIssue::getUser)
-            .noneMatch(oldUsers::contains));
-
-        assertTrue(assignedIssues.stream()
-            .map(AssignedIssue::getUser)
-            .allMatch(updateUsers::contains));
+        assertThat(ids).hasSize(3).containsExactlyInAnyOrder(3L, 4L, 5L);
     }
 
     @DisplayName("labels를 새로운 label List로 업데이트한다.")
     @Test
     void update_label_list() {
         // given
-        List<Label> oldLabels = List.of(LabelFactory.mockSingleLabel(1), LabelFactory.mockSingleLabel(2));
+        List<Label> oldLabels = new ArrayList<>(
+            List.of(LabelFactory.mockSingleLabelWithId(2), LabelFactory.mockSingleLabelWithId(3)));
         issue.attachedLabel(oldLabels);
 
         // when
-        List<Label> updateLabelList = List.of(LabelFactory.mockSingleLabel(3), LabelFactory.mockSingleLabel(4), LabelFactory.mockSingleLabel(5));
+        List<Label> updateLabelList = new ArrayList<>(
+            List.of(LabelFactory.mockSingleLabelWithId(3), LabelFactory.mockSingleLabelWithId(4)));
 
         issue.updateLabels(updateLabelList);
 
         // then
         Set<AttachedLabel> attachedLabels = issue.getAttachedLabels();
+        List<Long> ids = attachedLabels.stream()
+            .map(attachedLabel -> attachedLabel.getLabel().getId())
+            .collect(Collectors.toList());
 
-        assertThat(attachedLabels.size()).isEqualTo(3);
-
-        assertTrue(attachedLabels.stream()
-            .map(AttachedLabel::getLabel)
-            .noneMatch(oldLabels::contains));
-
-        assertTrue(attachedLabels.stream()
-            .map(AttachedLabel::getLabel)
-            .allMatch(updateLabelList::contains));
+        assertThat(ids).hasSize(2).containsExactlyInAnyOrder(3L, 4L);
     }
 }

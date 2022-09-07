@@ -3,7 +3,7 @@ package com.codesquad.issueTracker.issue.domain.repository;
 import static com.codesquad.issueTracker.comment.domain.QComment.*;
 import static com.codesquad.issueTracker.issue.domain.QAssignedIssue.*;
 import static com.codesquad.issueTracker.issue.domain.QIssue.*;
-import static com.codesquad.issueTracker.label.domain.QAttachedLabel.*;
+import static com.codesquad.issueTracker.issue.domain.QAttachedLabel.*;
 import static com.codesquad.issueTracker.label.domain.QLabel.*;
 import static com.codesquad.issueTracker.milestone.domain.QMilestone.*;
 import static com.codesquad.issueTracker.user.domain.QUser.*;

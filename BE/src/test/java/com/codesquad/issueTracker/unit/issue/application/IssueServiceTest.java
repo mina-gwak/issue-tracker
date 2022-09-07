@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -46,9 +47,10 @@ import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueContentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeLabelsRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeMilestoneRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.CommentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
-import com.codesquad.issueTracker.label.domain.AttachedLabel;
+import com.codesquad.issueTracker.issue.domain.AttachedLabel;
 import com.codesquad.issueTracker.label.domain.Label;
 import com.codesquad.issueTracker.label.domain.LabelRepository;
 import com.codesquad.issueTracker.milestone.domain.Milestone;
@@ -393,6 +395,49 @@ public class IssueServiceTest {
             () -> issueService.changeIssueContents(issue.getId(), contentsRequest, another.getId()));
     }
 
+    @DisplayName("작성자는 이슈의 마일스톤을 수정할 수 있다.")
+    @Test
+    void another_can_not_edit_issue_milestone() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, milestone);
+
+        Milestone changedMilestone = new Milestone("changedMilestone", null, "milestone2 입니다.");
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        given(milestoneRepository.findByName("changedMilestone"))
+            .willReturn(Optional.of(changedMilestone));
+
+        // when
+        ChangeMilestoneRequest milestoneRequest = new ChangeMilestoneRequest("changedMilestone");
+        issueService.changeMilestone(issue.getId(), milestoneRequest, writer.getId());
+
+        // then
+        assertThat(issue.getMilestoneName()).isEqualTo("changedMilestone");
+    }
+
+    @DisplayName("작성자가 아니라면 마일스톤을 수정할 수 없다.")
+    @Test
+    void writer_can_edit_issue_milestone() {
+        // given
+        User writer = UserFactory.mockSingleUserWithId(1L);
+        Milestone milestone = MilestoneFactory.mockSingleMilestone(1);
+        Issue issue = IssueFactory.mockSingleIssueWithId(1L, writer, milestone);
+
+        User another = UserFactory.mockSingleUserWithId(2L);
+
+        given(issueRepository.findById(anyLong()))
+            .willReturn(Optional.of(issue));
+
+        // when & then
+        ChangeMilestoneRequest milestoneRequest = new ChangeMilestoneRequest("changedMilestone");
+        assertThrows(IssueNotEditableException.class,
+            () -> issueService.changeMilestone(issue.getId(), milestoneRequest, another.getId()));
+    }
+
     @DisplayName("작성자만 assignee를 수정할 수 있다.")
     @Test
     void writer_can_edit_assignee_list() {
@@ -405,7 +450,8 @@ public class IssueServiceTest {
             .willReturn(Optional.of(issue));
 
         ChangeAssigneesRequest request = new ChangeAssigneesRequest(List.of("user10", "user11"));
-        List<User> assigneeForChange = List.of(UserFactory.mockSingleUserWithId(10L), UserFactory.mockSingleUserWithId(11L));
+        List<User> assigneeForChange = new ArrayList<>(
+            List.of(UserFactory.mockSingleUserWithId(10L), UserFactory.mockSingleUserWithId(11L)));
         given(userRepository.findByNameIn(request.getAssignees()))
             .willReturn(Optional.of(assigneeForChange));
 
@@ -450,7 +496,8 @@ public class IssueServiceTest {
             .willReturn(Optional.of(issue));
 
         ChangeLabelsRequest request = new ChangeLabelsRequest(List.of("label1", "label2"));
-        List<Label> labels = List.of(LabelFactory.mockSingleLabelWithId(1L), LabelFactory.mockSingleLabelWithId(2L));
+        List<Label> labels = new ArrayList<>(
+            List.of(LabelFactory.mockSingleLabelWithId(1L), LabelFactory.mockSingleLabelWithId(2L)));
 
         given(labelRepository.findByNameIn(request.getLabels()))
             .willReturn(Optional.of(labels));

@@ -29,6 +29,7 @@ import com.codesquad.issueTracker.issue.presentation.dto.ChangeAssigneesRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueContentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeIssueTitleRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.ChangeLabelsRequest;
+import com.codesquad.issueTracker.issue.presentation.dto.ChangeMilestoneRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.CommentsRequest;
 import com.codesquad.issueTracker.issue.presentation.dto.IssueContentsRequest;
 
@@ -117,6 +118,15 @@ public class IssueController {
         @RequestBody ChangeLabelsRequest request,
         @RequestAttribute Long userId) {
         issueService.changeLabelList(issueId, request, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{issueId}/milestones")
+    public ResponseEntity<Void> changeMilestone(
+        @PathVariable Long issueId,
+        @RequestBody ChangeMilestoneRequest request,
+        @RequestAttribute Long userId) {
+        issueService.changeMilestone(issueId, request, userId);
         return ResponseEntity.ok().build();
     }
 
