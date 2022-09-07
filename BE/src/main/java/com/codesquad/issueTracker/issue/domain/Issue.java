@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -17,7 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.codesquad.issueTracker.comment.domain.Comment;
-import com.codesquad.issueTracker.label.domain.AttachedLabel;
 import com.codesquad.issueTracker.label.domain.Label;
 import com.codesquad.issueTracker.milestone.domain.Milestone;
 import com.codesquad.issueTracker.user.domain.User;
@@ -127,13 +127,15 @@ public class Issue {
 
     public void updateAssignee(List<User> assignees) {
         this.modificationTime = LocalDateTime.now();
-        assignedIssues.clear();
+        removeAssigneesFromAssignedIssues(assignees);
+        removeDuplicatedAssignee(assignees);
         assignUser(assignees);
     }
 
     public void updateLabels(List<Label> labels) {
         this.modificationTime = LocalDateTime.now();
-        attachedLabels.clear();
+        removeLabelsFromAttachedLabels(labels);
+        removeDuplicatedLabel(labels);
         attachedLabel(labels);
     }
 
@@ -191,5 +193,37 @@ public class Issue {
 
     public void changeMilestone(Milestone milestone) {
         this.milestone = milestone;
+    }
+
+    private void removeAssigneesFromAssignedIssues(List<User> assignees) {
+        List<AssignedIssue> removed = assignedIssues.stream()
+            .filter(assignedIssue ->
+                !assignees.contains(assignedIssue.getUser()))
+            .collect(Collectors.toList());
+        removed.forEach(assignedIssues::remove);
+    }
+
+    private void removeDuplicatedAssignee(List<User> assignees) {
+        List<User> keepAssigned = assignedIssues.stream()
+            .map(AssignedIssue::getUser)
+            .filter(assignees::contains)
+            .collect(Collectors.toList());
+        assignees.removeAll(keepAssigned);
+    }
+
+    private void removeLabelsFromAttachedLabels(List<Label> labels) {
+        List<AttachedLabel> removed = attachedLabels.stream()
+            .filter(attachedLabel ->
+                !labels.contains(attachedLabel.getLabel()))
+            .collect(Collectors.toList());
+        removed.forEach(attachedLabels::remove);
+    }
+
+    private void removeDuplicatedLabel(List<Label> labels) {
+        List<Label> keepAttachedLabels = attachedLabels.stream()
+            .map(AttachedLabel::getLabel)
+            .filter(labels::contains)
+            .collect(Collectors.toList());
+        labels.removeAll(keepAttachedLabels);
     }
 }

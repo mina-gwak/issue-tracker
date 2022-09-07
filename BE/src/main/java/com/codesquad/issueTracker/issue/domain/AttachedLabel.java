@@ -1,4 +1,4 @@
-package com.codesquad.issueTracker.label.domain;
+package com.codesquad.issueTracker.issue.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.codesquad.issueTracker.issue.domain.Issue;
+import com.codesquad.issueTracker.label.domain.Label;
 
 import lombok.AccessLevel;
 import lombok.Getter;
