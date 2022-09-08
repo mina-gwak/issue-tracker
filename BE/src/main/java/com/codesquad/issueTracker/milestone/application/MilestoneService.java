@@ -33,16 +33,16 @@ public class MilestoneService {
         boolean isOpened = Boolean.parseBoolean(open);
         long milestoneCount = milestoneRepository.count();
 
-        if(isOpened) {
+        if (isOpened) {
             List<MilestoneSingleInfoResponse> openList = milestoneRepository.findByIsOpenedTrue().stream()
                 .map(MilestoneSingleInfoResponse::new)
                 .collect(Collectors.toList());
-            return new MilestonesResponse(openList, openList.size(), (int) milestoneCount - openList.size());
+            return new MilestonesResponse(openList, openList.size(), (int)milestoneCount - openList.size());
         }
         List<MilestoneSingleInfoResponse> closeList = milestoneRepository.findByIsOpenedFalse().stream()
             .map(MilestoneSingleInfoResponse::new)
             .collect(Collectors.toList());
-        return new MilestonesResponse(closeList, closeList.size(), (int)milestoneCount - closeList.size());
+        return new MilestonesResponse(closeList, (int)milestoneCount - closeList.size(), closeList.size());
     }
 
     @Transactional
@@ -65,7 +65,7 @@ public class MilestoneService {
     }
 
     @Transactional
-    public void deleteLabels(Long milestoneId) {
+    public void deleteMilestones(Long milestoneId) {
         Milestone milestone = findSingleMilestone(milestoneId);
         List<Issue> issues = milestone.getIssues();
         for (Issue issue : issues) {

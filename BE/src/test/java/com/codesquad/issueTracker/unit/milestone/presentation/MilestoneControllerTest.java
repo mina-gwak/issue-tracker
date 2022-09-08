@@ -230,7 +230,7 @@ class MilestoneControllerTest extends ControllerTest {
             .andExpect(status().isOk());
 
         verify(milestoneService, times(1))
-            .deleteLabels(eq(1L));
+            .deleteMilestones(eq(1L));
 
         // docs
         perform.andDo(

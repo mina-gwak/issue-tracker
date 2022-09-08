@@ -59,7 +59,7 @@ public class MilestoneController {
 
     @DeleteMapping("/{milestoneId}")
     public ResponseEntity<Void> deleteMilestone(@PathVariable Long milestoneId) {
-        milestoneService.deleteLabels(milestoneId);
+        milestoneService.deleteMilestones(milestoneId);
         return ResponseEntity.ok().build();
     }
 
