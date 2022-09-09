@@ -9,6 +9,7 @@ import { BUTTON_SIZE } from '@components/common/Button/constants';
 import Image from '@components/common/Image';
 import { IMAGE_SIZE } from '@components/common/Image/constants';
 import Textarea from '@components/common/Textarea';
+import { queryClient } from '@src';
 import { detailIssueTrigger } from '@store/detailIssue';
 import { userState } from '@store/user';
 import { commentType, issueContentType } from '@type/detailIssueType';
@@ -37,6 +38,7 @@ const CommentList = ({
     if (createCommentResult) {
       setDetailIssueTrigger((triggerCount) => triggerCount + 1);
       setContent('');
+      queryClient.invalidateQueries(['issues', issueId]);
     }
   };
 

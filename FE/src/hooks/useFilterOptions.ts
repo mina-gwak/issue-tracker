@@ -48,13 +48,16 @@ const useFilterOptions = ({ type }: UseDropDownType) => {
   const checkBoxClickHandler: checkBoxClickHandlerType = (value) => () => {
     if (!value) return;
 
+    if (type === 'stateModify') {
+      fetchStateModify(value);
+      return;
+    }
+
     for (const [objKey, objValue] of filterBarArrValue) {
       if (objKey === type) {
         const checkSameValue = objValue.includes(value);
         if (type === 'is') {
           setFilterBarValue({ ...filterBarValue, [type]: ['issue', value] });
-        } else if (type === 'stateModify') {
-          fetchStateModify(value);
         } else {
           if (checkSameValue) setFilterBarValue({ ...filterBarValue, [type]: [] });
           else setFilterBarValue({ ...filterBarValue, [type]: [value] });

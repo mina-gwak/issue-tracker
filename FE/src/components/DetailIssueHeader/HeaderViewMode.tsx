@@ -3,6 +3,7 @@ import { useSetRecoilState } from 'recoil';
 import * as S from '@components/DetailIssueHeader/DetailIssueHeader.style';
 import Button from '@components/common/Button';
 import { BUTTON_SIZE } from '@components/common/Button/constants';
+import { queryClient } from '@src';
 import { detailIssueTrigger, titleEditMode } from '@store/detailIssue';
 import { fetchIssueUpdate } from '@utils/api/fetchDetailIssue';
 
@@ -21,7 +22,10 @@ const HeaderViewMode = ({ issueId, status, title, editable }: HeaderViewModeProp
   const handleEditClick = () => setTitleEditMode(true);
   const handleOpenClose = async () => {
     const response = await fetchIssueUpdate(issueId, status);
-    if (response) setIssueOpenClose((prev) => prev + 1);
+    if (response) {
+      setIssueOpenClose((prev) => prev + 1);
+      queryClient.invalidateQueries(['issues', issueId]);
+    }
   };
 
   return (

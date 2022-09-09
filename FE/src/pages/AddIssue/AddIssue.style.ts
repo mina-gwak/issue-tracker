@@ -36,9 +36,9 @@ export const FormWrapper = styled.div`
 `;
 
 export const FormElements = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  & > div {
+    margin-bottom: 16px;
+  }
   
   input {
     width: 100%;

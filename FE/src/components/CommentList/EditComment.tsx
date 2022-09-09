@@ -28,7 +28,7 @@ const EditComment = ({ issueId, commentId, content, handleCancleClick }: EditCom
     else result = await editComments(commentId, editContent);
     if (result) {
       handleCancleClick();
-      queryClient.invalidateQueries(['issues', issueId]);
+      queryClient.invalidateQueries(['issues']);
     }
   };
 

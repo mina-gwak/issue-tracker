@@ -1,10 +1,12 @@
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 
 import { useSetRecoilState } from 'recoil';
 
 import * as S from '@components/DetailIssueHeader/DetailIssueHeader.style';
 import Button from '@components/common/Button';
 import { BUTTON_SIZE } from '@components/common/Button/constants';
+import TextInput from '@components/common/TextInput';
+import { queryClient } from '@src';
 import { detailIssueTrigger, titleEditMode } from '@store/detailIssue';
 import { fetchEditTitle } from '@utils/api/fetchDetailIssue';
 
@@ -19,20 +21,20 @@ const HeaderEditMode = ({ issueId, title }: HeaderEditModePropsType) => {
   const [editTitle, setEditTitle] = useState(title);
 
   const handleCancel = () => setTitleEditMode(false);
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => setEditTitle(e.target.value);
   const handleSubmit = async () => {
     const fetchResult = await fetchEditTitle(issueId, editTitle);
     if (fetchResult) {
       setTitleEditMode(false);
       setDetailRender((prev) => prev + 1);
+      queryClient.invalidateQueries(['issues', issueId]);
     }
   };
 
   return (
     <S.HeaderEditWrapper>
-      <div>
-        <S.TitleInput value={editTitle} onChange={handleChange} />
-      </div>
+      <S.TitleInputContainer>
+        <TextInput name='issueTitle' placeholder='제목' value={editTitle} setValue={setEditTitle} />
+      </S.TitleInputContainer>
       <S.EditButtonContainer>
         <Button size={BUTTON_SIZE.SMALL} outline={true} onClick={handleCancel}>
           <span> X 편집 취소</span>

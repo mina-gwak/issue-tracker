@@ -25,17 +25,12 @@ export const HeaderEditWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const TitleInput = styled.input`
-  min-width: 700px;
-  font-size: ${({ theme }) => theme.fontSizes.display};
-  height: 46px;
-  border: none;
-  border-radius: 11px;
-  background-color: ${({ theme }) => theme.colors.grey5};
-  margin-bottom: 1rem;
-  &:focus {
-    text-decoration: none;
-    background-color: ${({ theme }) => theme.colors.white};
+export const TitleInputContainer = styled.div`
+  width: 940px;
+  margin-bottom: 20px;
+  
+  input {
+    width: 940px;
   }
 `;
 
