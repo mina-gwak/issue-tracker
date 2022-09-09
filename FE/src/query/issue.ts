@@ -25,6 +25,11 @@ interface EditAssigneesPropsType {
   assignees: string[];
 }
 
+interface EditMilestonePropsType {
+  issueId: number;
+  milestone: string;
+}
+
 export const fetchIssues = async ({
   filterBarValue,
   pageParam = 0,
@@ -106,6 +111,22 @@ export const editAssignees = async ({ issueId, assignees }: EditAssigneesPropsTy
   const { status } = await axios.patch(
     `${API.EDIT_ASSIGNEES(issueId)}`,
     { assignees },
+    {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(accessToken)}`,
+      },
+    },
+  );
+
+  if (status === 200) return true;
+};
+
+export const editMilestone = async ({ issueId, milestone }: EditMilestonePropsType) => {
+  const accessToken = localStorage.getItem('accessToken')!;
+
+  const { status } = await axios.patch(
+    `${API.EDIT_MILESTONE(issueId)}`,
+    { milestone },
     {
       headers: {
         Authorization: `Bearer ${JSON.parse(accessToken)}`,

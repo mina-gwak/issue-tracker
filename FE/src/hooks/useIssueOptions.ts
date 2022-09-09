@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 
 import { IconsType } from '@assets/icons';
 import { ICON_NAME } from '@components/common/Icon/constants';
-import { editAssignees, editLabels } from '@query/issue';
+import { editAssignees, editLabels, editMilestone } from '@query/issue';
 import { issueOptionsState, issueOptionsTriggerState } from '@store/issueOptions';
 import { checkBoxClickHandlerType, isCheckedType } from '@type/useOption';
 
@@ -19,8 +19,8 @@ const useIssueOptions = ({ type, issueId }: UseDropDownType) => {
   const [issueOptionsTrigger, setIssueOptionsTrigger] = useRecoilState(issueOptionsTriggerState);
 
   const { mutate: mutateLabel } = useMutation(editLabels);
-
   const { mutate: mutateAssignees } = useMutation(editAssignees);
+  const { mutate: mutateMilestone } = useMutation(editMilestone);
 
   const isChecked: isCheckedType = (value) => {
     let checkBoxIcon: IconsType = ICON_NAME.CHECKBOX_CIRCLE_INITIAL;
@@ -66,6 +66,7 @@ const useIssueOptions = ({ type, issueId }: UseDropDownType) => {
     if (issueId && issueOptionsTrigger.type === type) {
       if (type === 'labels') mutateLabel({ issueId, labels: issueOptions.labels });
       if (type === 'assignees') mutateAssignees({ issueId, assignees: issueOptions.assignees });
+      if (type === 'milestone') mutateMilestone({ issueId, milestone: issueOptions.milestone });
     }
   }, [issueOptionsTrigger.count]);
 
