@@ -120,9 +120,6 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
 
     private Predicate addMainCondition(MainFilter condition, Long userId,
         QUser assignedUser) {
-        if (condition.equals(MainFilter.OPEN)) {
-            return issue.isOpened.eq(true);
-        }
         if (condition.equals(MainFilter.CLOSE)) {
             return issue.isOpened.eq(false);
         }
@@ -135,7 +132,7 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
         if (condition.equals(MainFilter.ASSIGNED_ME)) {
             return assignedUser.id.eq(userId);
         }
-        return null;
+        return issue.isOpened.eq(true);
     }
 
     private Predicate addMainCondition(MainFilter mainFilter) {
