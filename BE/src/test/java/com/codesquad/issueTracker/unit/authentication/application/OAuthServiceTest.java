@@ -97,6 +97,53 @@ public class OAuthServiceTest {
             .insert("1", jwtRefreshToken);
     }
 
+    @DisplayName("없는 유저일 경우 새로 저장 후 반환한다.")
+    @Test
+    void login_success_with_not_exist_user() {
+        // given
+        String code = "oauthCode";
+        String jwtAccessToken = "accessToken";
+        String jwtRefreshToken = "refreshToken";
+        OAuthTokenResponse accessToken = new OAuthTokenResponse(code, "Bearer", "scope");
+        UserProfile userProfile = new UserProfile("name1", "nickname1", "image1");
+        User user = new User(1L, "name1", "nickname1", "image1");
+
+        given(oAuthClientServer.getOAuthToken(code))
+            .willReturn(accessToken);
+        given(oAuthClientServer.getUserProfile(accessToken))
+            .willReturn(userProfile);
+        given(userRepository.findByName(userProfile.getName()))
+            .willReturn(Optional.empty());
+        given(userRepository.save(any(User.class)))
+            .willReturn(user);
+        given(jwtTokenProvider.generateAccessToken("1"))
+            .willReturn(jwtAccessToken);
+        given(jwtTokenProvider.generateRefreshToken("1"))
+            .willReturn(jwtRefreshToken);
+
+        // when
+        OAuthLoginResponse loginResponse = oAuthService.login(code);
+
+        // then
+        assertThat(loginResponse.getAccessToken()).isEqualTo(jwtAccessToken);
+        assertThat(loginResponse.getRefreshToken()).isEqualTo(jwtRefreshToken);
+        assertThat(loginResponse.getTokenType()).isEqualTo("Bearer");
+        assertThat(loginResponse.getUserProfileResponse().getName()).isEqualTo("name1");
+
+        verify(oAuthClientServer, times(1))
+            .getOAuthToken(code);
+        verify(oAuthClientServer, times(1))
+            .getUserProfile(accessToken);
+        verify(userRepository, times(1))
+            .findByName("name1");
+        verify(userRepository, times(1))
+            .save(any(User.class));
+        verify(jwtTokenProvider, times(1))
+            .generateAccessToken("1");
+        verify(redisTokenRepository, times(1))
+            .insert("1", jwtRefreshToken);
+    }
+
     @DisplayName("로그아웃 요청 시 토큰이 삭제된다.")
     @Test
     void logout_request() {
