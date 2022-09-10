@@ -4,11 +4,17 @@ import java.time.LocalDateTime;
 
 import com.codesquad.issueTracker.milestone.domain.Milestone;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class MilestoneSingleInfoResponse {
+
+    @EqualsAndHashCode.Include
     private Long id;
+
+    @EqualsAndHashCode.Include
     private String name;
     private LocalDateTime dueDate;
     private String description;
