@@ -23,21 +23,27 @@ import com.codesquad.issueTracker.milestone.domain.Milestone;
 import com.codesquad.issueTracker.user.domain.User;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Issue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
+    @EqualsAndHashCode.Include
     private String title;
+
+    @EqualsAndHashCode.Include
     private String content;
     private boolean isOpened;
     private LocalDateTime writtenTime;
@@ -166,21 +172,6 @@ public class Issue {
 
     public boolean isOpened() {
         return this.isOpened;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        Issue issue = (Issue)o;
-        return Objects.equals(getId(), issue.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
     }
 
     public boolean isEditable(Long userId) {

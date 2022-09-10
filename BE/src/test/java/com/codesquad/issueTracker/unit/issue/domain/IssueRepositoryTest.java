@@ -585,4 +585,71 @@ public class IssueRepositoryTest {
         // then
         assertThat(findIssues).hasSize(1).hasSameElementsAs(List.of(subUserAssignedIssue));
     }
+
+    @DisplayName("subfilter가 적용된 OPEN 이슈 개수를 가져온다.")
+    @Test
+    void apply_sub_filter_status_open() {
+        // given
+        Issue userAssignedIssue1 = issueRepository.findById(1L)
+            .orElseThrow();
+
+        Issue userAssignedIssue2 = issueRepository.findById(2L)
+            .orElseThrow();
+
+        User user1 = userRepository.findById(1L)
+            .orElseThrow();
+
+        User user2 = userRepository.findById(2L)
+            .orElseThrow();
+
+        userAssignedIssue1.assignUser(List.of(user1, user2));
+        userAssignedIssue2.assignUser(List.of(user1, user2));
+
+
+        // when
+        FilterCondition filterCondition = new FilterCondition();
+        SubFilterDetail subFilter1 = new SubFilterDetail(SubFilter.ASSIGNEES, user1.getName());
+        SubFilterDetail subFilter2 = new SubFilterDetail(SubFilter.ASSIGNEES, user2.getName());
+        filterCondition.addSubFilter(subFilter1);
+        filterCondition.addSubFilter(subFilter2);
+        Long resultCount = issueRepository.findCountByMainStatus(filterCondition,
+            filterCondition.getMainFilter());
+
+        // then
+        assertThat(resultCount).isEqualTo(2);
+    }
+
+    @DisplayName("subfilter가 적용된 CLOSE 이슈 개수를 가져온다.")
+    @Test
+    void apply_sub_filter_status_close() {
+        // given
+        Issue userAssignedIssue1 = issueRepository.findById(1L)
+            .orElseThrow();
+
+        Issue userAssignedIssue2 = issueRepository.findById(2L)
+            .orElseThrow();
+
+        User user1 = userRepository.findById(1L)
+            .orElseThrow();
+
+        User user2 = userRepository.findById(2L)
+            .orElseThrow();
+
+        userAssignedIssue1.assignUser(List.of(user1, user2));
+        userAssignedIssue2.assignUser(List.of(user1, user2));
+        userAssignedIssue1.changeStatus(Boolean.FALSE);
+
+        // when
+        FilterCondition filterCondition = new FilterCondition();
+        SubFilterDetail subFilter1 = new SubFilterDetail(SubFilter.ASSIGNEES, user1.getName());
+        SubFilterDetail subFilter2 = new SubFilterDetail(SubFilter.ASSIGNEES, user2.getName());
+        filterCondition.addSubFilter(subFilter1);
+        filterCondition.addSubFilter(subFilter2);
+        Long resultCount = issueRepository.findCountByMainStatus(filterCondition,
+            MainFilter.CLOSE);
+
+        // then
+        assertThat(resultCount).isEqualTo(1);
+    }
+
 }
