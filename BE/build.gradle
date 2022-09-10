@@ -13,6 +13,9 @@ plugins {
 
 	// spring rest docss
 	id "org.asciidoctor.jvm.convert" version "3.3.2"
+
+	// jacoco
+	id 'jacoco'
 }
 
 group = 'com.codesquad'
@@ -155,5 +158,22 @@ bootJar {
 	dependsOn asciidoctor
 	from ("${asciidoctor.outputDir}/html5") {
 		into 'static/docs'
+	}
+}
+
+jacocoTestReport {
+	dependsOn test // tests are required to run before generating the report
+
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					"**/dto/*",
+					"**/exception/*",
+					"**/config/*",
+					"**/aspect/*",
+					"**/IssueTrackerApplication.class",
+					"**/Q*.class"
+			])
+		}))
 	}
 }
