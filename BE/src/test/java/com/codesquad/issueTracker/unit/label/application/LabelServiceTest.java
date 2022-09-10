@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +18,6 @@ import org.springframework.data.domain.Sort;
 
 import com.codesquad.issueTracker.common.factory.LabelFactory;
 import com.codesquad.issueTracker.exception.label.LabelNotFoundException;
-import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.label.application.LabelService;
 import com.codesquad.issueTracker.label.application.dto.LabelDetails;
 import com.codesquad.issueTracker.label.application.dto.LabelListResponse;

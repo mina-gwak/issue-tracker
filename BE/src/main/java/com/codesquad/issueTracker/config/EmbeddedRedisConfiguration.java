@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Profile;
 import redis.embedded.RedisServer;
 
 @Configuration
-@Profile("!prod") // TODO : remove Comments if redis env build at ec2
+@Profile("!prod")
 public class EmbeddedRedisConfiguration {
 
     @Value("${spring.redis.port}")
