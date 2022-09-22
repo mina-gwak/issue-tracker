@@ -32,7 +32,7 @@ public class RedisCachingConfiguration {
                 RedisSerializationContext.SerializationPair
                     .fromSerializer(new GenericJackson2JsonRedisSerializer())) // json 지원 포맷으로 변경
             .prefixCacheNameWith("Test:") // 캐시의 prefix를 설정
-            .entryTtl(Duration.ofMinutes(2)); // duration time 설정
+            .entryTtl(Duration.ofSeconds(10)); // duration time 설정
 
         builder.cacheDefaults(configuration);
         return builder.build();

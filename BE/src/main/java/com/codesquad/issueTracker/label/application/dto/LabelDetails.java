@@ -2,9 +2,11 @@ package com.codesquad.issueTracker.label.application.dto;
 
 import com.codesquad.issueTracker.label.domain.Label;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
+@EqualsAndHashCode(exclude = {"description", "colorCode", "textColor"})
 public class LabelDetails {
     private Long id;
     private String name;

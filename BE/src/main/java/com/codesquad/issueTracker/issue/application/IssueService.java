@@ -2,11 +2,10 @@ package com.codesquad.issueTracker.issue.application;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -61,24 +60,20 @@ public class IssueService {
     private final MilestoneRepository milestoneRepository;
     private final CommentRepository commentRepository;
 
+    @Cacheable(value = "issueResponse", cacheManager = "cacheManager", unless = "#query == ''")
     @Transactional(readOnly = true)
     public IssueCoversResponse findIssuesByCondition(String query, Long userId, Pageable pageable) {
         FilterCondition condition = queryParser.makeFilterCondition(query);
-        Page<Issue> results = issueRepository.search(condition, userId, pageable);
-
-        List<IssueCoverResponse> issueCoverResponses = results.stream()
-            .map(IssueCoverResponse::new)
-            .collect(Collectors.toList());
-
+        Page<IssueCoverResponse> results = issueRepository.search(condition, userId, pageable);
         Long openCount = issueRepository.findCountByMainStatus(condition, MainFilter.OPEN);
         Long closeCount = issueRepository.findCountByMainStatus(condition, MainFilter.CLOSE);
 
         return new IssueCoversResponse(
-            issueCoverResponses, openCount, closeCount, labelRepository.count(),
+            results.getContent(), openCount, closeCount, labelRepository.count(),
             milestoneRepository.count(), results.getTotalPages(), results.getTotalElements());
     }
 
-    @Cacheable(value = "PopUpResponse", key = "#issueId", cacheManager = "cacheManager", unless = "#issueId == ''")
+    @Cacheable(value = "popUpResponse", key = "#issueId", cacheManager = "cacheManager", unless = "#issueId == ''")
     @Transactional(readOnly = true)
     public PopUpResponse popUpIssue(Long issueId, Long userId) {
         Issue issue = findSingleIssue(issueId);
@@ -107,27 +102,30 @@ public class IssueService {
         return new IssueDetailResponse(issue, userId);
     }
 
-    @CacheEvict(value = "PopUpResponse", key = "#issueId", cacheManager = "cacheManager")
     @Transactional
     public void deleteIssue(Long issueId, Long userId) {
         Issue issue = checkEditableIssue(issueId, userId);
         issueRepository.delete(issue);
     }
 
-    @CachePut(value = "PopUpResponse", key = "#issueId", cacheManager = "cacheManager", unless = "#issueId == ''")
+    @Caching(evict = {
+        @CacheEvict(value = "issueResponse", allEntries = true, cacheManager = "cacheManager"),
+        @CacheEvict(value = "popUpResponse", key = "#issueId", cacheManager = "cacheManager")
+    })
     @Transactional
-    public PopUpResponse changeIssueTitle(Long issueId, ChangeIssueTitleRequest request, Long userId) {
+    public void changeIssueTitle(Long issueId, ChangeIssueTitleRequest request, Long userId) {
         Issue issue = checkEditableIssue(issueId, userId);
         issue.updateTitle(request.getTitle());
-        return new PopUpResponse(issue, issue.isAssignedThisUser(userId));
     }
 
-    @CachePut(value = "PopUpResponse", key = "#issueId", cacheManager = "cacheManager", unless = "#issueId == ''")
+    @Caching(evict = {
+        @CacheEvict(value = "issueResponse", allEntries = true, cacheManager = "cacheManager"),
+        @CacheEvict(value = "popUpResponse", key = "#issueId", cacheManager = "cacheManager")
+    })
     @Transactional
-    public PopUpResponse changeIssueContents(Long issueId, ChangeIssueContentsRequest request, Long userId) {
+    public void changeIssueContents(Long issueId, ChangeIssueContentsRequest request, Long userId) {
         Issue issue = checkEditableIssue(issueId, userId);
         issue.updateContents(request.getContents());
-        return new PopUpResponse(issue, issue.isAssignedThisUser(userId));
     }
 
     @Transactional

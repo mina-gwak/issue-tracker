@@ -17,8 +17,8 @@ import com.codesquad.issueTracker.common.factory.LabelFactory;
 import com.codesquad.issueTracker.common.factory.MilestoneFactory;
 import com.codesquad.issueTracker.common.factory.UserFactory;
 import com.codesquad.issueTracker.issue.domain.AssignedIssue;
-import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.issue.domain.AttachedLabel;
+import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.label.domain.Label;
 import com.codesquad.issueTracker.user.domain.User;
 
@@ -106,8 +106,8 @@ public class IssueTest {
 
         // when
         List<User> updateUsers = new ArrayList<>(
-            List.of(UserFactory.mockSingleUserWithId(3L), UserFactory.mockSingleUserWithId(4L),
-                UserFactory.mockSingleUserWithId(5L)));
+            List.of(UserFactory.mockSingleUserWithId(2L), UserFactory.mockSingleUserWithId(3L),
+                UserFactory.mockSingleUserWithId(4L)));
 
         issue.updateAssignee(updateUsers);
 
@@ -117,7 +117,7 @@ public class IssueTest {
             .map(assignedIssue -> assignedIssue.getUser().getId())
             .collect(Collectors.toList());
 
-        assertThat(ids).hasSize(3).containsExactlyInAnyOrder(3L, 4L, 5L);
+        assertThat(ids).hasSize(3).containsExactlyInAnyOrder(2L, 3L,4L);
     }
 
     @DisplayName("labels를 새로운 label List로 업데이트한다.")
@@ -141,5 +141,28 @@ public class IssueTest {
             .collect(Collectors.toList());
 
         assertThat(ids).hasSize(2).containsExactlyInAnyOrder(3L, 4L);
+    }
+
+    @DisplayName("milestone이 없다면 null이 반환된다.")
+    @Test
+    void return_null_if_milestone_does_not_exist() {
+        // given
+        Issue issue = IssueFactory.mockSingleIssue(1, UserFactory.mockSingleUser(1), null);
+
+        // when
+        String milestoneName = issue.getMilestoneName();
+
+        // then
+        assertThat(milestoneName).isNull();
+    }
+
+    @DisplayName("milestone을 제거하면 null이 할당된다.")
+    @Test
+    void remove_milestone_return_null() {
+        // when
+        issue.removeMilestone();
+
+        // then
+        assertThat(issue.getMilestone()).isNull();
     }
 }

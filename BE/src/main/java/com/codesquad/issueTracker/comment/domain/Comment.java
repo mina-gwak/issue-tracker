@@ -17,10 +17,9 @@ import com.codesquad.issueTracker.issue.domain.Issue;
 import com.codesquad.issueTracker.user.domain.User;
 
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
+@lombok.Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Comment {
