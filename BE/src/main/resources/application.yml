@@ -10,10 +10,10 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
-        format_sql: true
+#        format_sql: true
         default_batch_fetch_size: 100
     database: mysql
-    show-sql: true
+#    show-sql: true
 
   redis:
     host: 127.0.0.1
@@ -57,6 +57,10 @@ cloud:
 logging:
   level:
     root: info
-    com.codesquad.issueTracker: debug
+    com.codesquad.issueTracker: warn
 
+#decorator:
+#  datasource:
+#    p6spy:
+#      enable-logging: false
 

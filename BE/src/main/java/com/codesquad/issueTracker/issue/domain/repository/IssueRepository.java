@@ -18,7 +18,6 @@ public interface IssueRepository extends JpaRepository<Issue, Long>, IssueReposi
         attributePaths = {"user", "comments",
             "attachedLabels", "attachedLabels.label", "attachedLabels.issue",
             "assignedIssues", "assignedIssues.issue", "assignedIssues.user",
-            "milestone", "milestone.issues",
             "comments", "comments.user"},
         type = EntityGraph.EntityGraphType.LOAD)
     Optional<Issue> findById(Long aLong);
