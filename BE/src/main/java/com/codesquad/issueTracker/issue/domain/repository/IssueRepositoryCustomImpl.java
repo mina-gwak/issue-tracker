@@ -8,7 +8,6 @@ import static com.codesquad.issueTracker.label.domain.QLabel.*;
 import static com.codesquad.issueTracker.milestone.domain.QMilestone.*;
 import static com.codesquad.issueTracker.user.domain.QUser.*;
 import static com.querydsl.core.group.GroupBy.*;
-import static com.querydsl.core.types.Projections.list;
 
 import java.util.List;
 
@@ -86,9 +85,9 @@ public class IssueRepositoryCustomImpl implements IssueRepositoryCustom {
             .transform(
                 groupBy(issue.id).list(
                     Projections.constructor(IssueCoverResponse.class,
-                        list(Projections.constructor(LabelCoverResponse.class,
+                        set(Projections.constructor(LabelCoverResponse.class,
                             label.name, label.labelColor, label.textColor)),
-                        list(Projections.constructor(UserOutlineResponse.class,
+                        set(Projections.constructor(UserOutlineResponse.class,
                             assignedUser.name, assignedUser.image)),
                         issue.title, issue.id, issue.user.name, issue.user.image,
                         issue.modificationTime, issue.milestone.name, issue.isOpened)));

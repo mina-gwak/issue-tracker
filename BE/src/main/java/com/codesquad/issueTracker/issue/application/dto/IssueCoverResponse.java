@@ -1,9 +1,11 @@
 package com.codesquad.issueTracker.issue.application.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -25,8 +27,8 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class IssueCoverResponse {
 
-    private List<LabelCoverResponse> labelCoverResponses;
-    private List<UserOutlineResponse> assignees;
+    private List<LabelCoverResponse> labelCoverResponses = new ArrayList<>();
+    private List<UserOutlineResponse> assignees = new ArrayList<>();
     private String title;
     private Long issueId;
     private String writer;
@@ -69,16 +71,24 @@ public class IssueCoverResponse {
         this.opened = issue.isOpened();
     }
 
-    public IssueCoverResponse(List<LabelCoverResponse> labelCoverResponses, List<UserOutlineResponse> assignees,
+    public IssueCoverResponse(
+        Set<LabelCoverResponse> labelCoverResponses,
+        Set<UserOutlineResponse> userOutlineResponses,
         String title, Long issueId, String writer, String writerImage, LocalDateTime modificationTime,
         String milestoneName,
         boolean opened) {
-        this.labelCoverResponses = labelCoverResponses.stream()
-            .sorted(Comparator.comparing(LabelCoverResponse::getLabelName))
-            .collect(Collectors.toList());
-        this.assignees = assignees.stream()
-            .sorted(Comparator.comparing(UserOutlineResponse::getOptionName))
-            .collect(Collectors.toList());
+
+        if (!labelCoverResponses.contains(LabelCoverResponse.EMPTY_RESPONSE)) {
+            this.labelCoverResponses = labelCoverResponses.stream()
+                .sorted(Comparator.comparing(LabelCoverResponse::getLabelName))
+                .collect(Collectors.toList());
+        }
+
+        if (!userOutlineResponses.contains(UserOutlineResponse.EMPTY_RESPONSE)) {
+            this.assignees = userOutlineResponses.stream()
+                .sorted(Comparator.comparing(UserOutlineResponse::getOptionName))
+                .collect(Collectors.toList());
+        }
         this.title = title;
         this.issueId = issueId;
         this.writer = writer;
