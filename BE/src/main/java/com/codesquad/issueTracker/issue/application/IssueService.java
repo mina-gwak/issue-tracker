@@ -60,7 +60,7 @@ public class IssueService {
     private final MilestoneRepository milestoneRepository;
     private final CommentRepository commentRepository;
 
-    @Cacheable(value = "issueResponse", cacheManager = "cacheManager", unless = "#query == ''")
+    @Cacheable(value = "issueResponse", key = "#query", cacheManager = "cacheManager", unless = "#query == ''")
     @Transactional(readOnly = true)
     public IssueCoversResponse findIssuesByCondition(String query, Long userId, Pageable pageable) {
         FilterCondition condition = queryParser.makeFilterCondition(query);
